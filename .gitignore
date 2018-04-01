@@ -92,5 +92,8 @@ nbdist/
 .nb-gradle/
 nbactions.xml
 
+### Java-Web ###
+## ignoring target file
+target/
 
 # End of https://www.gitignore.io/api/java,eclipse,netbeans
