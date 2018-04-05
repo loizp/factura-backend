@@ -16,13 +16,13 @@
     <column id="COL2" populated="true" UUID="dd5985c5-2219-4f68-8f5f-3fa1a0054e06" autoIncrement="true" autoIncrementSequenceName="documentos_docu_id_seq" defaultValue="" name="docu_id" nullable="0" physicalName="docu_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL3" populated="true" UUID="4591dc89-8300-4199-83e0-a8c37250087d" autoIncrement="false" autoIncrementSequenceName="tipo_documentos_tido_codigo_seq" defaultValue="" name="tido_codigo" nullable="0" physicalName="tido_codigo" precision="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL3" populated="true" UUID="4591dc89-8300-4199-83e0-a8c37250087d" autoIncrement="false" autoIncrementSequenceName="documentos_tido_codigo_seq" defaultValue="" name="tido_codigo" nullable="0" physicalName="tido_codigo" precision="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks></remarks>
     </column>
     <column id="COL4" populated="true" UUID="5139c46d-1631-4f0c-b188-759fe97a8552" autoIncrement="false" autoIncrementSequenceName="clientes_clie_id_seq" defaultValue="" name="empr_id" nullable="0" physicalName="empr_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL5" populated="true" UUID="912b22ab-434d-47f9-8546-42f93e92a8df" autoIncrement="false" autoIncrementSequenceName="clientes_clie_id_seq" defaultValue="" name="clie_id" nullable="0" physicalName="clie_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL5" populated="true" UUID="912b22ab-434d-47f9-8546-42f93e92a8df" autoIncrement="false" autoIncrementSequenceName="documentos_clie_id_seq" defaultValue="" name="clie_id" nullable="0" physicalName="clie_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
     <column id="COL6" populated="true" UUID="e9c78712-76b4-4559-be9b-2e049a3ac0b5" autoIncrement="false" autoIncrementSequenceName="documentos_docu_fecha_seq" defaultValue="" name="docu_fecha" nullable="0" physicalName="docu_fecha" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="91" userDefinedTypeUUID="ee349be3-6af2-46e1-b305-975f5354b009" >
@@ -31,7 +31,7 @@
     <column id="COL7" populated="true" UUID="ad1121ff-9bbc-40f5-839d-4010b9d60a40" autoIncrement="false" autoIncrementSequenceName="documentos_docu_numero_seq" defaultValue="" name="docu_numero" nullable="0" physicalName="docu_numero" precision="20" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL8" populated="true" UUID="a1136634-f080-4515-9568-7348e757cc01" autoIncrement="false" autoIncrementSequenceName="moneda_mone_id_seq" defaultValue="" name="mone_id" nullable="0" physicalName="mone_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL8" populated="true" UUID="a1136634-f080-4515-9568-7348e757cc01" autoIncrement="false" autoIncrementSequenceName="documentos_mone_id_seq" defaultValue="" name="mone_id" nullable="0" physicalName="mone_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
     <column id="COL9" populated="true" UUID="e7e91372-76b3-4042-b43a-11d63b9240d3" autoIncrement="false" autoIncrementSequenceName="documentos_docu_grabado_seq" defaultValue="" name="docu_grabada" nullable="0" physicalName="docu_grabada" precision="15" referenceCount="1" scale="2" sourceDataTypeName="UserDefinedSQLType" type="2" userDefinedTypeUUID="115245ce-612c-4d6a-b559-6dd903dd959a" >
@@ -73,7 +73,7 @@ En caso de Retencion, el valor de ls retencion (3% del valor totales de los docu
     <column id="COL20" populated="true" UUID="ba275c55-a316-41c8-aec2-c1f959864bdf" autoIncrement="false" autoIncrementSequenceName="documentos_docu_vendedor_seq" defaultValue="" name="docu_vendedor" nullable="0" physicalName="docu_vendedor" precision="200" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL21" populated="true" UUID="3cf54d0b-8727-4629-b2e7-da673aea7b00" autoIncrement="false" autoIncrementSequenceName="tipo_operaciones_tiop_codigo_seq" defaultValue="" name="tiop_codigo" nullable="0" physicalName="tiop_codigo" precision="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL21" populated="true" UUID="3cf54d0b-8727-4629-b2e7-da673aea7b00" autoIncrement="false" autoIncrementSequenceName="documentos_tiop_codigo_seq" defaultValue="" name="tiop_codigo" nullable="0" physicalName="tiop_codigo" precision="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks></remarks>
     </column>
     </folder>
@@ -93,7 +93,7 @@ En caso de Retencion, el valor de ls retencion (3% del valor totales de los docu
     <column id="COL25" populated="true" UUID="bbc0f580-dd52-4cf7-a640-6cdc6404a875" autoIncrement="true" autoIncrementSequenceName="detalle_documentos_dedo_id_seq" defaultValue="" name="dedo_id" nullable="0" physicalName="dedo_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
-    <column id="COL26" populated="true" UUID="73e91a85-2457-45a1-ba03-ae1dd7d28af1" autoIncrement="false" autoIncrementSequenceName="documentos_docu_id_seq" defaultValue="" name="docu_id" nullable="0" physicalName="docu_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL26" populated="true" UUID="73e91a85-2457-45a1-ba03-ae1dd7d28af1" autoIncrement="false" autoIncrementSequenceName="detalle_documentos_docu_id_seq" defaultValue="" name="docu_id" nullable="0" physicalName="docu_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks></remarks>
     </column>
     <column id="COL27" populated="true" UUID="08b2a7af-a5a0-4005-a5a9-2287d9fd9280" autoIncrement="false" autoIncrementSequenceName="detalle_documentos_dedo_orden_seq" defaultValue="" name="dedo_orden" nullable="0" physicalName="dedo_orden" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
@@ -105,7 +105,7 @@ En caso de Retencion, el valor de ls retencion (3% del valor totales de los docu
     <column id="COL29" populated="true" UUID="d887df2e-fd94-44d7-8389-07aa24371e58" autoIncrement="false" autoIncrementSequenceName="detalle_documentos_dedo_descripcion_seq" defaultValue="" name="dedo_descripcion" nullable="0" physicalName="dedo_descripcion" precision="200" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL30" populated="true" UUID="27ef4638-853f-4cb8-bb16-07ac2c45fb1d" autoIncrement="false" autoIncrementSequenceName="unidades_medida_unme_codigo_seq" defaultValue="" name="unme_codigo" nullable="0" physicalName="unme_codigo" precision="5" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL30" populated="true" UUID="27ef4638-853f-4cb8-bb16-07ac2c45fb1d" autoIncrement="false" autoIncrementSequenceName="detalle_documentos_unme_codigo_seq" defaultValue="" name="unme_codigo" nullable="0" physicalName="unme_codigo" precision="5" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
     <column id="COL31" populated="true" UUID="8e890e79-2b1e-4615-9d2b-2f77341b7842" autoIncrement="false" autoIncrementSequenceName="detalle_documentos_dedo_cantidad_seq" defaultValue="" name="dedo_cantidad" nullable="0" physicalName="dedo_cantidad" precision="15" referenceCount="1" scale="2" sourceDataTypeName="UserDefinedSQLType" type="2" userDefinedTypeUUID="115245ce-612c-4d6a-b559-6dd903dd959a" >
@@ -123,7 +123,7 @@ En caso de Retencion, el valor de ls retencion (3% del valor totales de los docu
     <column id="COL35" populated="true" UUID="a18027d8-2f4a-455a-8c93-072771cd710a" autoIncrement="false" autoIncrementSequenceName="detalle_documentos_dedo_igv_seq" defaultValue="" name="dedo_igv" nullable="0" physicalName="dedo_igv" precision="15" referenceCount="1" scale="2" sourceDataTypeName="UserDefinedSQLType" type="2" userDefinedTypeUUID="115245ce-612c-4d6a-b559-6dd903dd959a" >
      <remarks></remarks>
     </column>
-    <column id="COL36" populated="true" UUID="c3193b20-f162-4437-82dd-434133ce3948" autoIncrement="false" autoIncrementSequenceName="tipos_afectacion_igv_tiai_codigo_seq" defaultValue="" name="tiai_codigo" nullable="0" physicalName="tiai_codigo" precision="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL36" populated="true" UUID="c3193b20-f162-4437-82dd-434133ce3948" autoIncrement="false" autoIncrementSequenceName="detalle_documentos_tiai_codigo_seq" defaultValue="" name="tiai_codigo" nullable="0" physicalName="tiai_codigo" precision="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks></remarks>
     </column>
     </folder>
@@ -155,7 +155,7 @@ En caso de Retencion, el valor de ls retencion (3% del valor totales de los docu
     <column id="COL44" populated="true" UUID="e3219fe3-03a3-4dbf-b4f7-3d4a7fda5ff8" autoIncrement="false" autoIncrementSequenceName="empresas_empr_direccion_seq" defaultValue="" name="empr_direccion" nullable="0" physicalName="empr_direccion" precision="200" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL45" populated="true" UUID="b270a27e-3461-4bc0-97ba-df05da727ef9" autoIncrement="false" autoIncrementSequenceName="tipo_documento_identidad_tiid_codigo_seq" defaultValue="" name="tiid_codigo" nullable="0" physicalName="tiid_codigo" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL45" populated="true" UUID="b270a27e-3461-4bc0-97ba-df05da727ef9" autoIncrement="false" autoIncrementSequenceName="empresas_tiid_codigo_seq" defaultValue="" name="tiid_codigo" nullable="0" physicalName="tiid_codigo" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks></remarks>
     </column>
     <column id="COL46" populated="true" UUID="bd551998-2fac-4dd1-9ca9-daa7a3a49292" autoIncrement="false" autoIncrementSequenceName="empresas_ubig_id_seq" defaultValue="" name="ubig_id" nullable="0" physicalName="ubig_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
@@ -241,7 +241,7 @@ En caso de Retencion, el valor de ls retencion (3% del valor totales de los docu
     <column id="COL64" populated="true" UUID="6e9ea8fe-b0af-47e8-b8e1-49515c48c9de" autoIncrement="false" autoIncrementSequenceName="clientes_clie_numero_seq" defaultValue="" name="clie_numero" nullable="0" physicalName="clie_numero" precision="15" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks></remarks>
     </column>
-    <column id="COL65" populated="true" UUID="c6e1efcf-618f-4b82-81db-582c5f64583d" autoIncrement="false" autoIncrementSequenceName="tipo_identificaciones_tiid_codigo_seq" defaultValue="" name="tiid_codigo" nullable="0" physicalName="tiid_codigo" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL65" populated="true" UUID="c6e1efcf-618f-4b82-81db-582c5f64583d" autoIncrement="false" autoIncrementSequenceName="clientes_tiid_codigo_seq" defaultValue="" name="tiid_codigo" nullable="0" physicalName="tiid_codigo" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks></remarks>
     </column>
     <column id="COL66" populated="true" UUID="0d170115-5e52-439c-b21f-851e8813333f" autoIncrement="false" autoIncrementSequenceName="clientes_clie_nombres_seq" defaultValue="" name="clie_nombres" nullable="0" physicalName="clie_nombres" precision="200" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
@@ -331,6 +331,7 @@ PEN Nuevo Sol</remarks>
   </table>
   <table id="TAB84" populated="true" UUID="c6118517-bddf-4b03-8b8d-8b17aec8d6d3" name="unidades_medida" objectType="TABLE" physicalName="unidades_medida" >
    <remarks>NIU Unidades
+LIT litros
 ZZ Servicios</remarks>
    <folder id="FOLTAB841" populated="true" name="Columns" physicalName="Columns" type="1">
     <column id="COL85" populated="true" UUID="76726608-10c2-4c3a-a08f-56a775d1dd25" autoIncrement="false" autoIncrementSequenceName="unidades_medida_unme_codigo_seq" defaultValue="" name="unme_codigo" nullable="0" physicalName="unme_codigo" precision="5" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
@@ -425,26 +426,26 @@ ZZ Servicios</remarks>
  <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="false" target-schema="sunqubit"> </ddl-generator>
  <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
  <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
- <play-pen zoom="1.0" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
-  <table-pane table-ref="TAB1" x="581" y="41" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB24" x="621" y="439" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB39" x="267" y="27" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB49" x="915" y="110" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB54" x="946" y="375" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB62" x="277" y="202" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB69" x="20" y="82" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB74" x="929" y="218" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB79" x="906" y="20" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB84" x="340" y="435" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB89" x="336" y="564" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
+ <play-pen zoom="1.0" viewportX="0" viewportY="8" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
+  <table-pane table-ref="TAB1" x="613" y="42" bgColor="0xb9bbf6" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB24" x="653" y="439" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB39" x="299" y="27" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB49" x="947" y="111" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB54" x="978" y="375" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB62" x="309" y="202" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB69" x="20" y="115" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB74" x="961" y="218" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB79" x="938" y="20" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB84" x="372" y="435" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB89" x="368" y="564" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-link relationship-ref="REL94" pkConnection="0.48333333333333334" fkConnection="0.5138121546961326" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="132"/>
   <table-link relationship-ref="REL98" pkConnection="0.6976744186046512" fkConnection="0.3333333333333333" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="18"/>
   <table-link relationship-ref="REL96" pkConnection="0.911504424778761" fkConnection="0.34124629080118696" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="33"/>
   <table-link relationship-ref="REL100" pkConnection="0.6588235294117647" fkConnection="0.5786350148367952" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="33"/>
   <table-link relationship-ref="REL102" pkConnection="0.5406698564593302" fkConnection="0.45454545454545453" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="36"/>
   <table-link relationship-ref="REL106" pkConnection="0.17543859649122806" fkConnection="0.639344262295082" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="18"/>
-  <table-link relationship-ref="REL108" pkConnection="0.7368421052631579" fkConnection="0.20771513353115728" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="18"/>
-  <table-link relationship-ref="REL104" pkConnection="0.9521531100478469" fkConnection="0.0" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="40"/>
+  <table-link relationship-ref="REL108" pkConnection="0.8421052631578947" fkConnection="0.20771513353115728" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="18"/>
+  <table-link relationship-ref="REL104" pkConnection="0.5488372093023256" fkConnection="0.2125984251968504" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="40"/>
   <table-link relationship-ref="REL110" pkConnection="0.6551724137931034" fkConnection="0.36363636363636365" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="33"/>
   <table-link relationship-ref="REL112" pkConnection="0.17543859649122806" fkConnection="0.6192893401015228" rLineColor="0x000000" pkLabelText="" fkLabelText="" orientation="33"/>
  </play-pen>

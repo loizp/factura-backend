@@ -5,16 +5,15 @@ import com.sunqubit.faqture.core.daos.contracts.IClienteDao;
 
 public class ClienteDao implements IClienteDao {
 
-	@Override
-	public void insert(Cliente cliente) {
-		
-		
-	}
+    @Override
+    public void insert(Cliente cliente) {
 
-	@Override
-	public void update(Cliente cliente) {
-		// TODO Auto-generated method stub
-		
-	}
+    }
+
+    @Override
+    public void update(Cliente cliente) {
+        // TODO Auto-generated method stub
+
+    }
 
 }
