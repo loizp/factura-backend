@@ -2,24 +2,23 @@ package com.sunqubit.faqture.core.beans;
 
 public class TipoDocumento {
 
-    private long tidoId;
-    private String tidoDescripcion;
+	private long tidoCodigo;
+	private String tidoDescripcion;
 
-    public long getTidoId() {
-        return tidoId;
-    }
+	public long getTidoCodigo() {
+		return tidoCodigo;
+	}
 
-    public void setTidoId(long tidoId) {
-        this.tidoId = tidoId;
-    }
+	public void setTidoCodigo(long tidoCodigo) {
+		this.tidoCodigo = tidoCodigo;
+	}
 
-    public String getTidoDescripcion() {
-        return tidoDescripcion;
-    }
+	public String getTidoDescripcion() {
+		return tidoDescripcion;
+	}
 
-    public void setTidoDescripcion(String tidoDescripcion) {
-        this.tidoDescripcion = tidoDescripcion;
-    }
-    
-    
+	public void setTidoDescripcion(String tidoDescripcion) {
+		this.tidoDescripcion = tidoDescripcion;
+	}
+
 }
