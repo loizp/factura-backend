@@ -8,6 +8,7 @@ public class Documento {
 
 	private long docuId;
 	private Empresa empresa;
+	private Sucursal sucursal;
 	private Cliente cliente;
 	private Date docuFecha;
 	private String docuNumero;
@@ -42,6 +43,14 @@ public class Documento {
 
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+
+	public Sucursal getSucursal() {
+		return sucursal;
+	}
+
+	public void setSucursal(Sucursal sucursal) {
+		this.sucursal = sucursal;
 	}
 
 	public Cliente getCliente() {

@@ -5,19 +5,59 @@
  */
 package com.sunqubit.faqture;
 
+import com.sunqubit.faqture.core.beans.Cliente;
+import com.sunqubit.faqture.core.beans.Empresa;
+import com.sunqubit.faqture.core.beans.TipoDocumentoIdentidad;
+import com.sunqubit.faqture.core.beans.Ubigeo;
+import com.sunqubit.faqture.core.daos.contracts.IClienteDao;
+import com.sunqubit.faqture.core.daos.contracts.IEmpresaDao;
+import com.sunqubit.faqture.core.daos.contracts.ITipoDocumentoIdentidadDao;
+import com.sunqubit.faqture.core.daos.contracts.IUbigeoDao;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sunqubit.faqture.core.beans.Cliente;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class AppTest {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(AppTest.class);
 
-	public static void main(String[] args) {
-		Cliente cliente = new Cliente();
-		System.out.println("cliente encontrado");
-		LOGGER.info("cliente encontrado");
-		LOGGER.info("probando...");
-	}
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppTest.class);
+
+    public static void main(String[] args) {
+    	ApplicationContext context = new ClassPathXmlApplicationContext("config/spring-config.xml");
+        LOGGER.info("inicio");
+        TipoDocumentoIdentidad tipoDocumentoIdentidad = new TipoDocumentoIdentidad();
+        ITipoDocumentoIdentidadDao tipoDocumentoIdentidadDao = (ITipoDocumentoIdentidadDao) context.getBean("tipoDocumentoIdentidadDao");
+        tipoDocumentoIdentidad = tipoDocumentoIdentidadDao.get("6");
+        LOGGER.info("obteniendo tipoDocumentoIdentidad");
+        System.out.println(tipoDocumentoIdentidad.getTiidDescripcion());
+        
+        //Cliente cliente = new Cliente(1,"46798659","Juan Perez",new TipoDocumentoIdentidad("1","DNI"));
+        Ubigeo ubigeo = new Ubigeo();
+        IUbigeoDao ubigeoDao = (IUbigeoDao) context.getBean("ubigeoDao");
+        ubigeo = ubigeoDao.get(792);
+        LOGGER.info("obteniendo ubigeo");
+        System.out.println(ubigeo.getUbigDescripcion());
+        /*
+        Empresa empresa = new Empresa();
+        empresa.setEmprRuc("12345678901");
+        empresa.setEmprRazonSocial("Comercial S.A.");
+        empresa.setEmprNombreComercial("Comercio Ropa");
+        empresa.setEmprDireccion("Jr. 5nocer");
+        empresa.setTipoDocumentoIdentidad(tipoDocumentoIdentidad);
+        empresa.setUbigeo(ubigeo);*/
+        IEmpresaDao empresaDao = (IEmpresaDao) context.getBean("empresaDao");
+        //empresaDao.insert(empresa);
+        //LOGGER.info("insertando empresa");
+        //IClienteDao clienteDao = (IClienteDao) context.getBean("clienteDao");
+        //clienteDao.insert(cliente);
+        //System.out.println(clienteDao.getList().size());
+        LOGGER.info("obteniendo empresa");
+        System.out.println(empresaDao.filterName("Ropa"));
+        //IUbigeoDao ubigeoDao = (IUbigeoDao) context.getBean("ubigeoDao");
+        //System.out.println(ubigeoDao.filter("22000"));
+        LOGGER.info("final");
+        
+        ((ClassPathXmlApplicationContext) context).close();
+    }
 }

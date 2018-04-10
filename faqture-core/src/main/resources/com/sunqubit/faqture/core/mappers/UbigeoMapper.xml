@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD//Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.sunqubit.faqture.core.mappers.UbigeoMapper">
+    <resultMap id="UbigeoMap" type="Ubigeo">
+        <id column="ubig_id" property="ubigId" />
+        <result column="ubig_cod_dpto" property="ubigCodDpto" />
+        <result column="ubig_cod_prov" property="ubigCodProv" />
+        <result column="ubig_cod_dist" property="ubigCodDist" />
+        <result column="ubig_descripcion" property="ubigDescripcion" />
+    </resultMap>
+
+    <select id="filter" resultMap="UbigeoMap">
+        SELECT * FROM sunqubit.ubigeos 
+        	WHERE ubig_cod_dpto || ubig_cod_prov || ubig_cod_dist || ubig_descripcion LIKE '%' || #{filtro} || '%';
+    </select>
+    
+    <select id="get" resultMap="UbigeoMap">
+        SELECT * FROM sunqubit.ubigeos 
+        	WHERE ubig_id = #{ubigId};
+    </select>
+
+</mapper>

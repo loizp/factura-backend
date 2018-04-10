@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD//Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.sunqubit.faqture.core.mappers.EmpresaMapper">
+    <resultMap id="EmpresaMap" type="Empresa">
+        <id column="empr_id" property="emprId" />
+        <result column="empr_ruc" property="emprRuc" />
+        <result column="empr_razon_social" property="emprRazonSocial"/>
+        <result column="empr_nombre_comercial" property="emprNombreComercial"/>
+        <result column="empr_direccion" property="emprDireccion"/>
+        <association property="ubigeo" javaType="Ubigeo" resultMap="UbigeoMap"/>
+        <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="TipoDocumentoIdentidadMap"/>
+    </resultMap>
+    
+    <resultMap id="UbigeoMap" type="Ubigeo">
+        <id column="ubig_id" property="ubigId" />
+        <result column="ubig_cod_dpto" property="ubigCodDpto" />
+        <result column="ubig_cod_prov" property="ubigCodProv" />
+        <result column="ubig_cod_dist" property="ubigCodDist" />
+        <result column="ubig_descripcion" property="ubigDescripcion" />
+    </resultMap>
+    
+    <resultMap id="TipoDocumentoIdentidadMap" type="TipoDocumentoIdentidad">
+        <id column="tiid_codigo" property="tiidCodigo" />
+        <result column="tiid_descripcion" property="tiidDescripcion" />
+    </resultMap>
+
+	<insert id="insert" parameterType="empresa">
+		INSERT INTO sunqubit.empresas (empr_ruc, empr_razon_social, empr_nombre_comercial, empr_direccion, tiid_codigo, ubig_id)
+			VALUES (#{emprRuc}, #{emprRazonSocial}, #{emprNombreComercial}, #{emprDireccion}, #{tipoDocumentoIdentidad.tiidCodigo}, #{ubigeo.ubigId});
+	</insert>
+	
+	<update id="update" parameterType="empresa">
+		UPDATE sunqubit.empresas 
+			SET empr_nombre_comercial = #{emprNombreComercial}, empr_direccion = #{emprDireccion}, ubig_id = #{ubigeo.ubigId}
+			WHERE empr_id = #{emprId};
+	</update>
+	
+    <select id="getForId" parameterType="long" resultMap="EmpresaMap">
+        SELECT * FROM sunqubit.empresas 
+        	INNER JOIN sunqubit.tipo_documentos_identidad ON sunqubit.tipo_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
+        	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
+        	WHERE empr_id = #{emprId};
+    </select>
+    
+    <select id="getForRuc" parameterType="string" resultMap="EmpresaMap">
+        SELECT * FROM sunqubit.empresas 
+        	INNER JOIN sunqubit.tipo_documentos_identidad ON sunqubit.tipo_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
+        	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
+        	WHERE empr_ruc = #{emprRuc};
+    </select>
+    
+    <select id="filterName" parameterType="string" resultMap="EmpresaMap">
+        SELECT * FROM sunqubit.empresas 
+        	INNER JOIN sunqubit.tipo_documentos_identidad ON sunqubit.tipo_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
+        	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
+        	WHERE empr_nombre_comercial like '%' || #{nombre} || '%' or empr_razon_social like '%' || #{nombre} || '%';
+    </select>
+
+</mapper>

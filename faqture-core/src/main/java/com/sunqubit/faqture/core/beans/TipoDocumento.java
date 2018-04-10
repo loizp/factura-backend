@@ -2,6 +2,12 @@ package com.sunqubit.faqture.core.beans;
 
 public class TipoDocumento {
 
+	public TipoDocumento(long tidoCodigo, String tidoDescripcion) {
+		super();
+		this.tidoCodigo = tidoCodigo;
+		this.tidoDescripcion = tidoDescripcion;
+	}
+
 	private long tidoCodigo;
 	private String tidoDescripcion;
 
