@@ -2,8 +2,6 @@ package com.sunqubit.faqture.core.mappers;
 
 import com.sunqubit.faqture.core.beans.Documento;
 import com.sunqubit.faqture.core.beans.Empresa;
-import com.sunqubit.faqture.core.beans.Cliente;
-import com.sunqubit.faqture.core.beans.DetalleDocumento;
 
 import java.util.List;
 
