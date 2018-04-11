@@ -5,27 +5,26 @@
  */
 package com.sunqubit.faqture;
 
-import com.sunqubit.faqture.core.beans.Cliente;
-import com.sunqubit.faqture.core.beans.Empresa;
-import com.sunqubit.faqture.core.beans.TipoDocumentoIdentidad;
-import com.sunqubit.faqture.core.beans.Ubigeo;
-import com.sunqubit.faqture.core.daos.contracts.IClienteDao;
-import com.sunqubit.faqture.core.daos.contracts.IEmpresaDao;
-import com.sunqubit.faqture.core.daos.contracts.ITipoDocumentoIdentidadDao;
-import com.sunqubit.faqture.core.daos.contracts.IUbigeoDao;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import com.sunqubit.faqture.core.beans.TipoDocumentoIdentidad;
+import com.sunqubit.faqture.core.beans.Ubigeo;
+import com.sunqubit.faqture.core.daos.contracts.IEmpresaDao;
+import com.sunqubit.faqture.core.daos.contracts.ITipoDocumentoIdentidadDao;
+import com.sunqubit.faqture.core.daos.contracts.IUbigeoDao;
 
 public class AppTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppTest.class);
 
     public static void main(String[] args) {
+    	
+    	
     	ApplicationContext context = new ClassPathXmlApplicationContext("config/spring-config.xml");
-        LOGGER.info("inicio");
+        LOGGER.info("inicio preliminar");
         TipoDocumentoIdentidad tipoDocumentoIdentidad = new TipoDocumentoIdentidad();
         ITipoDocumentoIdentidadDao tipoDocumentoIdentidadDao = (ITipoDocumentoIdentidadDao) context.getBean("tipoDocumentoIdentidadDao");
         tipoDocumentoIdentidad = tipoDocumentoIdentidadDao.get("6");

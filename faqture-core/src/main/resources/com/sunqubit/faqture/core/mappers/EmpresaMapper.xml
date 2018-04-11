@@ -8,7 +8,7 @@
         <result column="empr_nombre_comercial" property="emprNombreComercial"/>
         <result column="empr_direccion" property="emprDireccion"/>
         <association property="ubigeo" javaType="Ubigeo" resultMap="UbigeoMap"/>
-        <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="TipoDocumentoIdentidadMap"/>
+        <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="com.sunqubit.faqture.core.mappers.TipoDocumentoIdentidadMapper.TipoDocumentoIdentidadMap"/>
     </resultMap>
     
     <resultMap id="UbigeoMap" type="Ubigeo">
@@ -18,12 +18,12 @@
         <result column="ubig_cod_dist" property="ubigCodDist" />
         <result column="ubig_descripcion" property="ubigDescripcion" />
     </resultMap>
-    
+    <!-- 
     <resultMap id="TipoDocumentoIdentidadMap" type="TipoDocumentoIdentidad">
         <id column="tiid_codigo" property="tiidCodigo" />
         <result column="tiid_descripcion" property="tiidDescripcion" />
     </resultMap>
-
+ -->
 	<insert id="insert" parameterType="empresa">
 		INSERT INTO sunqubit.empresas (empr_ruc, empr_razon_social, empr_nombre_comercial, empr_direccion, tiid_codigo, ubig_id)
 			VALUES (#{emprRuc}, #{emprRazonSocial}, #{emprNombreComercial}, #{emprDireccion}, #{tipoDocumentoIdentidad.tiidCodigo}, #{ubigeo.ubigId});
