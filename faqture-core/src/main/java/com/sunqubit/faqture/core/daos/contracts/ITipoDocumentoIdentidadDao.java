@@ -6,5 +6,4 @@ import com.sunqubit.faqture.core.beans.TipoDocumentoIdentidad;
 
 public interface ITipoDocumentoIdentidadDao {
 	List<TipoDocumentoIdentidad> getAll();
-	TipoDocumentoIdentidad get(String tiidCodigo);
 }

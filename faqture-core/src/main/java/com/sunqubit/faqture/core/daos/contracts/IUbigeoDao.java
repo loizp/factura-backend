@@ -6,5 +6,4 @@ import com.sunqubit.faqture.core.beans.Ubigeo;
 
 public interface IUbigeoDao {
 	List<Ubigeo> filter(String filtro);
-	Ubigeo get(long ubigId);
 }

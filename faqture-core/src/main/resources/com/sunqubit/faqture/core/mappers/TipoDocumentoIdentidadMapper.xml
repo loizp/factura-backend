@@ -9,9 +9,4 @@
     <select id="getAll" resultMap="TipoDocumentoIdentidadMap">
         SELECT * FROM sunqubit.tipo_documentos_identidad;
     </select>
-    
-    <select id="get" resultMap="TipoDocumentoIdentidadMap">
-        SELECT * FROM sunqubit.tipo_documentos_identidad 
-        	WHERE tiid_codigo = #{tiidCodigo};
-    </select>
 </mapper>

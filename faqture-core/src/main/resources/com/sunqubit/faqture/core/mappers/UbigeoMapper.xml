@@ -13,10 +13,4 @@
         SELECT * FROM sunqubit.ubigeos 
         	WHERE ubig_cod_dpto || ubig_cod_prov || ubig_cod_dist || ubig_descripcion LIKE '%' || #{filtro} || '%';
     </select>
-    
-    <select id="get" resultMap="UbigeoMap">
-        SELECT * FROM sunqubit.ubigeos 
-        	WHERE ubig_id = #{ubigId};
-    </select>
-
 </mapper>

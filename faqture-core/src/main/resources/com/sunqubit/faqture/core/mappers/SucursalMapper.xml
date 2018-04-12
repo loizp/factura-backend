@@ -4,24 +4,8 @@
     <resultMap id="SucursalMap" type="Sucursal">
         <id column="sucu_id" property="sucuId" />
         <result column="sucu_direccion" property="sucuDireccion" />
-        <association property="empresa" javaType="Empresa" resultMap="EmpresaMap"/>
-        <association property="ubigeo" javaType="Ubigeo" resultMap="UbigeoMap"/>
-    </resultMap>
-    
-    <resultMap id="EmpresaMap" type="Empresa">
-        <id column="empr_id" property="emprId" />
-        <result column="empr_ruc" property="emprRuc" />
-        <result column="empr_razon_social" property="emprRazonSocial"/>
-        <result column="empr_nombre_comercial" property="emprNombreComercial"/>
-        <result column="empr_direccion" property="emprDireccion"/>
-    </resultMap>
-    
-    <resultMap id="UbigeoMap" type="Ubigeo">
-        <id column="ubig_id" property="ubigId" />
-        <result column="ubig_cod_dpto" property="ubigCodDpto" />
-        <result column="ubig_cod_prov" property="ubigCodProv" />
-        <result column="ubig_cod_dist" property="ubigCodDist" />
-        <result column="ubig_descripcion" property="ubigDescripcion" />
+        <association property="empresa" javaType="Empresa" resultMap="com.sunqubit.faqture.core.mappers.EmpresaMapper.EmpresaMap"/>
+        <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.core.mappers.UbigeoMapper.UbigeoMap"/>
     </resultMap>
 
     <insert id="insert" parameterType="sucursal">

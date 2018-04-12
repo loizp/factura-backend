@@ -26,15 +26,4 @@ public class UbigeoDao implements IUbigeoDao{
 		session.close();
 	    return listado;
 	}
-
-	@Override
-	public Ubigeo get(long ubigId) {
-		Ubigeo ubigeo = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		UbigeoMapper mapper = session.getMapper(UbigeoMapper.class);
-		ubigeo = mapper.get(ubigId);
-		session.close();
-	    return ubigeo;
-	}
-	
 }

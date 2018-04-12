@@ -26,14 +26,4 @@ public class TipoDocumentoIdentidadDao implements ITipoDocumentoIdentidadDao {
 		session.close();
 		return listado;
 	}
-
-	@Override
-	public TipoDocumentoIdentidad get(String tiidCodigo) {
-		TipoDocumentoIdentidad tipoDocumentoIdentidad = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		TipoDocumentoIdentidadMapper mapper = session.getMapper(TipoDocumentoIdentidadMapper.class);
-		tipoDocumentoIdentidad = mapper.get(tiidCodigo);
-		return tipoDocumentoIdentidad;
-	}
-
 }
