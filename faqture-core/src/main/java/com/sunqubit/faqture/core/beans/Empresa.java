@@ -9,7 +9,10 @@ public class Empresa {
 	private String emprDireccion;
 	private TipoDocumentoIdentidad tipoDocumentoIdentidad;
 	private Ubigeo ubigeo;
-
+	
+	public Empresa() {
+		emprId=0;
+	}
 	public long getEmprId() {
 		return emprId;
 	}
@@ -66,4 +69,12 @@ public class Empresa {
 		this.ubigeo = ubigeo;
 	}
 
+	@Override
+	public String toString() {
+		return "Empresa [emprId=" + emprId + ", emprRuc=" + emprRuc + ", emprRazonSocial=" + emprRazonSocial
+				+ ", emprNombreComercial=" + emprNombreComercial + ", emprDireccion=" + emprDireccion
+				+ ", tipoDocumentoIdentidad=" + tipoDocumentoIdentidad + ", ubigeo=" + ubigeo + "]";
+	}
+
+	
 }

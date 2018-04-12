@@ -13,17 +13,15 @@ import com.sunqubit.faqture.core.mappers.TipoDocumentoIdentidadMapper;
 
 @Component
 public class TipoDocumentoIdentidadDao implements ITipoDocumentoIdentidadDao {
-	
-	@Autowired
+
+    @Autowired
     private SqlSessionFactory sqlSessionFactory;
 
-	@Override
-	public List<TipoDocumentoIdentidad> getAll() {
-		List<TipoDocumentoIdentidad> listado = null;
-		SqlSession session = sqlSessionFactory.openSession();
-		TipoDocumentoIdentidadMapper mapper = session.getMapper(TipoDocumentoIdentidadMapper.class);
-		listado = mapper.getAll();
-		session.close();
-		return listado;
-	}
+    @Override
+    public List<TipoDocumentoIdentidad> getAll() {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            TipoDocumentoIdentidadMapper mapper = session.getMapper(TipoDocumentoIdentidadMapper.class);
+            return mapper.getAll();
+        }
+    }
 }

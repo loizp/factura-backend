@@ -10,11 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.sunqubit.faqture.core.beans.TipoDocumentoIdentidad;
-import com.sunqubit.faqture.core.beans.Ubigeo;
 import com.sunqubit.faqture.core.daos.contracts.IEmpresaDao;
-import com.sunqubit.faqture.core.daos.contracts.ITipoDocumentoIdentidadDao;
-import com.sunqubit.faqture.core.daos.contracts.IUbigeoDao;
 
 public class AppTest {
 
