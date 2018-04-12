@@ -10,9 +10,9 @@ public interface EmpresaMapper {
 	
 	void update(Empresa empresa);
 	
-	Empresa getForId(long emprId);
+	Empresa getById(long emprId);
 	
-	Empresa getForRuc(String emprRuc);
+	Empresa getByRuc(String emprRuc);
 	
 	List<Empresa> filterName(String nombre);
 }

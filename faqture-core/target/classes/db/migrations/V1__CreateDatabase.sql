@@ -222,7 +222,7 @@ CREATE TABLE sunqubit.empresas (
                 empr_razon_social VARCHAR(200) NOT NULL,
                 empr_nombre_comercial VARCHAR(200) NOT NULL,
                 empr_direccion VARCHAR(200) NOT NULL,
-                tiid_codigo CHAR(1) NOT NULL,
+                tiid_codigo CHAR(1) DEFAULT '6' NOT NULL,
                 ubig_id INTEGER NOT NULL,
                 pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
                 CONSTRAINT empresas_pk PRIMARY KEY (empr_id)

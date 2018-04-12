@@ -38,7 +38,7 @@ public class EmpresaDao implements IEmpresaDao {
 		Empresa empresa = null;
         SqlSession session = sqlSessionFactory.openSession();
         EmpresaMapper mapper = session.getMapper(EmpresaMapper.class);
-        empresa = mapper.getForId(emprId);
+        empresa = mapper.getById(emprId);
         session.close();
         return empresa;
 	}
@@ -48,7 +48,7 @@ public class EmpresaDao implements IEmpresaDao {
 		Empresa empresa = null;
         SqlSession session = sqlSessionFactory.openSession();
         EmpresaMapper mapper = session.getMapper(EmpresaMapper.class);
-        empresa = mapper.getForRuc(emprRuc);
+        empresa = mapper.getByRuc(emprRuc);
         session.close();
         return empresa;
 	}

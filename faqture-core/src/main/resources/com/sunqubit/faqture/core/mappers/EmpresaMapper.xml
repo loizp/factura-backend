@@ -22,23 +22,23 @@
 			WHERE empr_id = #{emprId};
 	</update>
 	
-    <select id="getForId" parameterType="long" resultMap="EmpresaMap">
+    <select id="getById" parameterType="long" resultMap="EmpresaMap">
         SELECT * FROM sunqubit.empresas 
-        	INNER JOIN sunqubit.tipo_documentos_identidad ON sunqubit.tipo_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
+        	INNER JOIN sunqubit.tipos_documentos_identidad ON sunqubit.tipos_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
         	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
         	WHERE empr_id = #{emprId};
     </select>
     
-    <select id="getForRuc" parameterType="string" resultMap="EmpresaMap">
+    <select id="getByRuc" parameterType="string" resultMap="EmpresaMap">
         SELECT * FROM sunqubit.empresas 
-        	INNER JOIN sunqubit.tipo_documentos_identidad ON sunqubit.tipo_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
+        	INNER JOIN sunqubit.tipos_documentos_identidad ON sunqubit.tipos_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
         	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
         	WHERE empr_ruc = #{emprRuc};
     </select>
     
     <select id="filterName" parameterType="string" resultMap="EmpresaMap">
         SELECT * FROM sunqubit.empresas 
-        	INNER JOIN sunqubit.tipo_documentos_identidad ON sunqubit.tipo_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
+        	INNER JOIN sunqubit.tipos_documentos_identidad ON sunqubit.tipos_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
         	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
         	WHERE empr_nombre_comercial like '%' || #{nombre} || '%' or empr_razon_social like '%' || #{nombre} || '%';
     </select>

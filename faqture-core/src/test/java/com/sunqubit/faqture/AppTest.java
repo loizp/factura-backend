@@ -25,18 +25,9 @@ public class AppTest {
     	
     	ApplicationContext context = new ClassPathXmlApplicationContext("config/spring-config.xml");
         LOGGER.info("inicio preliminar");
-        TipoDocumentoIdentidad tipoDocumentoIdentidad = new TipoDocumentoIdentidad();
-        ITipoDocumentoIdentidadDao tipoDocumentoIdentidadDao = (ITipoDocumentoIdentidadDao) context.getBean("tipoDocumentoIdentidadDao");
-        tipoDocumentoIdentidad = tipoDocumentoIdentidadDao.get("6");
-        LOGGER.info("obteniendo tipoDocumentoIdentidad");
-        System.out.println(tipoDocumentoIdentidad.getTiidDescripcion());
+
         
         //Cliente cliente = new Cliente(1,"46798659","Juan Perez",new TipoDocumentoIdentidad("1","DNI"));
-        Ubigeo ubigeo = new Ubigeo();
-        IUbigeoDao ubigeoDao = (IUbigeoDao) context.getBean("ubigeoDao");
-        ubigeo = ubigeoDao.get(792);
-        LOGGER.info("obteniendo ubigeo");
-        System.out.println(ubigeo.getUbigDescripcion());
         /*
         Empresa empresa = new Empresa();
         empresa.setEmprRuc("12345678901");

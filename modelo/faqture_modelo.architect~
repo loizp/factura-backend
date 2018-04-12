@@ -218,7 +218,7 @@ verificar CATALOGO No. 07</remarks>
     <column id="COL60" populated="true" UUID="e3219fe3-03a3-4dbf-b4f7-3d4a7fda5ff8" autoIncrement="false" autoIncrementSequenceName="empresas_empr_direccion_seq" defaultValue="" name="empr_direccion" nullable="0" physicalName="empr_direccion" precision="200" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks>Campo que contiene la Dirección de la empresa</remarks>
     </column>
-    <column id="COL61" populated="true" UUID="b270a27e-3461-4bc0-97ba-df05da727ef9" autoIncrement="false" autoIncrementSequenceName="empresas_tiid_codigo_seq" defaultValue="" name="tiid_codigo" nullable="0" physicalName="tiid_codigo" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL61" populated="true" UUID="b270a27e-3461-4bc0-97ba-df05da727ef9" autoIncrement="false" autoIncrementSequenceName="empresas_tiid_codigo_seq" defaultValue="&apos;6&apos;" name="tiid_codigo" nullable="0" physicalName="tiid_codigo" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks>Campo clave del tipo de documento de identificación teniendo en cuenta que la mayoria usa el RUC</remarks>
     </column>
     <column id="COL62" populated="true" UUID="bd551998-2fac-4dd1-9ca9-daa7a3a49292" autoIncrement="false" autoIncrementSequenceName="empresas_ubig_id_seq" defaultValue="" name="ubig_id" nullable="0" physicalName="ubig_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
@@ -668,15 +668,15 @@ Penalidades/ otros conceptos</remarks>
    </relationship>
   </relationships>
  </target-database>
- <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="false" target-schema="sunqubit"> </ddl-generator>
+ <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="true" target-schema="sunqubit"> </ddl-generator>
  <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
  <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
- <play-pen zoom="0.5946035575013604" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
+ <play-pen zoom="0.5946035575013602" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
   <table-pane table-ref="TAB1" x="815" y="253" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB38" x="1241" y="1121" bgColor="0xe4e4b8" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB55" x="63" y="568" bgColor="0xc7d0df" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB68" x="639" y="57" bgColor="0xe8cfdb" fgColor="0x000000" rounded="false" dashed="false"/>
-  <table-pane table-ref="TAB73" x="114" y="1030" bgColor="0xdfedce" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB73" x="102" y="1057" bgColor="0xdfedce" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB81" x="190" y="90" bgColor="0xbfd6ff" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB90" x="105" y="366" bgColor="0xeeeeee" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB95" x="1437" y="248" bgColor="0xf6bcbc" fgColor="0x000000" rounded="false" dashed="false"/>

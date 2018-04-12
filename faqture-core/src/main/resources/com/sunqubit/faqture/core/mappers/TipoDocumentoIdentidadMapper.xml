@@ -7,6 +7,6 @@
     </resultMap>
 
     <select id="getAll" resultMap="TipoDocumentoIdentidadMap">
-        SELECT * FROM sunqubit.tipo_documentos_identidad;
+        SELECT * FROM sunqubit.tipos_documentos_identidad;
     </select>
 </mapper>
