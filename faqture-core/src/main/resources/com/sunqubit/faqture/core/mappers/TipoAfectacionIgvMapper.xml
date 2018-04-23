@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD//Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.sunqubit.faqture.core.mappers.TipoAfectacionIgvMapper">
+    <resultMap id="TipoAfectacionIgvMap" type="TipoAfectacionIgv">
+        <id column="tiai_codigo" property="codigo" />
+        <result column="tiai_descripcion" property="descripcion" />
+    </resultMap>
+
+    <select id="getAll" resultMap="TipoAfectacionIgvMap">
+        SELECT * FROM sunqubit.tipos_afectacion_igv;
+    </select>
+</mapper>

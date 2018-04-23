@@ -2,38 +2,76 @@
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD//Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="com.sunqubit.faqture.core.mappers.EmpresaMapper">
     <resultMap id="EmpresaMap" type="Empresa">
-        <id column="empr_id" property="emprId" />
-        <result column="empr_ruc" property="emprRuc" />
-        <result column="empr_razon_social" property="emprRazonSocial"/>
-        <result column="empr_nombre_comercial" property="emprNombreComercial"/>
-        <result column="empr_direccion" property="emprDireccion"/>
+        <id column="empr_id" property="id" />
+        <result column="empr_ruc" property="ruc" />
+        <result column="empr_razon_social" property="razonSocial"/>
+        <result column="empr_nombre_comercial" property="nombreComercial"/>
+        <result column="empr_direccion" property="direccion"/>
+        <result column="empr_status" property="activo"/>
         <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.core.mappers.UbigeoMapper.UbigeoMap"/>
         <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="com.sunqubit.faqture.core.mappers.TipoDocumentoIdentidadMapper.TipoDocumentoIdentidadMap"/>
+    	<collection property="sucursales" javaType="Sucursal" resultMap="com.sunqubit.faqture.core.mappers.SucursalMapper.SucursalMap" />  
     </resultMap>
 
 	<insert id="insert" parameterType="empresa">
-		INSERT INTO sunqubit.empresas (empr_ruc, empr_razon_social, empr_nombre_comercial, empr_direccion, tiid_codigo, ubig_id)
-			VALUES (#{emprRuc}, #{emprRazonSocial}, #{emprNombreComercial}, #{emprDireccion}, #{tipoDocumentoIdentidad.tiidCodigo}, #{ubigeo.ubigId});
+		<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT NEXTVAL('sunqubit.empresas_empr_id_seq');
+    	</selectKey>
+    	<if test="activo == null">
+    		INSERT INTO sunqubit.empresas (empr_id, empr_ruc, empr_razon_social, empr_nombre_comercial, empr_direccion, tiid_codigo, ubig_id)
+				VALUES (#{id}, #{ruc}, #{razonSocial}, #{nombreComercial}, #{direccion}, #{tipoDocumentoIdentidad.codigo}, #{ubigeo.id});
+		</if>
+    	<if test="activo != null">
+    		INSERT INTO sunqubit.empresas (empr_id, empr_ruc, empr_razon_social, empr_nombre_comercial, empr_direccion, tiid_codigo, ubig_id, empr_status)
+			VALUES (#{id}, #{ruc}, #{razonSocial}, #{nombreComercial}, #{direccion}, #{tipoDocumentoIdentidad.codigo}, #{ubigeo.id}, #{activo});
+    	</if>
+		<if test="sucursales != null">
+			<foreach item="sucursal" collection="sucursales">
+				<if test="sucursal.direccion != null AND sucursal.ubigeo.id !=null">
+					INSERT INTO sunqubit.sucursales (empr_id, sucu_direccion, ubig_id, sucu_status)
+						VALUES (#{id}, #{sucursal.direccion}, #{sucursal.ubigeo.id},
+						<if test="sucursal.activo == null">true);</if>
+						<if test="sucursal.activo != null">#{sucursal.activo});</if>
+				</if>
+    		</foreach>
+		</if>
 	</insert>
 	
 	<update id="update" parameterType="empresa">
 		UPDATE sunqubit.empresas 
-			SET empr_nombre_comercial = #{emprNombreComercial}, empr_direccion = #{emprDireccion}, ubig_id = #{ubigeo.ubigId}
-			WHERE empr_id = #{emprId};
+			SET empr_razon_social=#{razonSocial}, empr_nombre_comercial = #{nombreComercial},
+				empr_direccion = #{direccion}, ubig_id = #{ubigeo.id}
+				<if test="activo != null">, empr_status = #{activo}</if>
+			WHERE empr_id = #{id};
+	</update>
+	
+	<update id="changeRuc" parameterType="empresa">
+		UPDATE sunqubit.empresas 
+			SET empr_ruc=#{ruc}, tiid_codigo = #{tipoDocumentoIdentidad.codigo}
+			WHERE empr_id = #{id};
 	</update>
 	
     <select id="getById" parameterType="long" resultMap="EmpresaMap">
         SELECT * FROM sunqubit.empresas 
         	INNER JOIN sunqubit.tipos_documentos_identidad ON sunqubit.tipos_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
         	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
-        	WHERE empr_id = #{emprId};
+        	WHERE empr_id = #{id};
     </select>
     
-    <select id="getByRuc" parameterType="string" resultMap="EmpresaMap">
+    <select id="getSucursales" parameterType="long" resultMap="EmpresaMap">
         SELECT * FROM sunqubit.empresas 
         	INNER JOIN sunqubit.tipos_documentos_identidad ON sunqubit.tipos_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
         	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
-        	WHERE empr_ruc = #{emprRuc};
+        	INNER JOIN sunqubit.sucursales ON sunqubit.empresas.empr_id = sunqubit.sucursales.empr_id
+        	WHERE empr_id = #{id};
+    </select>
+    
+    <select id="getByRuc" parameterType="HashMap" resultMap="EmpresaMap">
+        SELECT * FROM sunqubit.empresas 
+        	INNER JOIN sunqubit.tipos_documentos_identidad ON sunqubit.tipos_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
+        	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
+        	INNER JOIN sunqubit.sucursales ON sunqubit.empresas.empr_id = sunqubit.sucursales.empr_id
+        	WHERE empr_ruc = #{numRuc} AND tiid_codigo = #{tDocIdent};
     </select>
     
     <select id="filterName" parameterType="string" resultMap="EmpresaMap">
@@ -41,6 +79,11 @@
         	INNER JOIN sunqubit.tipos_documentos_identidad ON sunqubit.tipos_documentos_identidad.tiid_codigo = sunqubit.empresas.tiid_codigo
         	INNER JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.empresas.ubig_id
         	WHERE empr_nombre_comercial like '%' || #{nombre} || '%' or empr_razon_social like '%' || #{nombre} || '%';
+    </select>
+    
+    <select id="rucExist" parameterType="HashMap" resultType="long">
+        SELECT count(*) FROM sunqubit.empresas
+        	WHERE empr_ruc = #{numRuc} AND tiid_codigo = #{tDocIdent};
     </select>
 
 </mapper>

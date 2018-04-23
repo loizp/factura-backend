@@ -6,13 +6,13 @@ import com.sunqubit.faqture.core.beans.Empresa;
 
 public interface IDocumentoDao {
 	
-	void insert(Documento documento);
+	void insert(Documento documento) throws Exception;
 	
-	void insertDetails(Documento documento);
+	void insertDetails(Documento documento) throws Exception;
 	
-	void update(Documento documento);
+	void update(Documento documento) throws Exception;
 	
-	Documento get(long docuId);
+	Documento get(long docuId) throws Exception;
 	
-	List<Documento> getList(Empresa empresa);
+	List<Documento> getList(Empresa empresa) throws Exception;
 }

@@ -1,23 +1,20 @@
 package com.sunqubit.faqture.core.beans;
 
 public class TipoOperacion {
-	private String tiopCodigo;
-	private String tiopDescripcion;
-
-	public String getTiopCodigo() {
-		return tiopCodigo;
+	private String codigo;
+	private String descripcion;
+	
+	public String getCodigo() {
+		return codigo;
 	}
-
-	public void setTiopCodigo(String tiopCodigo) {
-		this.tiopCodigo = tiopCodigo;
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
-
-	public String getTiopDescripcion() {
-		return tiopDescripcion;
+	public String getDescripcion() {
+		return descripcion;
 	}
-
-	public void setTiopDescripcion(String tiopDescripcion) {
-		this.tiopDescripcion = tiopDescripcion;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

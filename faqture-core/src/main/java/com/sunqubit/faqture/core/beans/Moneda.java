@@ -1,23 +1,21 @@
 package com.sunqubit.faqture.core.beans;
 
 public class Moneda {
-	private long moneId;
-	private String moneDescripcion;
-
-	public long getMoneId() {
-		return moneId;
+	private long id;
+	private String descripcion;
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
-	public void setMoneId(long moneId) {
-		this.moneId = moneId;
-	}
-
-	public String getMoneDescripcion() {
-		return moneDescripcion;
-	}
-
-	public void setMoneDescripcion(String moneDescripcion) {
-		this.moneDescripcion = moneDescripcion;
-	}
 
 }

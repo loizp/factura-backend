@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD//Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.sunqubit.faqture.core.mappers.TipoIscMapper">
+    <resultMap id="TipoIscMap" type="TipoIsc">
+        <id column="tisc_codigo" property="codigo" />
+        <result column="tisc_descripcion" property="descripcion" />
+    </resultMap>
+
+    <select id="getAll" resultMap="TipoIscMap">
+        SELECT * FROM sunqubit.tipos_isc;
+    </select>
+</mapper>

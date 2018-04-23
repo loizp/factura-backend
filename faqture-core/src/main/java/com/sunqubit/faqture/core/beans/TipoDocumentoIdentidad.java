@@ -1,23 +1,21 @@
 package com.sunqubit.faqture.core.beans;
 
 public class TipoDocumentoIdentidad {
-	private String tiidCodigo;
-	private String tiidDescripcion;
-
-	public String getTiidCodigo() {
-		return tiidCodigo;
+	private String codigo;
+	private String descripcion;
+	
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
-	public void setTiidCodigo(String tiidCodigo) {
-		this.tiidCodigo = tiidCodigo;
-	}
-
-	public String getTiidDescripcion() {
-		return tiidDescripcion;
-	}
-
-	public void setTiidDescripcion(String tiidDescripcion) {
-		this.tiidDescripcion = tiidDescripcion;
-	}
 
 }

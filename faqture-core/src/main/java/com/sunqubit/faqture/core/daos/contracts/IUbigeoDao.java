@@ -5,5 +5,5 @@ import java.util.List;
 import com.sunqubit.faqture.core.beans.Ubigeo;
 
 public interface IUbigeoDao {
-	List<Ubigeo> filter(String filtro);
+	List<Ubigeo> filter(String filtro) throws Exception;
 }

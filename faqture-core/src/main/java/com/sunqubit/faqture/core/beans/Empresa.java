@@ -1,56 +1,65 @@
 package com.sunqubit.faqture.core.beans;
 
+import java.util.List;
+
 public class Empresa {
 
-	private long emprId;
-	private String emprRuc;
-	private String emprRazonSocial;
-	private String emprNombreComercial;
-	private String emprDireccion;
+	private long id;
+	private String ruc;
+	private String razonSocial;
+	private String nombreComercial;
+	private String direccion;
 	private TipoDocumentoIdentidad tipoDocumentoIdentidad;
 	private Ubigeo ubigeo;
-	
-	public Empresa() {
-		emprId=0;
-	}
-	public long getEmprId() {
-		return emprId;
+	private boolean activo;
+	private List<Sucursal> sucursales;
+
+	public List<Sucursal> getSucursales() {
+		return sucursales;
 	}
 
-	public void setEmprId(long emprId) {
-		this.emprId = emprId;
+	public void setSucursales(List<Sucursal> sucursales) {
+		this.sucursales = sucursales;
 	}
 
-	public String getEmprRuc() {
-		return emprRuc;
+	public long getId() {
+		return id;
 	}
 
-	public void setEmprRuc(String emprRuc) {
-		this.emprRuc = emprRuc;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public String getEmprRazonSocial() {
-		return emprRazonSocial;
+	public String getRuc() {
+		return ruc;
 	}
 
-	public void setEmprRazonSocial(String emprRazonSocial) {
-		this.emprRazonSocial = emprRazonSocial;
+	public void setRuc(String ruc) {
+		this.ruc = ruc;
 	}
 
-	public String getEmprNombreComercial() {
-		return emprNombreComercial;
+	public String getRazonSocial() {
+		return razonSocial;
 	}
 
-	public void setEmprNombreComercial(String emprNombreComercial) {
-		this.emprNombreComercial = emprNombreComercial;
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
 	}
 
-	public String getEmprDireccion() {
-		return emprDireccion;
+	public String getNombreComercial() {
+		return nombreComercial;
 	}
 
-	public void setEmprDireccion(String emprDireccion) {
-		this.emprDireccion = emprDireccion;
+	public void setNombreComercial(String nombreComercial) {
+		this.nombreComercial = nombreComercial;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
 	public TipoDocumentoIdentidad getTipoDocumentoIdentidad() {
@@ -69,12 +78,11 @@ public class Empresa {
 		this.ubigeo = ubigeo;
 	}
 
-	@Override
-	public String toString() {
-		return "Empresa [emprId=" + emprId + ", emprRuc=" + emprRuc + ", emprRazonSocial=" + emprRazonSocial
-				+ ", emprNombreComercial=" + emprNombreComercial + ", emprDireccion=" + emprDireccion
-				+ ", tipoDocumentoIdentidad=" + tipoDocumentoIdentidad + ", ubigeo=" + ubigeo + "]";
+	public boolean isActivo() {
+		return activo;
 	}
 
-	
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
 }

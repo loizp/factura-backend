@@ -1,12 +1,9 @@
 package com.sunqubit.faqture.core.daos.contracts;
 
-import java.util.List;
-
-import com.sunqubit.faqture.core.beans.Empresa;
 import com.sunqubit.faqture.core.beans.Sucursal;
 
 public interface ISucursalDao {
-	void insert(Sucursal sucursal);
+	void insert(Sucursal sucursal) throws Exception;
 	
-	List<Sucursal> getList(Empresa empresa);
+	void update(Sucursal sucursal) throws Exception;
 }

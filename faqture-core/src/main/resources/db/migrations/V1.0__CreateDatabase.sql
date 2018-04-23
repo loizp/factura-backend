@@ -1,3 +1,61 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--- CREANDO LA ESTRUCTURA DE LA BASE DE DATOS
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE SEQUENCE sunqubit.roles_role_id_seq;
+
+CREATE TABLE sunqubit.roles (
+                role_id INTEGER NOT NULL DEFAULT nextval('sunqubit.roles_role_id_seq'),
+                role_name VARCHAR(20) NOT NULL,
+                CONSTRAINT roles_pk PRIMARY KEY (role_id)
+);
+COMMENT ON TABLE sunqubit.roles IS 'Tabla que tiene los roles de accesos de los usuarios';
+COMMENT ON COLUMN sunqubit.roles.role_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.roles.role_name IS 'Campo con la descripcion del ROL';
+
+
+ALTER SEQUENCE sunqubit.roles_role_id_seq OWNED BY sunqubit.roles.role_id;
+
+CREATE SEQUENCE sunqubit.usuarios_user_id_seq;
+
+CREATE TABLE sunqubit.usuarios (
+                user_id INTEGER NOT NULL DEFAULT nextval('sunqubit.usuarios_user_id_seq'),
+                user_login_name VARCHAR(20) NOT NULL,
+                user_password VARCHAR(255) NOT NULL,
+                user_nombre VARCHAR(200) NOT NULL,
+                user_email VARCHAR(200) NOT NULL,
+                user_status BOOLEAN DEFAULT True NOT NULL,
+                CONSTRAINT usuarios_pk PRIMARY KEY (user_id)
+);
+COMMENT ON TABLE sunqubit.usuarios IS 'Tabla que contendra los datos de los usuarios que se autenticaran para el uso del servicio';
+COMMENT ON COLUMN sunqubit.usuarios.user_id IS 'Campo PK de la tabla usuario';
+COMMENT ON COLUMN sunqubit.usuarios.user_login_name IS 'Campo de identificación principal de usuario';
+COMMENT ON COLUMN sunqubit.usuarios.user_password IS 'campo que almacena las contraseñas de los usuarios';
+COMMENT ON COLUMN sunqubit.usuarios.user_nombre IS 'Campo con el nombre a mostrarse del usuario';
+COMMENT ON COLUMN sunqubit.usuarios.user_email IS 'Campo con el email del usuario para contacto';
+COMMENT ON COLUMN sunqubit.usuarios.user_status IS 'Campo que valida el estado del usuario activo(True) o inactivo(False)';
+
+
+ALTER SEQUENCE sunqubit.usuarios_user_id_seq OWNED BY sunqubit.usuarios.user_id;
+
+CREATE UNIQUE INDEX usuarios_idx
+ ON sunqubit.usuarios
+ ( user_login_name );
+
+CREATE SEQUENCE sunqubit.asignaciones_roles_arol_id_seq;
+
+CREATE TABLE sunqubit.asignaciones_roles (
+                arol_id INTEGER NOT NULL DEFAULT nextval('sunqubit.asignaciones_roles_arol_id_seq'),
+                role_id INTEGER NOT NULL,
+                user_id INTEGER NOT NULL,
+                CONSTRAINT asignaciones_roles_pk PRIMARY KEY (arol_id)
+);
+COMMENT ON TABLE sunqubit.asignaciones_roles IS 'Tabla detalle Muchos a muchos entre usuarios y roles';
+COMMENT ON COLUMN sunqubit.asignaciones_roles.arol_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.asignaciones_roles.role_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.asignaciones_roles.user_id IS 'Campo PK de la tabla usuario';
+
+
+ALTER SEQUENCE sunqubit.asignaciones_roles_arol_id_seq OWNED BY sunqubit.asignaciones_roles.arol_id;
 
 CREATE TABLE sunqubit.paises (
                 pais_codigo CHAR(2) NOT NULL,
@@ -7,50 +65,6 @@ CREATE TABLE sunqubit.paises (
 COMMENT ON TABLE sunqubit.paises IS 'Tabla de paises segun el catálogo';
 COMMENT ON COLUMN sunqubit.paises.pais_codigo IS 'Campo PK con el código de pais estipulado en el catálogo';
 COMMENT ON COLUMN sunqubit.paises.pais_nombre IS 'Campo con el nombre del pais';
-
-
-CREATE TABLE sunqubit.tipos_notas_debito (
-                tnod_codigo CHAR(2) NOT NULL,
-                tnod_descripcion VARCHAR(200) NOT NULL,
-                CONSTRAINT tipos_notas_debito_pk PRIMARY KEY (tnod_codigo)
-);
-COMMENT ON TABLE sunqubit.tipos_notas_debito IS '01
-Intereses por mora
-02
-03
-Aumento en el valor
-Penalidades/ otros conceptos';
-COMMENT ON COLUMN sunqubit.tipos_notas_debito.tnod_codigo IS 'Campo PK codigo del tipo de nota de debito';
-COMMENT ON COLUMN sunqubit.tipos_notas_debito.tnod_descripcion IS 'Campo con la descripción del tipo de nota de débito';
-
-
-CREATE TABLE sunqubit.tipos_notas_credito (
-                tnoc_codigo CHAR(2) NOT NULL,
-                tnoc_descripcion VARCHAR(200) NOT NULL,
-                CONSTRAINT tipos_notas_credito_pk PRIMARY KEY (tnoc_codigo)
-);
-COMMENT ON TABLE sunqubit.tipos_notas_credito IS '01
-Anulación de la operación
-02
-Anulación por error en el RUC
-03
-Corrección por error en la descripción
-04
-Descuento global
-05
-Descuento por ítem
-06
-Devolución total
-07
-Devolución por ítem
-08
-Bonificación
-09
-Disminución en el valor
-10
-Otros Conceptos';
-COMMENT ON COLUMN sunqubit.tipos_notas_credito.tnoc_codigo IS 'Campo PK codigo de tipo de nota de crédito';
-COMMENT ON COLUMN sunqubit.tipos_notas_credito.tnoc_descripcion IS 'Campo con la descripción del tipo de nota de crédito';
 
 
 CREATE TABLE sunqubit.tipos_isc (
@@ -155,9 +169,10 @@ CREATE SEQUENCE sunqubit.clientes_clie_id_seq_1;
 
 CREATE TABLE sunqubit.clientes (
                 clie_id INTEGER NOT NULL DEFAULT nextval('sunqubit.clientes_clie_id_seq_1'),
-                clie_numero VARCHAR(15) NOT NULL,
+                clie_numero VARCHAR(15),
                 tiid_codigo CHAR(1) NOT NULL,
                 clie_nombres VARCHAR(200) NOT NULL,
+                clie_direccion VARCHAR(200),
                 CONSTRAINT clientes_pk PRIMARY KEY (clie_id)
 );
 COMMENT ON TABLE sunqubit.clientes IS 'Contiene los datos de los clientes a quienes se les emite un documento.';
@@ -165,13 +180,10 @@ COMMENT ON COLUMN sunqubit.clientes.clie_id IS 'Campo PK autoincremental';
 COMMENT ON COLUMN sunqubit.clientes.clie_numero IS 'Campo único que contiene el número de documento de identificación';
 COMMENT ON COLUMN sunqubit.clientes.tiid_codigo IS 'Campo clave del tipo de documento de identificación';
 COMMENT ON COLUMN sunqubit.clientes.clie_nombres IS 'Campo que representa al nombre o razón social';
+COMMENT ON COLUMN sunqubit.clientes.clie_direccion IS 'Campo que contiene la direccion del cliente';
 
 
 ALTER SEQUENCE sunqubit.clientes_clie_id_seq_1 OWNED BY sunqubit.clientes.clie_id;
-
-CREATE UNIQUE INDEX clientes_idx
- ON sunqubit.clientes
- ( clie_numero );
 
 CREATE SEQUENCE sunqubit.ubigeos_ubig_id_seq;
 
@@ -214,10 +226,45 @@ COMMENT ON COLUMN sunqubit.tipos_documentos.tido_codigo IS 'Campo PK que identif
 COMMENT ON COLUMN sunqubit.tipos_documentos.tido_descripcion IS 'Campo con la Descripción del tipo de Documento según el catálogo Nro 01';
 
 
-CREATE SEQUENCE sunqubit.empresas_clie_id_seq_1_1;
+CREATE SEQUENCE sunqubit.tipos_notas_tino_id_seq;
+
+CREATE TABLE sunqubit.tipos_notas (
+                tino_id INTEGER NOT NULL DEFAULT nextval('sunqubit.tipos_notas_tino_id_seq'),
+                tino_codigo CHAR(2) NOT NULL,
+                tino_descripcion VARCHAR(200) NOT NULL,
+                tido_codigo CHAR(2) NOT NULL,
+                CONSTRAINT tipos_notas_pk PRIMARY KEY (tino_id)
+);
+COMMENT ON TABLE sunqubit.tipos_notas IS 'Tabla que contiene los tipos de notas tanto de Crédito o de Débito.
+
+Credito:
+01 Anulación de la operación
+02 Anulación por error en el RUC
+03 Corrección por error en la descripción
+04 Descuento global
+05 Descuento por ítem
+06 Devolución total
+07 Devolución por ítem
+08 Bonificación
+09 Disminución en el valor
+10 Otros Conceptos
+
+Debito:
+01 Intereses por mora
+02 Aumento en el valor
+03 Penalidades/ otros conceptos';
+COMMENT ON COLUMN sunqubit.tipos_notas.tino_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.tipos_notas.tino_codigo IS 'Campo codigo segun su catalogo';
+COMMENT ON COLUMN sunqubit.tipos_notas.tino_descripcion IS 'campo con la descripcion del tipo de nota';
+COMMENT ON COLUMN sunqubit.tipos_notas.tido_codigo IS 'Campo PK que identifica el tipo de documento segun el catálogo 01';
+
+
+ALTER SEQUENCE sunqubit.tipos_notas_tino_id_seq OWNED BY sunqubit.tipos_notas.tino_id;
+
+CREATE SEQUENCE sunqubit.empresas_empr_id_seq;
 
 CREATE TABLE sunqubit.empresas (
-                empr_id INTEGER NOT NULL DEFAULT nextval('sunqubit.empresas_clie_id_seq_1_1'),
+                empr_id INTEGER NOT NULL DEFAULT nextval('sunqubit.empresas_empr_id_seq'),
                 empr_ruc CHAR(11) NOT NULL,
                 empr_razon_social VARCHAR(200) NOT NULL,
                 empr_nombre_comercial VARCHAR(200) NOT NULL,
@@ -225,6 +272,7 @@ CREATE TABLE sunqubit.empresas (
                 tiid_codigo CHAR(1) DEFAULT '6' NOT NULL,
                 ubig_id INTEGER NOT NULL,
                 pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
+                empr_status BOOLEAN DEFAULT true NOT NULL,
                 CONSTRAINT empresas_pk PRIMARY KEY (empr_id)
 );
 COMMENT ON TABLE sunqubit.empresas IS 'Tabla que contiene las empresas quienes emiten los documentos a los clientes';
@@ -236,13 +284,14 @@ COMMENT ON COLUMN sunqubit.empresas.empr_direccion IS 'Campo que contiene la Dir
 COMMENT ON COLUMN sunqubit.empresas.tiid_codigo IS 'Campo clave del tipo de documento de identificación teniendo en cuenta que la mayoria usa el RUC';
 COMMENT ON COLUMN sunqubit.empresas.ubig_id IS 'Campo clave para la ubicación Postal de acuerdo a los registros de ubigeo controlado por el estado';
 COMMENT ON COLUMN sunqubit.empresas.pais_codigo IS 'Campo con el codigo de pais de la empresa por defecto es PERU';
+COMMENT ON COLUMN sunqubit.empresas.empr_status IS 'Campo que almacena el estado de actividad activo(True) o inactivo(False)';
 
 
-ALTER SEQUENCE sunqubit.empresas_clie_id_seq_1_1 OWNED BY sunqubit.empresas.empr_id;
+ALTER SEQUENCE sunqubit.empresas_empr_id_seq OWNED BY sunqubit.empresas.empr_id;
 
 CREATE UNIQUE INDEX empresas_idx
  ON sunqubit.empresas
- ( empr_ruc );
+ ( empr_ruc, tiid_codigo );
 
 CREATE SEQUENCE sunqubit.sucursales_sucu_id_seq_1;
 
@@ -252,6 +301,7 @@ CREATE TABLE sunqubit.sucursales (
                 sucu_direccion VARCHAR(200) NOT NULL,
                 ubig_id INTEGER NOT NULL,
                 pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
+                sucu_status BOOLEAN DEFAULT true NOT NULL,
                 CONSTRAINT sucursales_pk PRIMARY KEY (sucu_id, empr_id)
 );
 COMMENT ON TABLE sunqubit.sucursales IS 'Contiene las sucursales de las empresas emisoras de documentos';
@@ -260,6 +310,7 @@ COMMENT ON COLUMN sunqubit.sucursales.empr_id IS 'Campo PK autoincremental';
 COMMENT ON COLUMN sunqubit.sucursales.sucu_direccion IS 'Campo con la dirección de la sucursal';
 COMMENT ON COLUMN sunqubit.sucursales.ubig_id IS 'Campo clave de la ubicación geográfica';
 COMMENT ON COLUMN sunqubit.sucursales.pais_codigo IS 'Campo con el codigo de pais de la sucursal por defecto es PERU';
+COMMENT ON COLUMN sunqubit.sucursales.sucu_status IS 'Campo que define si tendra actividad(True) o no(False) la sucursal';
 
 
 ALTER SEQUENCE sunqubit.sucursales_sucu_id_seq_1 OWNED BY sunqubit.sucursales.sucu_id;
@@ -289,10 +340,8 @@ CREATE TABLE sunqubit.documentos (
                 tiop_codigo CHAR(2) NOT NULL,
                 docu_proc_fecha TIMESTAMP NOT NULL,
                 clie_id INTEGER NOT NULL,
-                sucu_id INTEGER NOT NULL,
-                empr_id INTEGER NOT NULL,
                 docu_sustento_nota VARCHAR(250),
-                docu_tipo_nota CHAR(2),
+                tino_id INTEGER,
                 docu_enviar_sunat BOOLEAN DEFAULT True NOT NULL,
                 docu_proc_status CHAR(1) DEFAULT 'N' NOT NULL,
                 docu_link_cdr VARCHAR(200),
@@ -301,6 +350,9 @@ CREATE TABLE sunqubit.documentos (
                 docu_cdr_status VARCHAR(200),
                 docu_cdr_nota VARCHAR(200),
                 docu_cdr_observacion VARCHAR,
+                sucu_id INTEGER NOT NULL,
+                empr_id INTEGER NOT NULL,
+                docu_clie_email VARCHAR(200),
                 CONSTRAINT documentos_pk PRIMARY KEY (docu_id)
 );
 COMMENT ON TABLE sunqubit.documentos IS 'Tabla principal del sistema que contiene los documentos que son captado y enviados a las SUNAT';
@@ -335,10 +387,8 @@ COMMENT ON COLUMN sunqubit.documentos.docu_vendedor IS 'Campo en el caso de cont
 COMMENT ON COLUMN sunqubit.documentos.tiop_codigo IS 'Campo clave del tipo de operación';
 COMMENT ON COLUMN sunqubit.documentos.docu_proc_fecha IS 'Campo que especifica la hora y la fecha del procesado';
 COMMENT ON COLUMN sunqubit.documentos.clie_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.documentos.sucu_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.documentos.empr_id IS 'Campo PK autoincremental';
 COMMENT ON COLUMN sunqubit.documentos.docu_sustento_nota IS 'campo que se aplica al ingresar una nota de débito o crédito que especifica el sustento de la emisión';
-COMMENT ON COLUMN sunqubit.documentos.docu_tipo_nota IS 'Campo clave que indica que tipo de nota se esta emitiendo en caso de que el documento sea nota de crédito ó débito';
+COMMENT ON COLUMN sunqubit.documentos.tino_id IS 'Campo clave que indica que tipo de nota se esta emitiendo en caso de que el documento sea nota de crédito ó débito';
 COMMENT ON COLUMN sunqubit.documentos.docu_enviar_sunat IS 'Campo que indica si el documento debe(True) o no(False) ser enviado a la sunat';
 COMMENT ON COLUMN sunqubit.documentos.docu_proc_status IS '* - Insertando a tablas cabecera y Detalle.
 N - Nuevo
@@ -352,6 +402,9 @@ COMMENT ON COLUMN sunqubit.documentos.docu_link_xml IS 'Campo con la ruta del en
 COMMENT ON COLUMN sunqubit.documentos.docu_cdr_status IS 'Campo que contiene el estado del CDR';
 COMMENT ON COLUMN sunqubit.documentos.docu_cdr_nota IS 'Campo con la nota del CDR';
 COMMENT ON COLUMN sunqubit.documentos.docu_cdr_observacion IS 'Campo con la nota de observación del CDR';
+COMMENT ON COLUMN sunqubit.documentos.sucu_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.documentos.empr_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.documentos.docu_clie_email IS 'Campo que contiene la direccion de email para el envio del documento al cliente';
 
 
 ALTER SEQUENCE sunqubit.documentos_docu_id_seq OWNED BY sunqubit.documentos.docu_id;
@@ -407,6 +460,20 @@ COMMENT ON COLUMN sunqubit.detalle_documentos.dedo_descuento IS 'campo caso de t
 
 
 ALTER SEQUENCE sunqubit.detalle_documentos_dedo_id_seq OWNED BY sunqubit.detalle_documentos.dedo_id;
+
+ALTER TABLE sunqubit.asignaciones_roles ADD CONSTRAINT roles_asignaciones_roles_fk
+FOREIGN KEY (role_id)
+REFERENCES sunqubit.roles (role_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE sunqubit.asignaciones_roles ADD CONSTRAINT usuarios_asignaciones_roles_fk
+FOREIGN KEY (user_id)
+REFERENCES sunqubit.usuarios (user_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
 
 ALTER TABLE sunqubit.detalle_documentos ADD CONSTRAINT tipos_isc_detalle_documentos_fk
 FOREIGN KEY (tisc_codigo)
@@ -465,6 +532,13 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE sunqubit.documentos ADD CONSTRAINT tipo_documentos_documentos_fk
+FOREIGN KEY (tido_codigo)
+REFERENCES sunqubit.tipos_documentos (tido_codigo)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE sunqubit.tipos_notas ADD CONSTRAINT tipos_documentos_tipos_notas_fk
 FOREIGN KEY (tido_codigo)
 REFERENCES sunqubit.tipos_documentos (tido_codigo)
 ON DELETE NO ACTION

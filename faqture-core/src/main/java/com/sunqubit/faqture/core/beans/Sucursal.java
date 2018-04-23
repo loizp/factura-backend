@@ -1,22 +1,26 @@
 package com.sunqubit.faqture.core.beans;
 
+import java.util.List;
+
 public class Sucursal {
-	private long sucuId;
-	private String sucuDireccion;
+	private long id;
+	private String direccion;
 	private Empresa empresa;
 	private Ubigeo ubigeo;
+	private Boolean activo;
+	private List<Documento> documentos;
 	
-	public long getSucuId() {
-		return sucuId;
+	public long getId() {
+		return id;
 	}
-	public void setSucuId(long sucuId) {
-		this.sucuId = sucuId;
+	public void setId(long id) {
+		this.id = id;
 	}
-	public String getSucuDireccion() {
-		return sucuDireccion;
+	public String getDireccion() {
+		return direccion;
 	}
-	public void setSucuDireccion(String sucuDireccion) {
-		this.sucuDireccion = sucuDireccion;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 	public Empresa getEmpresa() {
 		return empresa;
@@ -30,5 +34,16 @@ public class Sucursal {
 	public void setUbigeo(Ubigeo ubigeo) {
 		this.ubigeo = ubigeo;
 	}
-	
+	public Boolean getActivo() {
+		return activo;
+	}
+	public void setActivo(Boolean activo) {
+		this.activo = activo;
+	}
+	public List<Documento> getDocumentos() {
+		return documentos;
+	}
+	public void setDocumentos(List<Documento> documentos) {
+		this.documentos = documentos;
+	}
 }

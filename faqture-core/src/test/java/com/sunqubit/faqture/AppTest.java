@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.sunqubit.faqture.core.daos.contracts.IEmpresaDao;
-
 public class AppTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppTest.class);
@@ -32,14 +30,14 @@ public class AppTest {
         empresa.setEmprDireccion("Jr. 5nocer");
         empresa.setTipoDocumentoIdentidad(tipoDocumentoIdentidad);
         empresa.setUbigeo(ubigeo);*/
-        IEmpresaDao empresaDao = (IEmpresaDao) context.getBean("empresaDao");
+        //IEmpresaDao empresaDao = (IEmpresaDao) context.getBean("empresaDao");
         //empresaDao.insert(empresa);
         //LOGGER.info("insertando empresa");
         //IClienteDao clienteDao = (IClienteDao) context.getBean("clienteDao");
         //clienteDao.insert(cliente);
         //System.out.println(clienteDao.getList().size());
         LOGGER.info("obteniendo empresa");
-        System.out.println(empresaDao.filterName("Ropa"));
+        //System.out.println(empresaDao.filterName("Ropa"));
         //IUbigeoDao ubigeoDao = (IUbigeoDao) context.getBean("ubigeoDao");
         //System.out.println(ubigeoDao.filter("22000"));
         LOGGER.info("final");

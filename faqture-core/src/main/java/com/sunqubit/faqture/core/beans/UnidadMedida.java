@@ -2,23 +2,22 @@ package com.sunqubit.faqture.core.beans;
 
 public class UnidadMedida {
 
-	private String unmeCodigo;
-	private String unmeDescripcion;
-
-	public String getUnmeCodigo() {
-		return unmeCodigo;
+	private String codigo;
+	private String descripcion;
+	
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
-	public void setUnmeCodigo(String unmeCodigo) {
-		this.unmeCodigo = unmeCodigo;
-	}
-
-	public String getUnmeDescripcion() {
-		return unmeDescripcion;
-	}
-
-	public void setUnmeDescripcion(String unmeDescripcion) {
-		this.unmeDescripcion = unmeDescripcion;
-	}
+	
 
 }

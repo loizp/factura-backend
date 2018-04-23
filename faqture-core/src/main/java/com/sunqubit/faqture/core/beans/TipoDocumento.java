@@ -1,30 +1,29 @@
 package com.sunqubit.faqture.core.beans;
 
+import java.util.List;
+
 public class TipoDocumento {
 
-	public TipoDocumento(long tidoCodigo, String tidoDescripcion) {
-		super();
-		this.tidoCodigo = tidoCodigo;
-		this.tidoDescripcion = tidoDescripcion;
+	private long codigo;
+	private String descripcion;
+	private List<TipoNota> tiposNotas;
+	
+	public long getCodigo() {
+		return codigo;
 	}
-
-	private long tidoCodigo;
-	private String tidoDescripcion;
-
-	public long getTidoCodigo() {
-		return tidoCodigo;
+	public void setCodigo(long codigo) {
+		this.codigo = codigo;
 	}
-
-	public void setTidoCodigo(long tidoCodigo) {
-		this.tidoCodigo = tidoCodigo;
+	public String getDescripcion() {
+		return descripcion;
 	}
-
-	public String getTidoDescripcion() {
-		return tidoDescripcion;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
-
-	public void setTidoDescripcion(String tidoDescripcion) {
-		this.tidoDescripcion = tidoDescripcion;
+	public List<TipoNota> getTiposNotas() {
+		return tiposNotas;
 	}
-
+	public void setTiposNotas(List<TipoNota> tiposNotas) {
+		this.tiposNotas = tiposNotas;
+	}	
 }

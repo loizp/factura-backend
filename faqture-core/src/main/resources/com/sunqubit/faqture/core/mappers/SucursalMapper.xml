@@ -2,20 +2,30 @@
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD//Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="com.sunqubit.faqture.core.mappers.SucursalMapper">
     <resultMap id="SucursalMap" type="Sucursal">
-        <id column="sucu_id" property="sucuId" />
-        <result column="sucu_direccion" property="sucuDireccion" />
+        <id column="sucu_id" property="id" />
+        <result column="sucu_direccion" property="direccion" />
+        <result column="sucu_status" property="activo" />
         <association property="empresa" javaType="Empresa" resultMap="com.sunqubit.faqture.core.mappers.EmpresaMapper.EmpresaMap"/>
         <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.core.mappers.UbigeoMapper.UbigeoMap"/>
+        <collection property="documentos" javaType="Documento" resultMap="com.sunqubit.faqture.core.mappers.DocumentoMapper.DocumentoMap" />
     </resultMap>
 
     <insert id="insert" parameterType="sucursal">
-		INSERT INTO sunqubit.sucursales (empr_id, sucu_direccion, ubig_id)
-			VALUES (#{empresa.emprId}, #{sucuDireccion}, #{ubigeo.ubigId});
+    	<if test="activo == null">
+			INSERT INTO sunqubit.sucursales (empr_id, sucu_direccion, ubig_id)
+				VALUES (#{empresa.id}, #{direccion}, #{ubigeo.id});
+		</if>
+		<if test="activo != null">
+			INSERT INTO sunqubit.sucursales (empr_id, sucu_direccion, ubig_id, sucu_status)
+				VALUES (#{empresa.id}, #{direccion}, #{ubigeo.id}, #{activo});
+		</if>
 	</insert>
     
-    <select id="getList" resultMap="SucursalMap">
-        SELECT * FROM sunqubit.sucursales 
-        	WHERE empr_id = #{empresa.emprId};
+    <select id="update" parameterType="sucursal">
+        UPDATE sunqubit.sucursales 
+			SET sucu_direccion=#{direccion}, ubig_id = #{ubigeo.id}
+			<if test="activo != null">, sucu_status = #{activo}</if>
+			WHERE id = #{id};
     </select>
 
 </mapper>

@@ -1,23 +1,22 @@
 package com.sunqubit.faqture.core.beans;
 
 public class TipoAfectacionIgv {
-	private String tiaiCodigo;
-	private String tiaiDescripcion;
-
-	public String getTiaiCodigo() {
-		return tiaiCodigo;
+	private String codigo;
+	private String descripcion;
+	
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
-	public void setTiaiCodigo(String tiaiCodigo) {
-		this.tiaiCodigo = tiaiCodigo;
-	}
 
-	public String getTiaiDescripcion() {
-		return tiaiDescripcion;
-	}
-
-	public void setTiaiDescripcion(String tiaiDescripcion) {
-		this.tiaiDescripcion = tiaiDescripcion;
-	}
 
 }

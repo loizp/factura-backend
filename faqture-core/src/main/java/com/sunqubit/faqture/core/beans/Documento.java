@@ -6,203 +6,160 @@ import java.util.List;
 
 public class Documento {
 
-	private long docuId;
+	private long id;
 	private Empresa empresa;
 	private Sucursal sucursal;
 	private Cliente cliente;
-	private Date docuFecha;
-	private String docuNumero;
+	private Date fecha;
+	private String numero;
 	private Moneda moneda;
 	private TipoDocumento tipoDocumento;
-	private BigDecimal docuGrabada;
-	private BigDecimal docuInafecta;
-	private BigDecimal docuExonerada;
-	private BigDecimal docuGratuita;
-	private BigDecimal docuDescuento;
-	private BigDecimal docuSubtotal;
-	private BigDecimal docuTotal;
-	private BigDecimal docuIgv;
-	private BigDecimal docuIsc;
-	private BigDecimal docuOtrosTributos;
-	private BigDecimal docuOtrosCargos;
-	private String docuVendedor;
+	private BigDecimal grabada;
+	private BigDecimal inafecta;
+	private BigDecimal exonerada;
+	private BigDecimal gratuita;
+	private BigDecimal descuento;
+	private BigDecimal subtotal;
+	private BigDecimal total;
+	private BigDecimal igv;
+	private BigDecimal isc;
+	private BigDecimal tributos;
+	private BigDecimal otrosCargos;
+	private String vendedor;
 	private TipoOperacion tipoOperacion;
-	private List<DetalleDocumento> detalleDocumentos;
-
-	public long getDocuId() {
-		return docuId;
+	private List<DetalleDocumento> detallesDocumento;
+	
+	public long getId() {
+		return id;
 	}
-
-	public void setDocuId(long docuId) {
-		this.docuId = docuId;
+	public void setId(long id) {
+		this.id = id;
 	}
-
 	public Empresa getEmpresa() {
 		return empresa;
 	}
-
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
-
 	public Sucursal getSucursal() {
 		return sucursal;
 	}
-
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
 	}
-
 	public Cliente getCliente() {
 		return cliente;
 	}
-
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-
-	public Date getDocuFecha() {
-		return docuFecha;
+	public Date getFecha() {
+		return fecha;
 	}
-
-	public void setDocuFecha(Date docuFecha) {
-		this.docuFecha = docuFecha;
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
-
-	public String getDocuNumero() {
-		return docuNumero;
+	public String getNumero() {
+		return numero;
 	}
-
-	public void setDocuNumero(String docuNumero) {
-		this.docuNumero = docuNumero;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
-
 	public Moneda getMoneda() {
 		return moneda;
 	}
-
 	public void setMoneda(Moneda moneda) {
 		this.moneda = moneda;
 	}
-
 	public TipoDocumento getTipoDocumento() {
 		return tipoDocumento;
 	}
-
 	public void setTipoDocumento(TipoDocumento tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
-
-	public BigDecimal getDocuGrabada() {
-		return docuGrabada;
+	public BigDecimal getGrabada() {
+		return grabada;
 	}
-
-	public void setDocuGrabada(BigDecimal docuGrabada) {
-		this.docuGrabada = docuGrabada;
+	public void setGrabada(BigDecimal grabada) {
+		this.grabada = grabada;
 	}
-
-	public BigDecimal getDocuInafecta() {
-		return docuInafecta;
+	public BigDecimal getInafecta() {
+		return inafecta;
 	}
-
-	public void setDocuInafecta(BigDecimal docuInafecta) {
-		this.docuInafecta = docuInafecta;
+	public void setInafecta(BigDecimal inafecta) {
+		this.inafecta = inafecta;
 	}
-
-	public BigDecimal getDocuExonerada() {
-		return docuExonerada;
+	public BigDecimal getExonerada() {
+		return exonerada;
 	}
-
-	public void setDocuExonerada(BigDecimal docuExonerada) {
-		this.docuExonerada = docuExonerada;
+	public void setExonerada(BigDecimal exonerada) {
+		this.exonerada = exonerada;
 	}
-
-	public BigDecimal getDocuGratuita() {
-		return docuGratuita;
+	public BigDecimal getGratuita() {
+		return gratuita;
 	}
-
-	public void setDocuGratuita(BigDecimal docuGratuita) {
-		this.docuGratuita = docuGratuita;
+	public void setGratuita(BigDecimal gratuita) {
+		this.gratuita = gratuita;
 	}
-
-	public BigDecimal getDocuDescuento() {
-		return docuDescuento;
+	public BigDecimal getDescuento() {
+		return descuento;
 	}
-
-	public void setDocuDescuento(BigDecimal docuDescuento) {
-		this.docuDescuento = docuDescuento;
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
 	}
-
-	public BigDecimal getDocuSubtotal() {
-		return docuSubtotal;
+	public BigDecimal getSubtotal() {
+		return subtotal;
 	}
-
-	public void setDocuSubtotal(BigDecimal docuSubtotal) {
-		this.docuSubtotal = docuSubtotal;
+	public void setSubtotal(BigDecimal subtotal) {
+		this.subtotal = subtotal;
 	}
-
-	public BigDecimal getDocuTotal() {
-		return docuTotal;
+	public BigDecimal getTotal() {
+		return total;
 	}
-
-	public void setDocuTotal(BigDecimal docuTotal) {
-		this.docuTotal = docuTotal;
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}
-
-	public BigDecimal getDocuIgv() {
-		return docuIgv;
+	public BigDecimal getIgv() {
+		return igv;
 	}
-
-	public void setDocuIgv(BigDecimal docuIgv) {
-		this.docuIgv = docuIgv;
+	public void setIgv(BigDecimal igv) {
+		this.igv = igv;
 	}
-
-	public BigDecimal getDocuIsc() {
-		return docuIsc;
+	public BigDecimal getIsc() {
+		return isc;
 	}
-
-	public void setDocuIsc(BigDecimal docuIsc) {
-		this.docuIsc = docuIsc;
+	public void setIsc(BigDecimal isc) {
+		this.isc = isc;
 	}
-
-	public BigDecimal getDocuOtrosTributos() {
-		return docuOtrosTributos;
+	public BigDecimal getTributos() {
+		return tributos;
 	}
-
-	public void setDocuOtrosTributos(BigDecimal docuOtrosTributos) {
-		this.docuOtrosTributos = docuOtrosTributos;
+	public void setTributos(BigDecimal tributos) {
+		this.tributos = tributos;
 	}
-
-	public BigDecimal getDocuOtrosCargos() {
-		return docuOtrosCargos;
+	public BigDecimal getOtrosCargos() {
+		return otrosCargos;
 	}
-
-	public void setDocuOtrosCargos(BigDecimal docuOtrosCargos) {
-		this.docuOtrosCargos = docuOtrosCargos;
+	public void setOtrosCargos(BigDecimal otrosCargos) {
+		this.otrosCargos = otrosCargos;
 	}
-
-	public String getDocuVendedor() {
-		return docuVendedor;
+	public String getVendedor() {
+		return vendedor;
 	}
-
-	public void setDocuVendedor(String docuVendedor) {
-		this.docuVendedor = docuVendedor;
+	public void setVendedor(String vendedor) {
+		this.vendedor = vendedor;
 	}
-
 	public TipoOperacion getTipoOperacion() {
 		return tipoOperacion;
 	}
-
 	public void setTipoOperacion(TipoOperacion tipoOperacion) {
 		this.tipoOperacion = tipoOperacion;
 	}
-
-	public List<DetalleDocumento> getDetalleDocumentos() {
-		return detalleDocumentos;
+	public List<DetalleDocumento> getDetallesDocumento() {
+		return detallesDocumento;
 	}
-
-	public void setDetalleDocumentos(List<DetalleDocumento> detalleDocumentos) {
-		this.detalleDocumentos = detalleDocumentos;
+	public void setDetallesDocumento(List<DetalleDocumento> detallesDocumento) {
+		this.detallesDocumento = detallesDocumento;
 	}
 
 }

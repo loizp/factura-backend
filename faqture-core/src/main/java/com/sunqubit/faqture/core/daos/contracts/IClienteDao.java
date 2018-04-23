@@ -5,12 +5,16 @@ import java.util.List;
 
 public interface IClienteDao {
 
-    void insert(Cliente cliente);
+    void insert(Cliente cliente) throws Exception;
 
-    void update(Cliente cliente);
+    void update(Cliente cliente) throws Exception;
     
-    Cliente get(long clieId);
+    Cliente get(long clieId) throws Exception;
     
-    public List<Cliente> getList();
+    Cliente get(String numero, String tDocIdent) throws Exception;
+    
+    Boolean docIdentidadExist(String numero, String tDocIdent) throws Exception;
+    
+    List<Cliente> getFilter(String filtro) throws Exception;
     
 }

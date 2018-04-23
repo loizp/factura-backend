@@ -3,104 +3,81 @@ package com.sunqubit.faqture.core.beans;
 import java.math.BigDecimal;
 
 public class DetalleDocumento {
-	private long dedoId;
+	private long id;
 	private Documento documento;
-	private long dedoOrden;
-	private String dedoCodigoProducto;
-	private String dedoDescripcion;
+	private long orden;
+	private String codigoProducto;
+	private String descripcion;
 	private UnidadMedida unidadMedida;
-	private BigDecimal dedoCantidad;
-	private BigDecimal dedoPrecioVenta;
-	private BigDecimal dedoVentaNoOnerosa;
-	private BigDecimal dedoIGV;
+	private BigDecimal cantidad;
+	private BigDecimal precioVenta;
+	private BigDecimal ventaNoOnerosa;
+	private BigDecimal igv;
 	private TipoAfectacionIgv tipoAfectacionIgv;
-
-	public long getDedoId() {
-		return dedoId;
-	}
-
 	
-
-	public void setDedoId(long dedoId) {
-		this.dedoId = dedoId;
+	public long getId() {
+		return id;
 	}
-
+	public void setId(long id) {
+		this.id = id;
+	}
 	public Documento getDocumento() {
 		return documento;
 	}
-
 	public void setDocumento(Documento documento) {
 		this.documento = documento;
 	}
-
-	public long getDedoOrden() {
-		return dedoOrden;
+	public long getOrden() {
+		return orden;
 	}
-
-	public void setDedoOrden(long dedoOrden) {
-		this.dedoOrden = dedoOrden;
+	public void setOrden(long orden) {
+		this.orden = orden;
 	}
-
-	public String getDedoCodigoProducto() {
-		return dedoCodigoProducto;
+	public String getCodigoProducto() {
+		return codigoProducto;
 	}
-
-	public void setDedoCodigoProducto(String dedoCodigoProducto) {
-		this.dedoCodigoProducto = dedoCodigoProducto;
+	public void setCodigoProducto(String codigoProducto) {
+		this.codigoProducto = codigoProducto;
 	}
-
-	public String getDedoDescripcion() {
-		return dedoDescripcion;
+	public String getDescripcion() {
+		return descripcion;
 	}
-
-	public void setDedoDescripcion(String dedoDescripcion) {
-		this.dedoDescripcion = dedoDescripcion;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
-
 	public UnidadMedida getUnidadMedida() {
 		return unidadMedida;
 	}
-
 	public void setUnidadMedida(UnidadMedida unidadMedida) {
 		this.unidadMedida = unidadMedida;
 	}
-
-	public BigDecimal getDedoCantidad() {
-		return dedoCantidad;
+	public BigDecimal getCantidad() {
+		return cantidad;
 	}
-
-	public void setDedoCantidad(BigDecimal dedoCantidad) {
-		this.dedoCantidad = dedoCantidad;
+	public void setCantidad(BigDecimal cantidad) {
+		this.cantidad = cantidad;
 	}
-
-	public BigDecimal getDedoPrecioVenta() {
-		return dedoPrecioVenta;
+	public BigDecimal getPrecioVenta() {
+		return precioVenta;
 	}
-
-	public void setDedoPrecioVenta(BigDecimal dedoPrecioVenta) {
-		this.dedoPrecioVenta = dedoPrecioVenta;
+	public void setPrecioVenta(BigDecimal precioVenta) {
+		this.precioVenta = precioVenta;
 	}
-
-	public BigDecimal getDedoVentaNoOnerosa() {
-		return dedoVentaNoOnerosa;
+	public BigDecimal getVentaNoOnerosa() {
+		return ventaNoOnerosa;
 	}
-
-	public void setDedoVentaNoOnerosa(BigDecimal dedoVentaNoOnerosa) {
-		this.dedoVentaNoOnerosa = dedoVentaNoOnerosa;
+	public void setVentaNoOnerosa(BigDecimal ventaNoOnerosa) {
+		this.ventaNoOnerosa = ventaNoOnerosa;
 	}
-
-	public BigDecimal getDedoIGV() {
-		return dedoIGV;
+	public BigDecimal getIgv() {
+		return igv;
 	}
-
-	public void setDedoIGV(BigDecimal dedoIGV) {
-		this.dedoIGV = dedoIGV;
+	public void setIgv(BigDecimal igv) {
+		this.igv = igv;
 	}
-
 	public TipoAfectacionIgv getTipoAfectacionIgv() {
 		return tipoAfectacionIgv;
 	}
-
 	public void setTipoAfectacionIgv(TipoAfectacionIgv tipoAfectacionIgv) {
 		this.tipoAfectacionIgv = tipoAfectacionIgv;
 	}

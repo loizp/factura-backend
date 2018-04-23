@@ -1,16 +1,17 @@
 package com.sunqubit.faqture.test;
 
-import com.sunqubit.faqture.core.daos.TipoDocumentoIdentidadDao;
-import com.sunqubit.faqture.core.daos.contracts.ITipoDocumentoIdentidadDao;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class AppTest {
 
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("config/spring-config.xml");
-        ITipoDocumentoIdentidadDao tipoDocumentoIdentidadDao = (TipoDocumentoIdentidadDao) context.getBean("tipoDocumentoIdentidadDao");
-        System.out.println(tipoDocumentoIdentidadDao.getAll().toString());
-        ((ClassPathXmlApplicationContext) context).close();
+    	//BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(8);
+    	
+    	//System.out.println("ROOT: " + passwordEncoder.encode("20f@qture$UNAT18"));
+    	
+    	//System.out.println("UWEB: " + passwordEncoder.encode("#WEB@pplicat10n"));
+    	
+    	String cadena = "2123456789";
+    	System.out.println(cadena.matches("^[12][0]([0-9]{9})"));
     }
 }

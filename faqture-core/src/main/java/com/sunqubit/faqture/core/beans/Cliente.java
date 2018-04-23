@@ -1,39 +1,32 @@
 package com.sunqubit.faqture.core.beans;
 
 public class Cliente {
-	private long clieId;
-	private String clieNumero;
-	private String clieNombres;
+	private long id;
+	private String numero;
+	private String nombres;
 	private TipoDocumentoIdentidad tipoDocumentoIdentidad;
-
-	public long getClieId() {
-		return clieId;
+	
+	public long getId() {
+		return id;
 	}
-
-	public void setClieId(long clieId) {
-		this.clieId = clieId;
+	public void setId(long id) {
+		this.id = id;
 	}
-
-	public String getClieNumero() {
-		return clieNumero;
+	public String getNumero() {
+		return numero;
 	}
-
-	public void setClieNumero(String clieNumero) {
-		this.clieNumero = clieNumero;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
-
-	public String getClieNombres() {
-		return clieNombres;
+	public String getNombres() {
+		return nombres;
 	}
-
-	public void setClieNombres(String clieNombres) {
-		this.clieNombres = clieNombres;
+	public void setNombres(String nombres) {
+		this.nombres = nombres;
 	}
-
 	public TipoDocumentoIdentidad getTipoDocumentoIdentidad() {
 		return tipoDocumentoIdentidad;
 	}
-
 	public void setTipoDocumentoIdentidad(TipoDocumentoIdentidad tipoDocumentoIdentidad) {
 		this.tipoDocumentoIdentidad = tipoDocumentoIdentidad;
 	}
