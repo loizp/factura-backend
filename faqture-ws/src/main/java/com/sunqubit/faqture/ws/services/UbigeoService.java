@@ -25,7 +25,7 @@ public class UbigeoService {
             res = ubigeoDao.filter(filtro);
         } catch (Exception ex) {
             ok = false;
-            code = 400;
+            code = 500;
             msg = "No se puede obtener el listado de ubigeos debido a: " + ex.getMessage();
         }
         

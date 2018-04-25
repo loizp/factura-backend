@@ -12,9 +12,16 @@ INSERT INTO tipos_documentos (tido_codigo, tido_descripcion)
         ('09', 'GUIA DE REMISIÓN REMITENTE'),
         ('12', 'TICKET DE MAQUINA REGISTRADORA'),
         ('13', 'DOCUMENTO EMITIDO POR BANCOS, INSTITUCIONES FINANCIERAS, CREDITICIAS Y DE SEGUROS QUE SE ENCUENTREN BAJO EL CONTROL DE LA SUPERINTENDENCIA DE BANCA Y SEGUROS'),
+        ('14', 'RECIBO SERVICIOS PUBLICOS'),
+        ('16', 'BOLETO DE VIAJE EMITIDO POR EMPRESAS DE TRANSPORTE PÚBLICO INTERPROVINCIAL DE PASAJEROS'),
         ('18', 'DOCUMENTOS EMITIDOS POR LAS AFP'),
+        ('20', 'COMPROBANTE DE RETENCION'),
         ('31', 'GUIA DE REMISIÓN TRANSPORTISTA'),
-        ('56', 'COMPROBANTE DE PAGO SEAE');
+        ('40', 'COMPROBANTE DE PERCEPCION'),
+        ('40', 'COMPROBANTE DE PERCEPCION - VENTA INTERNA (FÍSICO-FORMATO IMPRESO)'),
+        ('56', 'COMPROBANTE DE PAGO SEAE'),
+        ('71', 'GUIA DE REMISIÓN REMITENTE COMPLEMENTARIA'),
+        ('72', 'GUIA DE REMISIÓN TRANSPORTISTA COMPLEMENTARIA');
 -------------------------------------------------------------------------------
 --- Tabla: monedas
 --- Catálogo No. 02: Códigos de Tipo de Monedas
@@ -1542,6 +1549,18 @@ INSERT INTO paises (pais_codigo, pais_nombre)
         ('ZW','ZIMBABWE');
 -------------------------------------------------------------------------------	
 --- Tabla: tipos_documentos_identidad
+--- Catálogo No. 05: Códigos de Tipos de Tributos
+-------------------------------------------------------------------------------
+INSERT INTO tipos_tributos (ttri_codigo, ttri_descripcion, ttri_descripcion_corta, ttri_categoria)
+    VALUES ('1000', 'IGV IMPUESTO GENERAL A LAS VENTAS', 'VAT', 'S'),
+    	('2000', 'ISC IMPUESTO SELECTIVO AL CONSUMO', 'EXC', 'S'),
+    	('9995', 'EXPORTACION', 'FRE', 'G'),
+    	('9996', 'GRATUITO', 'FRE', 'Z'),
+    	('9997', 'EXONERADO', 'VAT', 'E'),
+        ('9998', 'INAFECTO', 'FRE', 'O'),
+    	('9999', 'OTROS CONCEPTOS DE PAGO', 'OTH', 'S');
+-------------------------------------------------------------------------------	
+--- Tabla: tipos_documentos_identidad
 --- Catálogo No. 06: Códigos de Tipos de Documentos de Identidad
 -------------------------------------------------------------------------------
 INSERT INTO tipos_documentos_identidad (tiid_codigo, tiid_descripcion, tiid_descripcion_corta)
@@ -1550,7 +1569,10 @@ INSERT INTO tipos_documentos_identidad (tiid_codigo, tiid_descripcion, tiid_desc
     	('4', 'CARNET DE EXTRANJERIA', 'CARNET EXT.'),
     	('6', 'REG. UNICO DE CONTRIBUYENTES', 'RUC'),
     	('7', 'PASAPORTE', 'PASAPORTE'),
-    	('A', 'CED. DIPLOMATICA DE IDENTIDAD', 'CDI');
+    	('A', 'CED. DIPLOMATICA DE IDENTIDAD', 'CDI'),
+        ('B', 'DOC.IDENT.PAIS.RESIDENCIA-NO.D', 'DI PAIS RESID.NO.D'),
+        ('C', 'TAX IDENTIFICATION NUMBER', 'TIN - DOC.TRIB PP.NN'),
+        ('D', 'IDENTIFICATION NUMBER', 'IN - DOC.TRIB PP.JJ');
 -------------------------------------------------------------------------------
 --- Tabla: tipos_afectacion_igv
 --- Catálogo No. 07: Códigos de Tipo de Afectación del IGV

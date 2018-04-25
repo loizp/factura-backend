@@ -3,12 +3,92 @@
 <mapper namespace="com.sunqubit.faqture.core.mappers.DocumentoMapper">
     <resultMap id="DocumentoMap" type="Documento">
         <id column="docu_id" property="id" />
-        
+        <result column="docu_fecha_emision" property="fechaEmision" />
+        <result column="docu_fecha_vencimiento" property="fechaVencimiento" />
+        <result column="docu_numero" property="numero" />
+        <result column="docu_subtotal" property="subtotal" />
+        <result column="docu_grabada" property="grabada" />
+        <result column="docu_inafecta" property="inafecta" />
+        <result column="docu_exonerada" property="exonerada" />
+        <result column="docu_gratuita" property="gratuita" />
+        <result column="docu_descuento" property="descuento" />
+        <result column="docu_igv" property="igv" />
+        <result column="docu_isc" property="isc" />
+        <result column="docu_otros_tributos" property="otrosTributos" />
+        <result column="docu_otros_cargos" property="otrosCargos" />
+        <result column="docu_total" property="total" />
+        <result column="docu_vendedor" property="vendedor" />
+        <result column="docu_clie_email" property="emailCliente" />
+        <result column="docu_observacion" property="observacion" />
+        <result column="docu_sustento_nota" property="sustentoNota" />
+        <result column="docu_proc_fecha" property="fechaProceso" />
+        <result column="docu_proc_status" property="estadoProceso"/>
+        <result column="docu_anulado" property="anulado"/>
+        <result column="docu_enviar_sunat" property="enviarSunat" />
+        <result column="docu_link_pdf" property="linkPdf" />
+        <result column="docu_link_xml" property="linkXml" />
+        <result column="docu_hash_sunat" property="hashSunat" />
+        <result column="docu_link_cdr" property="linkCdr" />
+        <result column="docu_cdr_status" property="cdrStatus" />
+        <result column="docu_cdr_nota" property="cdrNota" />
+        <result column="docu_cdr_observacion" property="cdrObservacion" />
+        <association property="tipoDocumento" javaType="TipoDocumento" resultMap="com.sunqubit.faqture.core.mappers.TipoDocumentoMapper.TipoDocumentoMap"/>
+        <association property="tipoNota" javaType="TipoNota" resultMap="com.sunqubit.faqture.core.mappers.TipoNotaMapper.TipoNotaMap" />
+        <association property="empresa" javaType="Empresa" resultMap="com.sunqubit.faqture.core.mappers.EmpresaMapper.EmpresaMap" />
+        <association property="sucursal" javaType="Sucursal" resultMap="com.sunqubit.faqture.core.mappers.SucursalMapper.SucursalMap" />
+        <association property="cliente" javaType="Cliente" resultMap="com.sunqubit.faqture.core.mappers.ClienteMapper.ClienteMap" />
+        <association property="moneda" javaType="Moneda" resultMap="com.sunqubit.faqture.core.mappers.MonedaMapper.MonedaMap" />
+        <association property="tipoOperacion" javaType="TipoOperacion" resultMap="com.sunqubit.faqture.core.mappers.TipoOperacionMapper.TipoOperacionMap" />
+    	<collection property="detallesDocumento" javaType="DetalleDocumento" resultMap="com.sunqubit.faqture.core.mappers.DetalleDocumentoMapper.DetalleDocumentoMap" />
     </resultMap>
-
+	
+    <insert id="insert" parameterType="Documento">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT NEXTVAL('sunqubit.documentos_docu_id_seq');
+    	</selectKey>
+    	INSERT INTO sunqubit.documentos (docu_id, docu_fecha_emision
+    		<if test="fechaVencimiento != null">, docu_fecha_vencimiento</if>
+    		, docu_numero, docu_subtotal, docu_grabada, docu_inafecta, docu_exonerada, docu_gratuita, docu_descuento, docu_igv, docu_isc, docu_otros_tributos, docu_otros_cargos, docu_total
+    		<if test="vededor != null">, docu_vendedor</if>
+    		<if test="emailCliente != null">, docu_clie_email</if>
+    		<if test="observacion != null">, docu_observacion</if>
+    		<if test="sustentoNota != null">, docu_sustento_nota</if>
+    		, docu_proc_fecha
+    		<if test="estadoProceso != null">, docu_proc_status</if>
+    		<if test="anulado != null">, docu_anulado</if>
+    		, tido_codigo
+    		<if test="tipoNota != null">, tino_id</if>
+    		, empr_id, sucu_id, clie_id, mone_id, tiop_codigo
+    		<if test="emviarSunat != null">, docu_enviar_sunat</if>
+    		)
+			VALUES (#{id}, #{fechaEmision}
+				<if test="fechaVencimiento != null">, #{fechaVencimiento}</if>
+				, #{numero}, #{subtotal}, #{grabada}, #{inafecta}, #{exonerada}, #{gratuita}, #{descuento}, #{igv}, #{isc}, #{otrosTributos}, #{otrosCargos}, #{total}
+				<if test="vededor != null">, #{vendedor}</if>
+	    		<if test="emailCliente != null">, #{emailCliente}</if>
+	    		<if test="observacion != null">, #{observacion}</if>
+	    		<if test="sustentoNota != null">, #{sustentoNota}</if>
+	    		, #{fechaProceso}
+	    		<if test="estadoProceso != null">, #{estadoProceso}</if>
+	    		<if test="anulado != null">, #{anulado}</if>
+	    		, #{tipoDocumento.codigo}
+	    		<if test="tipoNota != null">, tipoNota.id</if>
+	    		, #{empresa.id}, #{sucursal.id, #{cliente.id}, #{moneda.id}, #{tipoOperacion.codigo}
+	    		<if test="emviarSunat != null">, #{enviarSunat}</if>
+				);
+    </insert>
     
-    <select id="getListE" resultMap="DocumentoMap">
-        select * from sunqubit.documentos
+    <update id="update">
+    	UPDATE sunqubit.documentos 
+			SET docu_observacion = #{observacion}
+				<if test="fechaVencimiento != null">docu_fecha_vencimiento = #{fechaVencimiento}</if>
+				<if test="emailCliente != null">docu_clie_email = #{emailCliente}</if>
+				<if test="subtotal != null">docu_subtotal = #{subtotal}</if>
+			WHERE docu_id = #{id};
+    </update>
+    
+    <select id="get" parameterType="long" resultMap="DocumentoMap">
+        SELECT * FROM sunqubit.documentos WHERE docu_id = docuId;
     </select>
 
 </mapper>

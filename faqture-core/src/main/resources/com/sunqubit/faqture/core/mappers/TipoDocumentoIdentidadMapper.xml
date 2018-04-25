@@ -4,6 +4,7 @@
     <resultMap id="TipoDocumentoIdentidadMap" type="TipoDocumentoIdentidad">
         <id column="tiid_codigo" property="codigo" />
         <result column="tiid_descripcion" property="descripcion" />
+        <result column="tiid_descripcion_corta" property="descripcionCorta" />
     </resultMap>
 
     <select id="getAll" resultMap="TipoDocumentoIdentidadMap">

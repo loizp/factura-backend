@@ -29,18 +29,21 @@ public class ClienteValidator extends ClienteDaoValidator {
 	}
 	
 	@Override
-	public void validaClieNombre(String clieNombre) throws ValidatorException {
-		super.validaClieNombre(clieNombre);
+	public void validaClieNombres(String clieNombres) throws ValidatorException {
+		super.validaClieNombres(clieNombres);
 		
-		if (clieNombre.isEmpty() || !clieNombre.matches("^[\\w- ]+(\\.[\\w- ]+)*$"))
+		if (clieNombres.trim().isEmpty() || !clieNombres.matches("^[\\w- ]+(\\.[\\w- ]+)*$"))
 			throw new ValidatorException("Es necesario que el atributo 'nombre' solo contenga caracteres alfabéticos o númericos");
 	}
 	
 	@Override
 	public void validaClieDireccion(String clieDireccion) throws ValidatorException {
+		if(clieDireccion == null)
+			throw new ValidatorException("Es necesario que el atributo 'direccion' del cliente");
+			
 		super.validaClieDireccion(clieDireccion);
 		
-		if (clieDireccion.isEmpty() || !clieDireccion.matches("^[\\w- ]+(\\.[\\w- ]+)*#[\\w- ]+(\\.[\\w- ]+)*$"))
+		if (clieDireccion.trim().isEmpty() || !clieDireccion.matches("^[\\w- ]+(\\.[\\w- ]+)*#[\\w- ]+(\\.[\\w- ]+)*$"))
             throw new ValidatorException("Es necesario que el atributo 'direccion' debe estar correctamente expresado");
 	}
 }

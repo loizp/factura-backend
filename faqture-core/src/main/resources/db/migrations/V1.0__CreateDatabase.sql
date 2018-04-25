@@ -1,6 +1,30 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --- CREANDO LA ESTRUCTURA DE LA BASE DE DATOS
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE sunqubit.tipos_leyendas (
+                tley_codigo CHAR(4) NOT NULL,
+                tley_descripcion VARCHAR(200) NOT NULL,
+                CONSTRAINT tipos_leyendas_pk PRIMARY KEY (tley_codigo)
+);
+COMMENT ON TABLE sunqubit.tipos_leyendas IS 'Tabla segun el catalogo 52';
+COMMENT ON COLUMN sunqubit.tipos_leyendas.tley_codigo IS 'Campo PK con el codigo de la leyenda a usar segun el catalogo';
+COMMENT ON COLUMN sunqubit.tipos_leyendas.tley_descripcion IS 'Campo con la descripcion del codigo de leyenda';
+
+
+CREATE TABLE sunqubit.tipos_tributos (
+                ttri_codigo CHAR(4) NOT NULL,
+                ttri_descripcion VARCHAR(150) NOT NULL,
+                ttri_descripcion_corta VARCHAR(20) NOT NULL,
+                ttri_categoria CHAR(1) NOT NULL,
+                CONSTRAINT tipos_tributos_pk PRIMARY KEY (ttri_codigo)
+);
+COMMENT ON TABLE sunqubit.tipos_tributos IS 'Tabla que contiene el catalogo 05 de la sunat';
+COMMENT ON COLUMN sunqubit.tipos_tributos.ttri_codigo IS 'Campo PK de la tabla con los codigos segun tabla del catalogo 05';
+COMMENT ON COLUMN sunqubit.tipos_tributos.ttri_descripcion IS 'Campo descripcion del catalogo';
+COMMENT ON COLUMN sunqubit.tipos_tributos.ttri_descripcion_corta IS 'Campo con la descripcion corta del tipo de tributo';
+COMMENT ON COLUMN sunqubit.tipos_tributos.ttri_categoria IS 'campo que indica la categoria del tipo de tributo';
+
+
 CREATE SEQUENCE sunqubit.roles_role_id_seq;
 
 CREATE TABLE sunqubit.roles (
@@ -151,6 +175,7 @@ COMMENT ON COLUMN sunqubit.monedas.mone_descripcion IS '1	NUEVOS SOLES
 CREATE TABLE sunqubit.tipos_documentos_identidad (
                 tiid_codigo CHAR(1) NOT NULL,
                 tiid_descripcion VARCHAR(100) NOT NULL,
+                tiid_descripcion_corta VARCHAR(20),
                 CONSTRAINT tipos_documentos_identidad_pk PRIMARY KEY (tiid_codigo)
 );
 COMMENT ON TABLE sunqubit.tipos_documentos_identidad IS 'Catálogo No. 06: Códigos de Tipos de Documentos de Identidad
@@ -163,27 +188,60 @@ COMMENT ON TABLE sunqubit.tipos_documentos_identidad IS 'Catálogo No. 06: Códi
 A CED. DIPLOMATICA DE IDENTIDAD';
 COMMENT ON COLUMN sunqubit.tipos_documentos_identidad.tiid_codigo IS 'Campo PK segun tabla del catálogo Nro 06';
 COMMENT ON COLUMN sunqubit.tipos_documentos_identidad.tiid_descripcion IS 'Campo que describe el Tipo de documento segun tabla del catálogo Nro 06';
+COMMENT ON COLUMN sunqubit.tipos_documentos_identidad.tiid_descripcion_corta IS 'Campo que contiene la descripcion corta de tipo de documento de identificación';
 
 
-CREATE SEQUENCE sunqubit.clientes_clie_id_seq_1;
+CREATE SEQUENCE sunqubit.contribuyentes_cont_id_seq_1_1;
 
-CREATE TABLE sunqubit.clientes (
-                clie_id INTEGER NOT NULL DEFAULT nextval('sunqubit.clientes_clie_id_seq_1'),
-                clie_numero VARCHAR(15),
+CREATE TABLE sunqubit.contribuyentes (
+                cont_id INTEGER NOT NULL DEFAULT nextval('sunqubit.contribuyentes_cont_id_seq_1_1'),
                 tiid_codigo CHAR(1) NOT NULL,
-                clie_nombres VARCHAR(200) NOT NULL,
-                clie_direccion VARCHAR(200),
-                CONSTRAINT clientes_pk PRIMARY KEY (clie_id)
+                cont_num_doc VARCHAR(15),
+                cont_nombre_legal VARCHAR(200) NOT NULL,
+                cont_nombre_comercial VARCHAR(200),
+                cont_direccion VARCHAR(200),
+                cont_status BOOLEAN DEFAULT true NOT NULL,
+                cont_urbanizacion VARCHAR(200),
+                ubig_id INTEGER,
+                pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
+                CONSTRAINT contribuyentes_pk PRIMARY KEY (cont_id)
 );
-COMMENT ON TABLE sunqubit.clientes IS 'Contiene los datos de los clientes a quienes se les emite un documento.';
-COMMENT ON COLUMN sunqubit.clientes.clie_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.clientes.clie_numero IS 'Campo único que contiene el número de documento de identificación';
-COMMENT ON COLUMN sunqubit.clientes.tiid_codigo IS 'Campo clave del tipo de documento de identificación';
-COMMENT ON COLUMN sunqubit.clientes.clie_nombres IS 'Campo que representa al nombre o razón social';
-COMMENT ON COLUMN sunqubit.clientes.clie_direccion IS 'Campo que contiene la direccion del cliente';
+COMMENT ON TABLE sunqubit.contribuyentes IS 'Tabla que contiene todos los contribuyentes admitidos por la SUNAT';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_id IS 'Campo PK del contribuyente';
+COMMENT ON COLUMN sunqubit.contribuyentes.tiid_codigo IS 'Campo PK segun tabla del catálogo Nro 06';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_num_doc IS 'Campo que contiene el número de documento';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_nombre_legal IS 'Campo que tendra el nombre completo en caso de ser una persona natural o la razon social en caso de ser una persona jurídica';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_nombre_comercial IS 'Campo que contiene el nomb re comercial en caso de tenerlo';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_direccion IS 'Campo que contiene la dirección del contribuyente en caso de contar con ello';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_status IS 'Campo que permite la verificación del estado de actividad de emision en nuestro sistema activo(true) o inactivo(false)';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_urbanizacion IS 'Campo que contiene en caso de contra con la ubicacion de urbanización del contribuyente';
+COMMENT ON COLUMN sunqubit.contribuyentes.ubig_id IS 'Campo clave con el id de la ubicacion geografica del contribuyente en caso de tenerlo';
+COMMENT ON COLUMN sunqubit.contribuyentes.pais_codigo IS 'Campo clave referencial del pais al que pertenece el contribuyente';
 
 
-ALTER SEQUENCE sunqubit.clientes_clie_id_seq_1 OWNED BY sunqubit.clientes.clie_id;
+ALTER SEQUENCE sunqubit.contribuyentes_cont_id_seq_1_1 OWNED BY sunqubit.contribuyentes.cont_id;
+
+CREATE SEQUENCE sunqubit.sucursales_sucu_id_seq_1;
+
+CREATE TABLE sunqubit.sucursales (
+                sucu_id INTEGER NOT NULL DEFAULT nextval('sunqubit.sucursales_sucu_id_seq_1'),
+                sucu_direccion VARCHAR(200) NOT NULL,
+                sucu_status BOOLEAN DEFAULT true NOT NULL,
+                cont_id INTEGER NOT NULL,
+                ubig_id INTEGER,
+                pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
+                CONSTRAINT sucursales_pk PRIMARY KEY (sucu_id)
+);
+COMMENT ON TABLE sunqubit.sucursales IS 'Contiene las sucursales de las empresas emisoras de documentos';
+COMMENT ON COLUMN sunqubit.sucursales.sucu_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.sucursales.sucu_direccion IS 'Campo con la dirección de la sucursal';
+COMMENT ON COLUMN sunqubit.sucursales.sucu_status IS 'Campo que define si tendra actividad(True) o no(False) la sucursal';
+COMMENT ON COLUMN sunqubit.sucursales.cont_id IS 'Campo PK del contribuyente';
+COMMENT ON COLUMN sunqubit.sucursales.ubig_id IS 'Campo clave referencial de la ubicacion de la sucursal';
+COMMENT ON COLUMN sunqubit.sucursales.pais_codigo IS 'Campo con el codigo de pais de la sucursal por defecto es PERU';
+
+
+ALTER SEQUENCE sunqubit.sucursales_sucu_id_seq_1 OWNED BY sunqubit.sucursales.sucu_id;
 
 CREATE SEQUENCE sunqubit.ubigeos_ubig_id_seq;
 
@@ -261,106 +319,60 @@ COMMENT ON COLUMN sunqubit.tipos_notas.tido_codigo IS 'Campo PK que identifica e
 
 ALTER SEQUENCE sunqubit.tipos_notas_tino_id_seq OWNED BY sunqubit.tipos_notas.tino_id;
 
-CREATE SEQUENCE sunqubit.empresas_empr_id_seq;
-
-CREATE TABLE sunqubit.empresas (
-                empr_id INTEGER NOT NULL DEFAULT nextval('sunqubit.empresas_empr_id_seq'),
-                empr_ruc CHAR(11) NOT NULL,
-                empr_razon_social VARCHAR(200) NOT NULL,
-                empr_nombre_comercial VARCHAR(200) NOT NULL,
-                empr_direccion VARCHAR(200) NOT NULL,
-                tiid_codigo CHAR(1) DEFAULT '6' NOT NULL,
-                ubig_id INTEGER NOT NULL,
-                pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
-                empr_status BOOLEAN DEFAULT true NOT NULL,
-                CONSTRAINT empresas_pk PRIMARY KEY (empr_id)
-);
-COMMENT ON TABLE sunqubit.empresas IS 'Tabla que contiene las empresas quienes emiten los documentos a los clientes';
-COMMENT ON COLUMN sunqubit.empresas.empr_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.empresas.empr_ruc IS 'Campo que contiene el numero de documento de identificacion de la Empresa emisora teniendo en cuenta que por lo general es el RUC';
-COMMENT ON COLUMN sunqubit.empresas.empr_razon_social IS 'Campo que contiene la Razon Social de la empresa emisora de acuerdo a los registros Públicos';
-COMMENT ON COLUMN sunqubit.empresas.empr_nombre_comercial IS 'Campo que contiene la Razon Comercial de la empresa emisora para identificacion con sus clientes';
-COMMENT ON COLUMN sunqubit.empresas.empr_direccion IS 'Campo que contiene la Dirección de la empresa';
-COMMENT ON COLUMN sunqubit.empresas.tiid_codigo IS 'Campo clave del tipo de documento de identificación teniendo en cuenta que la mayoria usa el RUC';
-COMMENT ON COLUMN sunqubit.empresas.ubig_id IS 'Campo clave para la ubicación Postal de acuerdo a los registros de ubigeo controlado por el estado';
-COMMENT ON COLUMN sunqubit.empresas.pais_codigo IS 'Campo con el codigo de pais de la empresa por defecto es PERU';
-COMMENT ON COLUMN sunqubit.empresas.empr_status IS 'Campo que almacena el estado de actividad activo(True) o inactivo(False)';
-
-
-ALTER SEQUENCE sunqubit.empresas_empr_id_seq OWNED BY sunqubit.empresas.empr_id;
-
-CREATE UNIQUE INDEX empresas_idx
- ON sunqubit.empresas
- ( empr_ruc, tiid_codigo );
-
-CREATE SEQUENCE sunqubit.sucursales_sucu_id_seq_1;
-
-CREATE TABLE sunqubit.sucursales (
-                sucu_id INTEGER NOT NULL DEFAULT nextval('sunqubit.sucursales_sucu_id_seq_1'),
-                empr_id INTEGER NOT NULL,
-                sucu_direccion VARCHAR(200) NOT NULL,
-                ubig_id INTEGER NOT NULL,
-                pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
-                sucu_status BOOLEAN DEFAULT true NOT NULL,
-                CONSTRAINT sucursales_pk PRIMARY KEY (sucu_id, empr_id)
-);
-COMMENT ON TABLE sunqubit.sucursales IS 'Contiene las sucursales de las empresas emisoras de documentos';
-COMMENT ON COLUMN sunqubit.sucursales.sucu_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.sucursales.empr_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.sucursales.sucu_direccion IS 'Campo con la dirección de la sucursal';
-COMMENT ON COLUMN sunqubit.sucursales.ubig_id IS 'Campo clave de la ubicación geográfica';
-COMMENT ON COLUMN sunqubit.sucursales.pais_codigo IS 'Campo con el codigo de pais de la sucursal por defecto es PERU';
-COMMENT ON COLUMN sunqubit.sucursales.sucu_status IS 'Campo que define si tendra actividad(True) o no(False) la sucursal';
-
-
-ALTER SEQUENCE sunqubit.sucursales_sucu_id_seq_1 OWNED BY sunqubit.sucursales.sucu_id;
-
 CREATE SEQUENCE sunqubit.documentos_docu_id_seq;
 
 CREATE TABLE sunqubit.documentos (
                 docu_id INTEGER NOT NULL DEFAULT nextval('sunqubit.documentos_docu_id_seq'),
-                tido_codigo CHAR(2) NOT NULL,
-                docu_observacion VARCHAR(250),
-                docu_fecha_emision DATE NOT NULL,
-                docu_fecha_vencimiento DATE,
+                cont_id INTEGER NOT NULL,
+                sucu_emisor_id INTEGER,
+                cont_clie_id INTEGER,
+                sucu_clie_id INTEGER,
+                tiop_codigo CHAR(2),
+                docu_fecha_emision TIMESTAMP NOT NULL,
+                docu_fecha_vencimiento TIMESTAMP NOT NULL,
                 docu_numero VARCHAR(20) NOT NULL,
+                tido_codigo CHAR(2) NOT NULL,
+                tino_id INTEGER,
                 mone_id VARCHAR(3) NOT NULL,
+                tley_codigo CHAR(2),
+                docu_leyenda VARCHAR(250),
+                docu_observacion VARCHAR(250),
+                docu_subtotal NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_grabada NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_inafecta NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_exonerada NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_gratuita NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_descuento NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
-                docu_subtotal NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
-                docu_total VARCHAR DEFAULT 0.00 NOT NULL,
                 docu_igv NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_isc NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_otros_tributos NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_otros_cargos NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
+                docu_total VARCHAR DEFAULT 0.00 NOT NULL,
                 docu_vendedor VARCHAR(200),
-                tiop_codigo CHAR(2) NOT NULL,
-                docu_proc_fecha TIMESTAMP NOT NULL,
-                clie_id INTEGER NOT NULL,
+                docu_clie_email VARCHAR(200),
                 docu_sustento_nota VARCHAR(250),
-                tino_id INTEGER,
-                docu_enviar_sunat BOOLEAN DEFAULT True NOT NULL,
+                docu_proc_fecha TIMESTAMP NOT NULL,
                 docu_proc_status CHAR(1) DEFAULT 'N' NOT NULL,
-                docu_link_cdr VARCHAR(200),
+                docu_anulado BOOLEAN DEFAULT false NOT NULL,
+                docu_enviar_sunat BOOLEAN DEFAULT True NOT NULL,
                 docu_link_pdf VARCHAR(200),
                 docu_link_xml VARCHAR(200),
+                docu_hash_sunat VARCHAR(200),
+                docu_link_cdr VARCHAR(200),
                 docu_cdr_status VARCHAR(200),
                 docu_cdr_nota VARCHAR(200),
                 docu_cdr_observacion VARCHAR,
-                sucu_id INTEGER NOT NULL,
-                empr_id INTEGER NOT NULL,
-                docu_clie_email VARCHAR(200),
                 CONSTRAINT documentos_pk PRIMARY KEY (docu_id)
 );
 COMMENT ON TABLE sunqubit.documentos IS 'Tabla principal del sistema que contiene los documentos que son captado y enviados a las SUNAT';
 COMMENT ON COLUMN sunqubit.documentos.docu_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.documentos.tido_codigo IS 'Campo clave que especifica que tipo de documento es ya sea Factura, Boleta, etc.';
-COMMENT ON COLUMN sunqubit.documentos.docu_observacion IS 'Campo de tener el documento alguna observación';
-COMMENT ON COLUMN sunqubit.documentos.docu_fecha_emision IS 'Campo que indica la fecha de emsión del documento en formato YYYY-MM-DD, ej. 2017-06-21';
-COMMENT ON COLUMN sunqubit.documentos.docu_fecha_vencimiento IS 'Campo en caso de fecha de vencimiento';
+COMMENT ON COLUMN sunqubit.documentos.cont_id IS 'Campo PK del contribuyente';
+COMMENT ON COLUMN sunqubit.documentos.sucu_emisor_id IS 'Campo clave referencia de sucursal en caso de tener sucursal';
+COMMENT ON COLUMN sunqubit.documentos.cont_clie_id IS 'Campo Clave referencial con el id del cliente en caso que el documento indique el cliente';
+COMMENT ON COLUMN sunqubit.documentos.sucu_clie_id IS 'Campo clave con el id de la sucursal en caso requiera el cliente para la emision de su documento';
+COMMENT ON COLUMN sunqubit.documentos.tiop_codigo IS 'Campo clave con la con el tipo de operacion a realizar en el caso de especificarlo';
+COMMENT ON COLUMN sunqubit.documentos.docu_fecha_emision IS 'Campo que indica la fecha y la hora de emsión del documento';
+COMMENT ON COLUMN sunqubit.documentos.docu_fecha_vencimiento IS 'Campo en caso de fecha y hora de vencimiento y/o pago';
 COMMENT ON COLUMN sunqubit.documentos.docu_numero IS 'Campo que identifica al documento segun el correlativo de la empresa emisora
 formato
 serie - numero
@@ -368,43 +380,45 @@ serie:
 F000 factura y sus Notas
 B000 Boleta  y sus Notas
 R000 Retenciones';
+COMMENT ON COLUMN sunqubit.documentos.tido_codigo IS 'Campo clave que especifica que tipo de documento es ya sea Factura, Boleta, etc.';
+COMMENT ON COLUMN sunqubit.documentos.tino_id IS 'Campo clave que indica que tipo de nota se esta emitiendo en caso de que el documento sea nota de crédito ó débito';
 COMMENT ON COLUMN sunqubit.documentos.mone_id IS 'Campo clave para saber el tipo de moneda usado en el docuemnto';
+COMMENT ON COLUMN sunqubit.documentos.tley_codigo IS 'Campo clave de tipos de leyenda en caso de tener';
+COMMENT ON COLUMN sunqubit.documentos.docu_leyenda IS 'Campo Leyenda del documento';
+COMMENT ON COLUMN sunqubit.documentos.docu_observacion IS 'Campo de tener el documento alguna observación';
+COMMENT ON COLUMN sunqubit.documentos.docu_subtotal IS 'Campo con el importe subtotal del documento';
 COMMENT ON COLUMN sunqubit.documentos.docu_grabada IS 'Campo que contiene el importe total de documento grabado al IGV';
 COMMENT ON COLUMN sunqubit.documentos.docu_inafecta IS 'Campo que contiene el importe total de  inafecto del documento';
 COMMENT ON COLUMN sunqubit.documentos.docu_exonerada IS 'Campo que contiene el importe total exonerado del IGV  del documento';
 COMMENT ON COLUMN sunqubit.documentos.docu_gratuita IS 'Campo que contiene el importe total de valores gratuitos  del documento';
 COMMENT ON COLUMN sunqubit.documentos.docu_descuento IS 'Campo con el valor en caso de tener descuento alguno';
-COMMENT ON COLUMN sunqubit.documentos.docu_subtotal IS 'Campo con el importe subtotal del documento';
-COMMENT ON COLUMN sunqubit.documentos.docu_total IS 'Campo con importe total  del documento
- importe total retenido+ igv + inafectos + exonerados + otros cargos + isc + otros tributos.
-
-En caso de Retencion, el valor de ls retencion (3% del valor totales de los documentos)';
 COMMENT ON COLUMN sunqubit.documentos.docu_igv IS 'Campo que contiene el valor total del impuesto General a las Ventas';
 COMMENT ON COLUMN sunqubit.documentos.docu_isc IS 'Campo que contiene el valor del Impuesto Selectivo al Consumo';
 COMMENT ON COLUMN sunqubit.documentos.docu_otros_tributos IS 'Campo que contiene el valor en caso de estar sometido a otros tributos';
 COMMENT ON COLUMN sunqubit.documentos.docu_otros_cargos IS 'Campo con el importe de otros cargos';
+COMMENT ON COLUMN sunqubit.documentos.docu_total IS 'Campo con importe total  del documento
+ importe total retenido+ igv + inafectos + exonerados + otros cargos + isc + otros tributos.
+
+En caso de Retencion, el valor de ls retencion (3% del valor totales de los documentos)';
 COMMENT ON COLUMN sunqubit.documentos.docu_vendedor IS 'Campo en el caso de contar con la identificación del vendedor';
-COMMENT ON COLUMN sunqubit.documentos.tiop_codigo IS 'Campo clave del tipo de operación';
-COMMENT ON COLUMN sunqubit.documentos.docu_proc_fecha IS 'Campo que especifica la hora y la fecha del procesado';
-COMMENT ON COLUMN sunqubit.documentos.clie_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.documentos.docu_clie_email IS 'Campo que contiene la direccion de email para el envio del documento al cliente';
 COMMENT ON COLUMN sunqubit.documentos.docu_sustento_nota IS 'campo que se aplica al ingresar una nota de débito o crédito que especifica el sustento de la emisión';
-COMMENT ON COLUMN sunqubit.documentos.tino_id IS 'Campo clave que indica que tipo de nota se esta emitiendo en caso de que el documento sea nota de crédito ó débito';
-COMMENT ON COLUMN sunqubit.documentos.docu_enviar_sunat IS 'Campo que indica si el documento debe(True) o no(False) ser enviado a la sunat';
+COMMENT ON COLUMN sunqubit.documentos.docu_proc_fecha IS 'Campo que especifica la hora y la fecha del procesado';
 COMMENT ON COLUMN sunqubit.documentos.docu_proc_status IS '* - Insertando a tablas cabecera y Detalle.
 N - Nuevo
 B - Bloqueo
 P - Proceso-
 E - Enviado
 X - Error de Envio';
-COMMENT ON COLUMN sunqubit.documentos.docu_link_cdr IS 'Campo con la ruta del enlace al archivo CDR del documento';
+COMMENT ON COLUMN sunqubit.documentos.docu_anulado IS 'Campo que indica si el documento esta anulado(true) o no(false)';
+COMMENT ON COLUMN sunqubit.documentos.docu_enviar_sunat IS 'Campo que indica si el documento debe(True) o no(False) ser enviado a la sunat';
 COMMENT ON COLUMN sunqubit.documentos.docu_link_pdf IS 'Campo con la ruta del enlace al archivo PDF del documento';
 COMMENT ON COLUMN sunqubit.documentos.docu_link_xml IS 'Campo con la ruta del enlace al archivo XML del documento';
+COMMENT ON COLUMN sunqubit.documentos.docu_hash_sunat IS 'Campo que contiene el Hash Generado por el Certificado';
+COMMENT ON COLUMN sunqubit.documentos.docu_link_cdr IS 'Campo con la ruta del enlace al archivo CDR del documento';
 COMMENT ON COLUMN sunqubit.documentos.docu_cdr_status IS 'Campo que contiene el estado del CDR';
 COMMENT ON COLUMN sunqubit.documentos.docu_cdr_nota IS 'Campo con la nota del CDR';
 COMMENT ON COLUMN sunqubit.documentos.docu_cdr_observacion IS 'Campo con la nota de observación del CDR';
-COMMENT ON COLUMN sunqubit.documentos.sucu_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.documentos.empr_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.documentos.docu_clie_email IS 'Campo que contiene la direccion de email para el envio del documento al cliente';
 
 
 ALTER SEQUENCE sunqubit.documentos_docu_id_seq OWNED BY sunqubit.documentos.docu_id;
@@ -496,13 +510,6 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE sunqubit.documentos ADD CONSTRAINT tipo_operaciones_documentos_fk
-FOREIGN KEY (tiop_codigo)
-REFERENCES sunqubit.tipos_operaciones (tiop_codigo)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
 ALTER TABLE sunqubit.documentos ADD CONSTRAINT moneda_documentos_fk
 FOREIGN KEY (mone_id)
 REFERENCES sunqubit.monedas (mone_id)
@@ -510,23 +517,23 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE sunqubit.clientes ADD CONSTRAINT tipo_identificaciones_clientes_fk
+ALTER TABLE sunqubit.contribuyentes ADD CONSTRAINT tipos_documentos_identidad_contribuyentes_fk
 FOREIGN KEY (tiid_codigo)
 REFERENCES sunqubit.tipos_documentos_identidad (tiid_codigo)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE sunqubit.empresas ADD CONSTRAINT tipo_documento_identidad_empresas_fk
-FOREIGN KEY (tiid_codigo)
-REFERENCES sunqubit.tipos_documentos_identidad (tiid_codigo)
+ALTER TABLE sunqubit.sucursales ADD CONSTRAINT contribuyentes_sucursales_fk
+FOREIGN KEY (cont_id)
+REFERENCES sunqubit.contribuyentes (cont_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE sunqubit.documentos ADD CONSTRAINT clientes_documentos_fk
-FOREIGN KEY (clie_id)
-REFERENCES sunqubit.clientes (clie_id)
+ALTER TABLE sunqubit.documentos ADD CONSTRAINT contribuyentes_documentos_fk
+FOREIGN KEY (cont_id)
+REFERENCES sunqubit.contribuyentes (cont_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
@@ -541,20 +548,6 @@ NOT DEFERRABLE;
 ALTER TABLE sunqubit.tipos_notas ADD CONSTRAINT tipos_documentos_tipos_notas_fk
 FOREIGN KEY (tido_codigo)
 REFERENCES sunqubit.tipos_documentos (tido_codigo)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE sunqubit.sucursales ADD CONSTRAINT empresas_sucursales_fk
-FOREIGN KEY (empr_id)
-REFERENCES sunqubit.empresas (empr_id)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE sunqubit.documentos ADD CONSTRAINT sucursales_documentos_fk
-FOREIGN KEY (sucu_id, empr_id)
-REFERENCES sunqubit.sucursales (sucu_id, empr_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;

@@ -12,9 +12,7 @@ public interface ClienteMapper {
 	
 	Cliente get(long clieId);
 	
-	Cliente get(HashMap<String, String> hmFind);
-	
-	Long docIdentidadExist(HashMap<String, String> hmFind);
+	Cliente getByDoc(HashMap<String, String> hmFind);
 	
 	List<Cliente> getFilter(String filtro);
 

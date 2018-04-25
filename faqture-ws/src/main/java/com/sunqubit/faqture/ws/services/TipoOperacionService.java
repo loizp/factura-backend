@@ -25,7 +25,7 @@ public class TipoOperacionService {
 			res = tipoOperacionDao.getAll();
 		} catch (Exception ex) {
 			ok = false;
-			code = 400;
+			code = 500;
 			msg = "No se puede obtener los tipos de operaciones debido a: " + ex.getMessage();
 		} 
 		return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);

@@ -73,29 +73,10 @@ public class ClienteDao implements IClienteDao {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ClienteMapper mapper = session.getMapper(ClienteMapper.class);
-			return mapper.get(hmFind);
+			return mapper.getByDoc(hmFind);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
 			throw new Exception("Ocurrió un error en la obtención de los datos");
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public Boolean docIdentidadExist(String numero, String tDocIdent) throws Exception {
-		HashMap<String, String> hmFind = new HashMap<>();
-		hmFind.put("numero", numero);
-		hmFind.put("tDocIdent", tDocIdent);
-		SqlSession session = sqlSessionFactory.openSession();
-		try {
-			ClienteMapper mapper = session.getMapper(ClienteMapper.class);
-			if (mapper.docIdentidadExist(hmFind) > 0) 
-				return true;
-			return false;
-		} catch (PersistenceException pe) {
-			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la verificación de existencia del cliente");
 		} finally {
 			session.close();
 		}

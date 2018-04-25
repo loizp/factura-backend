@@ -13,8 +13,5 @@ public interface IClienteDao {
     
     Cliente get(String numero, String tDocIdent) throws Exception;
     
-    Boolean docIdentidadExist(String numero, String tDocIdent) throws Exception;
-    
     List<Cliente> getFilter(String filtro) throws Exception;
-    
 }

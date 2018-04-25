@@ -5,9 +5,10 @@ import java.util.List;
 public class Sucursal {
 	private long id;
 	private String direccion;
-	private Empresa empresa;
+	private Contribuyente contribuyente;
 	private Ubigeo ubigeo;
 	private Boolean activo;
+	private Pais pais;
 	private List<Documento> documentos;
 	
 	public long getId() {
@@ -22,12 +23,6 @@ public class Sucursal {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	public Empresa getEmpresa() {
-		return empresa;
-	}
-	public void setEmpresa(Empresa empresa) {
-		this.empresa = empresa;
-	}
 	public Ubigeo getUbigeo() {
 		return ubigeo;
 	}
@@ -39,6 +34,18 @@ public class Sucursal {
 	}
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
+	}
+	public Contribuyente getContribuyente() {
+		return contribuyente;
+	}
+	public void setContribuyente(Contribuyente contribuyente) {
+		this.contribuyente = contribuyente;
+	}
+	public Pais getPais() {
+		return pais;
+	}
+	public void setPais(Pais pais) {
+		this.pais = pais;
 	}
 	public List<Documento> getDocumentos() {
 		return documentos;

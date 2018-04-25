@@ -11,15 +11,13 @@ public interface EmpresaMapper {
 	
 	void update(Empresa empresa);
 	
-	void changeRuc(Empresa empresa);
+	void changeDoc(Empresa empresa);
 	
 	Empresa getById(long emprId);
 	
 	Empresa getSucursales(long emprId);
 	
-	Empresa getByRuc(HashMap<String, String> hmFind);
-	
-	Long rucExist(HashMap<String, String> hmFind);
+	Empresa getByDoc(HashMap<String, String> hmFind);
 	
 	List<Empresa> filterName(String nombre);
 }

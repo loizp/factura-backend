@@ -13,11 +13,9 @@ public interface IEmpresaDao {
 
     Empresa get(long emprId) throws Exception;
 
-    Empresa get(String numRuc, String tDocIdent) throws Exception;
+    Empresa get(String numDoc, String tDocIdent) throws Exception;
     
     Empresa getSucursales(long emprId) throws Exception;
-    
-    Boolean rucExist(String numRuc, String tDocIdent) throws Exception;
 
     List<Empresa> filterName(String nombre) throws Exception;
 }

@@ -1,5 +1,5 @@
 package com.sunqubit.faqture.core.beans;
 
-public class Cliente extends Contribuyente {
+public class Factura extends Documento {
 	
 }

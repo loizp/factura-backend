@@ -83,7 +83,7 @@ public class EmpresaService {
         	res = empresaDao.get(id);
         } catch (Exception ex) {
             ok = false;
-            code = 400;
+            code = 500;
             msg = "No se puede obtener la empresa debido a: " + ex.getMessage();
         }
     	return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
@@ -98,7 +98,7 @@ public class EmpresaService {
         	res = empresaDao.get(ruc, "6");
         } catch (Exception ex) {
             ok = false;
-            code = 400;
+            code = 500;
             msg = "No se puede obtener la empresa debido a: " + ex.getMessage();
         }
     	return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
@@ -113,7 +113,7 @@ public class EmpresaService {
         	res = empresaDao.filterName(nombre);
         } catch (Exception ex) {
             ok = false;
-            code = 400;
+            code = 500;
             msg = "No se puede obtener la empresa debido a: " + ex.getMessage();
         }
     	return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
@@ -128,7 +128,7 @@ public class EmpresaService {
         	res = empresaDao.getSucursales(id);
         } catch (Exception ex) {
             ok = false;
-            code = 400;
+            code = 500;
             msg = "No se puede obtener la empresa con sus respectivas sucursales debido a: " + ex.getMessage();
         }
     	return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);

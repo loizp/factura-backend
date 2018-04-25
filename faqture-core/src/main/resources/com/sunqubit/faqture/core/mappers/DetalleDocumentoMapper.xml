@@ -7,7 +7,7 @@
     </resultMap>
 
     
-    <insert id="insert"  parameterType="detalleDocumento">
+    <insert id="insert"  parameterType="DetalleDocumento">
         
     </insert>
 

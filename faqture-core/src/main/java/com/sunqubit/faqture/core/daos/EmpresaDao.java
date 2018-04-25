@@ -56,7 +56,7 @@ public class EmpresaDao implements IEmpresaDao {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			EmpresaMapper mapper = session.getMapper(EmpresaMapper.class);
-			mapper.changeRuc(empresa);
+			mapper.changeDoc(empresa);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
 			throw new Exception("Ocurrió un error en la actualización de los datos");
@@ -80,14 +80,14 @@ public class EmpresaDao implements IEmpresaDao {
 	}
 
 	@Override
-	public Empresa get(String numRuc, String tDocIdent) throws Exception {
+	public Empresa get(String numDoc, String tDocIdent) throws Exception {
 		HashMap<String, String> hmFind = new HashMap<>();
-		hmFind.put("numRuc", numRuc);
+		hmFind.put("numDoc", numDoc);
 		hmFind.put("tDocIdent", tDocIdent);
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			EmpresaMapper mapper = session.getMapper(EmpresaMapper.class);
-			return mapper.getByRuc(hmFind);
+			return mapper.getByDoc(hmFind);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
 			throw new Exception("Ocurrió un error en la obtención de la empresa");
@@ -105,25 +105,6 @@ public class EmpresaDao implements IEmpresaDao {
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
 			throw new Exception("Ocurrió un error en el filtrado de la empresa");
-		} finally {
-			session.close();
-		}
-	}
-
-	@Override
-	public Boolean rucExist(String numRuc, String tDocIdent) throws Exception {
-		HashMap<String, String> hmFind = new HashMap<>();
-		hmFind.put("numRuc", numRuc);
-		hmFind.put("tDocIdent", tDocIdent);
-		SqlSession session = sqlSessionFactory.openSession();
-		try {
-			EmpresaMapper mapper = session.getMapper(EmpresaMapper.class);
-			if (mapper.rucExist(hmFind) > 0) 
-				return true;
-			return false;
-		} catch (PersistenceException pe) {
-			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la verificación de existencia del RUC");
 		} finally {
 			session.close();
 		}

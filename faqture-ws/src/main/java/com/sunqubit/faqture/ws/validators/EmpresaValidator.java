@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 
 import com.sunqubit.faqture.core.beans.TipoDocumentoIdentidad;
 import com.sunqubit.faqture.core.beans.Ubigeo;
-import com.sunqubit.faqture.core.validators.EmpresaDaoValidator;
+import com.sunqubit.faqture.core.validators.ContribuyenteDaoValidator;
 import com.sunqubit.faqture.core.validators.ValidatorException;
 
 @Component
-public class EmpresaValidator extends EmpresaDaoValidator {
+public class EmpresaValidator extends ContribuyenteDaoValidator {
 	
 	@Autowired
 	private DocIdentidadValidator docIdentidadValidator;

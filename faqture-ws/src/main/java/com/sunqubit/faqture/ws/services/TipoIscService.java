@@ -25,7 +25,7 @@ public class TipoIscService {
 			res = tipoIscDao.getAll();
 		} catch (Exception ex) {
 			ok = false;
-			code = 400;
+			code = 500;
 			msg = "No se puede obtener los tipos de ISC debido a: " + ex.getMessage();
 		} 
 		return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);

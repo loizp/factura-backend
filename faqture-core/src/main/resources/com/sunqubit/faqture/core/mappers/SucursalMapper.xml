@@ -5,25 +5,27 @@
         <id column="sucu_id" property="id" />
         <result column="sucu_direccion" property="direccion" />
         <result column="sucu_status" property="activo" />
-        <association property="empresa" javaType="Empresa" resultMap="com.sunqubit.faqture.core.mappers.EmpresaMapper.EmpresaMap"/>
+        <association property="contribuyente" javaType="Contribuyente" resultMap="com.sunqubit.faqture.core.mappers.ContribuyenteMapper.ContribuyenteMap"/>
         <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.core.mappers.UbigeoMapper.UbigeoMap"/>
+        <association property="pais" javaType="Pais" resultMap="com.sunqubit.faqture.core.mappers.PaisMapper.PaisMap"/>
         <collection property="documentos" javaType="Documento" resultMap="com.sunqubit.faqture.core.mappers.DocumentoMapper.DocumentoMap" />
     </resultMap>
 
-    <insert id="insert" parameterType="sucursal">
-    	<if test="activo == null">
-			INSERT INTO sunqubit.sucursales (empr_id, sucu_direccion, ubig_id)
-				VALUES (#{empresa.id}, #{direccion}, #{ubigeo.id});
-		</if>
-		<if test="activo != null">
-			INSERT INTO sunqubit.sucursales (empr_id, sucu_direccion, ubig_id, sucu_status)
-				VALUES (#{empresa.id}, #{direccion}, #{ubigeo.id}, #{activo});
-		</if>
+    <insert id="insert" parameterType="Sucursal">
+    	INSERT INTO sunqubit.sucursales (cont_id, sucu_direccion
+    		<if test="activo != null">, sucu_status</if>
+    		<if test="ubigeo.id != null">, ubig_id</if>
+    		)
+			VALUES (#{contribuyente.id}, #{direccion}
+			<if test="activo != null">, #{activo}</if>
+			<if test="ubigeo.id != null">, #{ubigeo.id}</if>
+			);
 	</insert>
     
-    <select id="update" parameterType="sucursal">
-        UPDATE sunqubit.sucursales 
-			SET sucu_direccion=#{direccion}, ubig_id = #{ubigeo.id}
+    <select id="update" parameterType="Sucursal">
+        UPDATE sunqubit.sucursales
+			SET sucu_direccion=#{direccion}
+			<if test="ubigeo.id != null">, ubig_id = #{ubigeo.id}</if>
 			<if test="activo != null">, sucu_status = #{activo}</if>
 			WHERE id = #{id};
     </select>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD//Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.sunqubit.faqture.core.mappers.ContribuyenteMapper">
+    <resultMap id="ContribuyenteMap" type="Contribuyente">
+        <id column="cont_id" property="id" />
+        <result column="cont_num_doc" property="numeroDocumento" />   
+        <result column="cont_nombre_legal" property="nombreLegal"/>
+        <result column="cont_nombre_comercial" property="nombreComercial"/>
+        <result column="cont_direccion" property="direccion"/>
+        <result column="cont_urbanizacion" property="urbanizacion"/>
+        <result column="cont_status" property="activo"/>
+        <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="com.sunqubit.faqture.core.mappers.TipoDocumentoIdentidadMapper.TipoDocumentoIdentidadMap"/>
+        <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.core.mappers.UbigeoMapper.UbigeoMap"/>
+        <association property="pais" javaType="Pais" resultMap="com.sunqubit.faqture.core.mappers.PaisMapper.PaisMap"/>
+    </resultMap>
+    
+    <select id="docIdentidadExist" parameterType="HashMap" resultType="long">
+    	SELECT count(*) FROM sunqubit.contribuyentes WHERE cont_num_doc = #{numDoc} AND tiid_codigo = #{tDocIdent};
+    </select>
+</mapper>

@@ -31,16 +31,6 @@ public class EmpresaController {
     	return ResponseEntity.ok(empresaService.update(empresa));
     }
     
-    @GetMapping(value = "/get/{id}", headers="Accept=application/json", produces={"application/json"})
-    public @ResponseBody ResponseEntity<?> get(@PathVariable("id") long id) {
-    	return ResponseEntity.ok(empresaService.get(id));
-    }
-    
-    @GetMapping(value = "/get/ruc/{ruc}", headers="Accept=application/json", produces={"application/json"})
-    public @ResponseBody ResponseEntity<?> get(@PathVariable("ruc") String ruc) {
-    	return ResponseEntity.ok(empresaService.get(ruc));
-    }
-    
     @GetMapping(value = "/get/list/{nombre}", headers="Accept=application/json", produces={"application/json"})
     public @ResponseBody ResponseEntity<?> getByName(@PathVariable("nombre") String nombre) {
     	return ResponseEntity.ok(empresaService.filter(nombre));
@@ -49,5 +39,15 @@ public class EmpresaController {
     @GetMapping(value = "/get/sucursales/{id}", headers="Accept=application/json", produces={"application/json"})
     public @ResponseBody ResponseEntity<?> getByName(@PathVariable("id") long id) {
     	return ResponseEntity.ok(empresaService.getSucursales(id));
+    }
+    
+    @GetMapping(value = "/get/{id}", headers="Accept=application/json", produces={"application/json"})
+    public @ResponseBody ResponseEntity<?> get(@PathVariable("id") long id) {
+    	return ResponseEntity.ok(empresaService.get(id));
+    }
+    
+    @GetMapping(value = "/get/ruc/{ruc}", headers="Accept=application/json", produces={"application/json"})
+    public @ResponseBody ResponseEntity<?> get(@PathVariable("ruc") String ruc) {
+    	return ResponseEntity.ok(empresaService.get(ruc));
     }
 }
