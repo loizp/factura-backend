@@ -55,7 +55,7 @@ R000 Retenciones</remarks>
     <column id="COL13" populated="true" UUID="a1136634-f080-4515-9568-7348e757cc01" autoIncrement="false" autoIncrementSequenceName="documentos_mone_id_seq" defaultValue="" name="mone_id" nullable="0" physicalName="mone_id" precision="3" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks>Campo clave para saber el tipo de moneda usado en el docuemnto</remarks>
     </column>
-    <column id="COL14" populated="true" UUID="889e54b0-85cc-4521-989c-6cce1522eb84" autoIncrement="false" autoIncrementSequenceName="documentos_tley_codigo_seq" defaultValue="" name="tley_codigo" nullable="1" physicalName="tley_codigo" precision="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL14" populated="true" UUID="889e54b0-85cc-4521-989c-6cce1522eb84" autoIncrement="false" autoIncrementSequenceName="documentos_tley_codigo_seq" defaultValue="" name="tley_codigo" nullable="1" physicalName="tley_codigo" precision="4" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks>Campo clave de tipos de leyenda en caso de tener</remarks>
     </column>
     <column id="COL15" populated="true" UUID="3ce49f9e-8593-4cdc-828b-ca7ae8173017" autoIncrement="false" autoIncrementSequenceName="documentos_docu_leyenda_seq" defaultValue="" name="docu_leyenda" nullable="1" physicalName="docu_leyenda" precision="250" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
@@ -767,7 +767,7 @@ Debito:
    </relationship>
   </relationships>
  </target-database>
- <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="false" target-schema="sunqubit"> </ddl-generator>
+ <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="true" target-schema="sunqubit"> </ddl-generator>
  <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
  <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
  <play-pen zoom="0.5946035575013602" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">

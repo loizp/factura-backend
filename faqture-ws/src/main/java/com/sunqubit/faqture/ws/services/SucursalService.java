@@ -25,7 +25,7 @@ public class SucursalService {
         String msg = "La sucursal fue registrado correctamente";
         
         try {
-        	sucursalValidator.validaSucuEmpresa(sucursal.getEmpresa());
+        	sucursalValidator.validaSucuContribuyente(sucursal.getContribuyente());
         	sucursalValidator.validaSucuDireccion(sucursal.getDireccion());
         	sucursalValidator.validaSucuUnigeo(sucursal.getUbigeo());
         	sucursalDao.insert(sucursal);

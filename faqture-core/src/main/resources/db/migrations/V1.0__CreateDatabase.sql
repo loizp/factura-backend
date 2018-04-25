@@ -334,7 +334,7 @@ CREATE TABLE sunqubit.documentos (
                 tido_codigo CHAR(2) NOT NULL,
                 tino_id INTEGER,
                 mone_id VARCHAR(3) NOT NULL,
-                tley_codigo CHAR(2),
+                tley_codigo CHAR(4),
                 docu_leyenda VARCHAR(250),
                 docu_observacion VARCHAR(250),
                 docu_subtotal NUMERIC(15,2) DEFAULT 0.00 NOT NULL,

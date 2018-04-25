@@ -15,56 +15,57 @@ public class EmpresaValidator extends ContribuyenteDaoValidator {
 	private DocIdentidadValidator docIdentidadValidator;
 	
 	@Override
-	public void validaEmprId(long emprId) throws ValidatorException{
-		super.validaEmprId(emprId);
+	public void validaContId(long emprId) throws ValidatorException{
+		super.validaContId(emprId);
 	}
 	
 	@Override
-	public void validaEmprRuc(String emprRuc, TipoDocumentoIdentidad emprTipoDocIdentidad) throws ValidatorException {
-		super.validaEmprRuc(emprRuc, emprTipoDocIdentidad);
+	public void validaContDoc(String emprDoc, TipoDocumentoIdentidad emprTipoDocIdentidad) throws ValidatorException {
+		super.validaContDoc(emprDoc, emprTipoDocIdentidad);
 		
-		this.validaEmprTipoDocIdentidad(emprTipoDocIdentidad);
+		this.validaContTipoDocIdentidad(emprTipoDocIdentidad);
 		
-		if(emprRuc.trim().isEmpty())
-			throw new ValidatorException("Es necesario que el atributo 'ruc' de la empresa");
+		if(emprDoc.trim().isEmpty())
+			throw new ValidatorException("Es necesario que el atributo 'numeroDocumento' de la empresa");
 		
-		if(!docIdentidadValidator.docIdentidadValido(emprRuc, emprTipoDocIdentidad.getCodigo())) {
-			throw new ValidatorException("Es necesario que el atributo 'ruc' sea valido segun el tipo de documento");
+		if(!docIdentidadValidator.docIdentidadValido(emprDoc, emprTipoDocIdentidad.getCodigo())) {
+			throw new ValidatorException("Es necesario que el atributo 'numeroDocumento' sea valido segun el tipo de documento");
 		}
 	}
 	
 	@Override
-	public void validaEmprRazonSocial(String emprRazonSocial) throws ValidatorException{
-		super.validaEmprRazonSocial(emprRazonSocial);
+	public void validaContNombreLegal(String emprRazonSocial) throws ValidatorException{
+		super.validaContNombreLegal(emprRazonSocial);
 		
 		if (emprRazonSocial.isEmpty() || !emprRazonSocial.matches("^[\\w- ]+(\\.[\\w- ]+)*$"))
-			throw new ValidatorException("Es necesario que el atributo 'razonSocial' solo contenga caracteres alfabéticos o númericos");
+			throw new ValidatorException("Es necesario que el atributo 'nombreLegal' solo contenga caracteres alfabéticos o númericos");
 	}
 	
 	@Override
-	public void validaEmprNombreComercial(String emprNombreComercial) throws ValidatorException{
-		super.validaEmprNombreComercial(emprNombreComercial);
+	public void validaContNombreComercial(String emprNombreComercial) throws ValidatorException{
+		super.validaContNombreComercial(emprNombreComercial);
 		
 		if (emprNombreComercial.isEmpty() || !emprNombreComercial.matches("^[\\w- ]+(\\.[\\w- ]+)*$"))
 			throw new ValidatorException("Es necesario que el atributo 'razonSocial' solo contenga caracteres alfabéticos o númericos");
 	}
 	
 	@Override
-	public void validaEmprDireccion(String emprDireccion) throws ValidatorException{
-		super.validaEmprDireccion(emprDireccion);
+	public void validaContDireccion(String emprDireccion) throws ValidatorException{
+		super.validaContDireccion(emprDireccion);
 		
 		if (emprDireccion.isEmpty() || !emprDireccion.matches("^[\\w- ]+(\\.[\\w- ]+)*#[\\w- ]+(\\.[\\w- ]+)*$"))
             throw new ValidatorException("Es necesario que el atributo 'direccion' debe estar correctamente expresado");
 	}
 	
 	@Override
-	public void validaEmprUnigeo(Ubigeo emprUbigeo) throws ValidatorException{
-		super.validaEmprUnigeo(emprUbigeo);
+	public void validaContUnigeo(Ubigeo emprUbigeo) throws ValidatorException{
+		super.validaContUnigeo(emprUbigeo);
 	}
 	
 	@Override
-	public void validaEmprTipoDocIdentidad(TipoDocumentoIdentidad emprTipoDocIdentidad) throws ValidatorException {
-		super.validaEmprTipoDocIdentidad(emprTipoDocIdentidad);
+	public void validaContTipoDocIdentidad(TipoDocumentoIdentidad emprTipoDocIdentidad) throws ValidatorException {
+		super.validaContTipoDocIdentidad(emprTipoDocIdentidad);
+		
 		String tidoPermitidos="1467A";
 		if(!tidoPermitidos.contains(emprTipoDocIdentidad.getCodigo()))
 			throw new ValidatorException("Es necesario que el atributo 'tipoDocumentoIdentidad' exija el numero de documento de la empresa");

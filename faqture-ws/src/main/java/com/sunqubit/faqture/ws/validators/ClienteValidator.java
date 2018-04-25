@@ -3,23 +3,23 @@ package com.sunqubit.faqture.ws.validators;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sunqubit.faqture.core.beans.TipoDocumentoIdentidad;
-import com.sunqubit.faqture.core.validators.ClienteDaoValidator;
+import com.sunqubit.faqture.core.validators.ContribuyenteDaoValidator;
 import com.sunqubit.faqture.core.validators.ValidatorException;
 
-public class ClienteValidator extends ClienteDaoValidator {
+public class ClienteValidator extends ContribuyenteDaoValidator {
 	
 	@Autowired
 	private DocIdentidadValidator docIdentidadValidator;
 	
 	@Override
-	public void validaClieId(long clieId) throws ValidatorException {
-		super.validaClieId(clieId);
+	public void validaContId(long clieId) throws ValidatorException {
+		super.validaContId(clieId);
 	}
 	
 	@Override
-	public void validaClieNumero(String clieNumero, TipoDocumentoIdentidad clieTipoDocIdentidad)
+	public void validaContDoc(String clieNumero, TipoDocumentoIdentidad clieTipoDocIdentidad)
 			throws ValidatorException {
-		super.validaClieNumero(clieNumero, clieTipoDocIdentidad);
+		super.validaContDoc(clieNumero, clieTipoDocIdentidad);
 		
 		if (clieTipoDocIdentidad.getCodigo() != "0" && (clieNumero == null || clieNumero.trim().isEmpty()))
             throw new ValidatorException("Es necesario contener el atributo 'numero' del cliente");
@@ -29,19 +29,19 @@ public class ClienteValidator extends ClienteDaoValidator {
 	}
 	
 	@Override
-	public void validaClieNombres(String clieNombres) throws ValidatorException {
-		super.validaClieNombres(clieNombres);
+	public void validaContNombreLegal(String clieNombres) throws ValidatorException {
+		super.validaContNombreLegal(clieNombres);
 		
 		if (clieNombres.trim().isEmpty() || !clieNombres.matches("^[\\w- ]+(\\.[\\w- ]+)*$"))
 			throw new ValidatorException("Es necesario que el atributo 'nombre' solo contenga caracteres alfabéticos o númericos");
 	}
 	
 	@Override
-	public void validaClieDireccion(String clieDireccion) throws ValidatorException {
+	public void validaContDireccion(String clieDireccion) throws ValidatorException {
 		if(clieDireccion == null)
 			throw new ValidatorException("Es necesario que el atributo 'direccion' del cliente");
 			
-		super.validaClieDireccion(clieDireccion);
+		super.validaContDireccion(clieDireccion);
 		
 		if (clieDireccion.trim().isEmpty() || !clieDireccion.matches("^[\\w- ]+(\\.[\\w- ]+)*#[\\w- ]+(\\.[\\w- ]+)*$"))
             throw new ValidatorException("Es necesario que el atributo 'direccion' debe estar correctamente expresado");

@@ -27,10 +27,10 @@ public class ClienteService {
 		String msg = "El cliente fue registrado correctamente";
 		
 		try {
-			clienteValidator.validaClieNombres(cliente.getNombres());
-			clienteValidator.validaClieNumero(cliente.getNumero(), cliente.getTipoDocumentoIdentidad());
+			clienteValidator.validaContNombreLegal(cliente.getNombreLegal());
+			clienteValidator.validaContDoc(cliente.getNumeroDocumento(), cliente.getTipoDocumentoIdentidad());
 			if(cliente.getDireccion() != null || cliente.getTipoDocumentoIdentidad().getCodigo() == "6")
-				clienteValidator.validaClieDireccion(cliente.getDireccion());
+				clienteValidator.validaContDireccion(cliente.getDireccion());
 			clienteDao.insert(cliente);
 		} catch (ValidatorException ve) {
 			ok = false;
@@ -50,11 +50,11 @@ public class ClienteService {
 		String msg = "El cliente fue modificado correctamente";
 		
 		try {
-			clienteValidator.validaClieId(cliente.getId());
-			clienteValidator.validaClieNombres(cliente.getNombres());
-			clienteValidator.validaClieNumero(cliente.getNumero(), cliente.getTipoDocumentoIdentidad());
+			clienteValidator.validaContId(cliente.getId());
+			clienteValidator.validaContNombreLegal(cliente.getNombreLegal());
+			clienteValidator.validaContDoc(cliente.getNumeroDocumento(), cliente.getTipoDocumentoIdentidad());
 			if(cliente.getDireccion() != null || cliente.getTipoDocumentoIdentidad().getCodigo() == "6")
-				clienteValidator.validaClieDireccion(cliente.getDireccion());
+				clienteValidator.validaContDireccion(cliente.getDireccion());
 			clienteDao.update(cliente);
 		} catch (ValidatorException ve) {
 			ok = false;

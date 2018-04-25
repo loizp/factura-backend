@@ -27,11 +27,11 @@ public class EmpresaService {
         String msg = "La empresa fue registrado correctamente";
         
         try {
-        	empresaValidator.validaEmprRuc(empresa.getRuc(), empresa.getTipoDocumentoIdentidad());
-        	empresaValidator.validaEmprRazonSocial(empresa.getRazonSocial());
-        	empresaValidator.validaEmprNombreComercial(empresa.getNombreComercial());
-        	empresaValidator.validaEmprDireccion(empresa.getDireccion());
-        	empresaValidator.validaEmprUnigeo(empresa.getUbigeo());
+        	empresaValidator.validaContDoc(empresa.getNumeroDocumento(), empresa.getTipoDocumentoIdentidad());
+        	empresaValidator.validaContNombreLegal(empresa.getNombreLegal());
+        	empresaValidator.validaContNombreComercial(empresa.getNombreComercial());
+        	empresaValidator.validaContDireccion(empresa.getDireccion());
+        	empresaValidator.validaContUnigeo(empresa.getUbigeo());
         	empresaDao.insert(empresa);
         } catch (ValidatorException ve) {
             ok = false;
@@ -51,16 +51,16 @@ public class EmpresaService {
         String msg = "La empresa fue modificada correctamente";
         
         try {
-        	empresaValidator.validaEmprId(empresa.getId());
+        	empresaValidator.validaContId(empresa.getId());
         	Empresa identifiedEmpr = empresaDao.get(empresa.getId());
-        	if(identifiedEmpr.getRuc() != empresa.getRuc() || identifiedEmpr.getTipoDocumentoIdentidad().getCodigo() != empresa.getTipoDocumentoIdentidad().getCodigo()) {
-        		empresaValidator.validaEmprRuc(empresa.getRuc(), empresa.getTipoDocumentoIdentidad());
+        	if(identifiedEmpr.getNumeroDocumento() != empresa.getNumeroDocumento() || identifiedEmpr.getTipoDocumentoIdentidad().getCodigo() != empresa.getTipoDocumentoIdentidad().getCodigo()) {
+        		empresaValidator.validaContDoc(empresa.getNumeroDocumento(), empresa.getTipoDocumentoIdentidad());
         		empresaDao.changeRuc(empresa);
         	}
-        	empresaValidator.validaEmprRazonSocial(empresa.getRazonSocial());
-        	empresaValidator.validaEmprNombreComercial(empresa.getNombreComercial());
-        	empresaValidator.validaEmprDireccion(empresa.getDireccion());
-        	empresaValidator.validaEmprUnigeo(empresa.getUbigeo());
+        	empresaValidator.validaContNombreLegal(empresa.getNombreLegal());
+        	empresaValidator.validaContNombreComercial(empresa.getNombreComercial());
+        	empresaValidator.validaContDireccion(empresa.getDireccion());
+        	empresaValidator.validaContUnigeo(empresa.getUbigeo());
         	empresaDao.update(empresa);
         } catch (ValidatorException ve) {
             ok = false;

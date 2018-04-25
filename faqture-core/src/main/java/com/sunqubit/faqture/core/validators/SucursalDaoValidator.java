@@ -1,6 +1,6 @@
 package com.sunqubit.faqture.core.validators;
 
-import com.sunqubit.faqture.core.beans.Empresa;
+import com.sunqubit.faqture.core.beans.Contribuyente;
 import com.sunqubit.faqture.core.beans.Ubigeo;
 
 public class SucursalDaoValidator {
@@ -10,9 +10,9 @@ public class SucursalDaoValidator {
             throw new ValidatorException("Es necesario contener el atributo 'id' de la sucursal");
 	}
 	
-	public void validaSucuEmpresa(Empresa sucuEmpresa) throws ValidatorException{
-		if (sucuEmpresa == null || Long.valueOf(sucuEmpresa.getId()) == null)
-            throw new ValidatorException("Es necesario contener el atributo 'empresa' de la sucursal");
+	public void validaSucuContribuyente(Contribuyente sucuContribuyente) throws ValidatorException{
+		if (sucuContribuyente == null || Long.valueOf(sucuContribuyente.getId()) == null)
+            throw new ValidatorException("Es necesario contener el atributo 'contribuyente' de la sucursal");
 	}
 	
 	public void validaSucuDireccion(String sucuDireccion) throws ValidatorException{
