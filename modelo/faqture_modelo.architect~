@@ -426,7 +426,7 @@ ZZ Servicios</remarks>
     <column id="COL103" populated="true" UUID="a62f87e1-434c-4db4-98d2-b00603741185" autoIncrement="false" autoIncrementSequenceName="sucursales_sucu_status_seq" defaultValue="true" name="sucu_status" nullable="0" physicalName="sucu_status" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="16" userDefinedTypeUUID="a26374aa-3026-4bb8-b564-eb2e186dfa5d" >
      <remarks>Campo que define si tendra actividad(True) o no(False) la sucursal</remarks>
     </column>
-    <column id="COL104" populated="true" UUID="b3562947-234f-4ae7-b5c8-5109840f105a" autoIncrement="false" autoIncrementSequenceName="contribuyentes_cont_id_seq" defaultValue="" name="cont_id" nullable="0" physicalName="cont_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL104" populated="true" UUID="b3562947-234f-4ae7-b5c8-5109840f105a" autoIncrement="false" autoIncrementSequenceName="contribuyentes_cont_id_seq_1" defaultValue="" name="cont_id" nullable="0" physicalName="cont_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks>Campo PK del contribuyente</remarks>
     </column>
     <column id="COL105" populated="true" UUID="c2b95a54-fb0e-487c-990e-c46dab363a6d" autoIncrement="false" autoIncrementSequenceName="sucursales_ubig_id_seq" defaultValue="" name="ubig_id" nullable="1" physicalName="ubig_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
@@ -664,7 +664,7 @@ Debito:
     <column id="COL161" populated="true" UUID="8af211d3-e247-4c5d-b059-3af769635c4f" autoIncrement="true" autoIncrementSequenceName="contribuyentes_cont_id_seq" defaultValue="" name="cont_id" nullable="0" physicalName="cont_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks>Campo PK del contribuyente</remarks>
     </column>
-    <column id="COL162" populated="true" UUID="6b205021-5e4d-4863-bca9-e94b62ead7b9" autoIncrement="false" autoIncrementSequenceName="tipos_documentos_identidad_tiid_codigo_seq" defaultValue="" name="tiid_codigo" nullable="0" physicalName="tiid_codigo" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL162" populated="true" UUID="6b205021-5e4d-4863-bca9-e94b62ead7b9" autoIncrement="false" autoIncrementSequenceName="tipos_documentos_identidad_tiid_codigo_seq_1" defaultValue="" name="tiid_codigo" nullable="0" physicalName="tiid_codigo" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks>Campo PK segun tabla del catálogo Nro 06</remarks>
     </column>
     <column id="COL163" populated="true" UUID="6b7de969-eaa1-4641-9763-c0a5c396cdca" autoIncrement="false" autoIncrementSequenceName="contribuyentes_cont_num_doc_seq" defaultValue="" name="cont_num_doc" nullable="1" physicalName="cont_num_doc" precision="15" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >

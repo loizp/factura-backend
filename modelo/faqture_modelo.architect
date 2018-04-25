@@ -661,7 +661,7 @@ Debito:
   <table id="TAB160" populated="true" UUID="21af5e5c-845e-4ee6-9fdd-71c7fe0c9de2" name="contribuyentes" objectType="TABLE" physicalName="contribuyentes" >
    <remarks>Tabla que contiene todos los contribuyentes admitidos por la SUNAT</remarks>
    <folder id="FOLTAB1601" populated="true" name="Columns" physicalName="Columns" type="1">
-    <column id="COL161" populated="true" UUID="8af211d3-e247-4c5d-b059-3af769635c4f" autoIncrement="true" autoIncrementSequenceName="contribuyentes_cont_id_seq" defaultValue="" name="cont_id" nullable="0" physicalName="cont_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+    <column id="COL161" populated="true" UUID="8af211d3-e247-4c5d-b059-3af769635c4f" autoIncrement="true" autoIncrementSequenceName="contribuyentes_cont_id_seq_1_1" defaultValue="" name="cont_id" nullable="0" physicalName="cont_id" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks>Campo PK del contribuyente</remarks>
     </column>
     <column id="COL162" populated="true" UUID="6b205021-5e4d-4863-bca9-e94b62ead7b9" autoIncrement="false" autoIncrementSequenceName="tipos_documentos_identidad_tiid_codigo_seq_1" defaultValue="" name="tiid_codigo" nullable="0" physicalName="tiid_codigo" precision="1" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
