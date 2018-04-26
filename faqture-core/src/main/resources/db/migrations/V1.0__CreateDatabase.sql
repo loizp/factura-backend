@@ -158,15 +158,15 @@ COMMENT ON COLUMN sunqubit.tipos_operaciones.tiop_descripcion IS 'Campo con la d
 
 
 CREATE TABLE sunqubit.monedas (
-                mone_id VARCHAR(3) NOT NULL,
+                mone_codigo CHAR(3) NOT NULL,
                 mone_descripcion VARCHAR(100) NOT NULL,
-                CONSTRAINT monedas_pk PRIMARY KEY (mone_id)
+                CONSTRAINT monedas_pk PRIMARY KEY (mone_codigo)
 );
 COMMENT ON TABLE sunqubit.monedas IS 'Catálogo No. 02: Códigos de Tipo de Monedas.
 Moneda del documento, 
 PEN - Soles
 USD - Dollar';
-COMMENT ON COLUMN sunqubit.monedas.mone_id IS 'Campo PK según el catálogo Nro 02';
+COMMENT ON COLUMN sunqubit.monedas.mone_codigo IS 'Campo PK según el catálogo Nro 02';
 COMMENT ON COLUMN sunqubit.monedas.mone_descripcion IS '1	NUEVOS SOLES
 2	DÓLARES AMERICANOS
 9	OTRA MONEDA (ESPECIFICAR)';
@@ -325,18 +325,18 @@ CREATE TABLE sunqubit.documentos (
                 docu_id INTEGER NOT NULL DEFAULT nextval('sunqubit.documentos_docu_id_seq'),
                 cont_id INTEGER NOT NULL,
                 sucu_emisor_id INTEGER,
+                docu_numero VARCHAR(20) NOT NULL,
+                docu_fecha_emision TIMESTAMP NOT NULL,
+                docu_observacion VARCHAR(250),
                 cont_clie_id INTEGER,
                 sucu_clie_id INTEGER,
                 tiop_codigo CHAR(2),
-                docu_fecha_emision TIMESTAMP NOT NULL,
-                docu_fecha_vencimiento TIMESTAMP NOT NULL,
-                docu_numero VARCHAR(20) NOT NULL,
+                docu_fecha_vencimiento TIMESTAMP,
                 tido_codigo CHAR(2) NOT NULL,
                 tino_id INTEGER,
-                mone_id VARCHAR(3) NOT NULL,
+                mone_codigo CHAR(3) DEFAULT 'PEN' NOT NULL,
                 tley_codigo CHAR(4),
                 docu_leyenda VARCHAR(250),
-                docu_observacion VARCHAR(250),
                 docu_subtotal NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_grabada NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_inafecta NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
@@ -354,25 +354,20 @@ CREATE TABLE sunqubit.documentos (
                 docu_proc_fecha TIMESTAMP NOT NULL,
                 docu_proc_status CHAR(1) DEFAULT 'N' NOT NULL,
                 docu_anulado BOOLEAN DEFAULT false NOT NULL,
-                docu_enviar_sunat BOOLEAN DEFAULT True NOT NULL,
+                docu_enviar_sunat BOOLEAN DEFAULT true NOT NULL,
                 docu_link_pdf VARCHAR(200),
                 docu_link_xml VARCHAR(200),
                 docu_hash_sunat VARCHAR(200),
                 docu_link_cdr VARCHAR(200),
                 docu_cdr_status VARCHAR(200),
                 docu_cdr_nota VARCHAR(200),
-                docu_cdr_observacion VARCHAR,
+                docu_cdr_observacion VARCHAR(200),
                 CONSTRAINT documentos_pk PRIMARY KEY (docu_id)
 );
 COMMENT ON TABLE sunqubit.documentos IS 'Tabla principal del sistema que contiene los documentos que son captado y enviados a las SUNAT';
 COMMENT ON COLUMN sunqubit.documentos.docu_id IS 'Campo PK autoincremental';
 COMMENT ON COLUMN sunqubit.documentos.cont_id IS 'Campo PK del contribuyente';
 COMMENT ON COLUMN sunqubit.documentos.sucu_emisor_id IS 'Campo clave referencia de sucursal en caso de tener sucursal';
-COMMENT ON COLUMN sunqubit.documentos.cont_clie_id IS 'Campo Clave referencial con el id del cliente en caso que el documento indique el cliente';
-COMMENT ON COLUMN sunqubit.documentos.sucu_clie_id IS 'Campo clave con el id de la sucursal en caso requiera el cliente para la emision de su documento';
-COMMENT ON COLUMN sunqubit.documentos.tiop_codigo IS 'Campo clave con la con el tipo de operacion a realizar en el caso de especificarlo';
-COMMENT ON COLUMN sunqubit.documentos.docu_fecha_emision IS 'Campo que indica la fecha y la hora de emsión del documento';
-COMMENT ON COLUMN sunqubit.documentos.docu_fecha_vencimiento IS 'Campo en caso de fecha y hora de vencimiento y/o pago';
 COMMENT ON COLUMN sunqubit.documentos.docu_numero IS 'Campo que identifica al documento segun el correlativo de la empresa emisora
 formato
 serie - numero
@@ -380,12 +375,17 @@ serie:
 F000 factura y sus Notas
 B000 Boleta  y sus Notas
 R000 Retenciones';
+COMMENT ON COLUMN sunqubit.documentos.docu_fecha_emision IS 'Campo que indica la fecha y la hora de emsión del documento';
+COMMENT ON COLUMN sunqubit.documentos.docu_observacion IS 'Campo de tener el documento alguna observación';
+COMMENT ON COLUMN sunqubit.documentos.cont_clie_id IS 'Campo Clave referencial con el id del cliente en caso que el documento indique el cliente';
+COMMENT ON COLUMN sunqubit.documentos.sucu_clie_id IS 'Campo clave con el id de la sucursal en caso requiera el cliente para la emision de su documento';
+COMMENT ON COLUMN sunqubit.documentos.tiop_codigo IS 'Campo clave con la con el tipo de operacion a realizar en el caso de especificarlo';
+COMMENT ON COLUMN sunqubit.documentos.docu_fecha_vencimiento IS 'Campo en caso de fecha y hora de vencimiento y/o pago';
 COMMENT ON COLUMN sunqubit.documentos.tido_codigo IS 'Campo clave que especifica que tipo de documento es ya sea Factura, Boleta, etc.';
 COMMENT ON COLUMN sunqubit.documentos.tino_id IS 'Campo clave que indica que tipo de nota se esta emitiendo en caso de que el documento sea nota de crédito ó débito';
-COMMENT ON COLUMN sunqubit.documentos.mone_id IS 'Campo clave para saber el tipo de moneda usado en el docuemnto';
+COMMENT ON COLUMN sunqubit.documentos.mone_codigo IS 'Campo clave para saber el tipo de moneda usado en el docuemnto';
 COMMENT ON COLUMN sunqubit.documentos.tley_codigo IS 'Campo clave de tipos de leyenda en caso de tener';
 COMMENT ON COLUMN sunqubit.documentos.docu_leyenda IS 'Campo Leyenda del documento';
-COMMENT ON COLUMN sunqubit.documentos.docu_observacion IS 'Campo de tener el documento alguna observación';
 COMMENT ON COLUMN sunqubit.documentos.docu_subtotal IS 'Campo con el importe subtotal del documento';
 COMMENT ON COLUMN sunqubit.documentos.docu_grabada IS 'Campo que contiene el importe total de documento grabado al IGV';
 COMMENT ON COLUMN sunqubit.documentos.docu_inafecta IS 'Campo que contiene el importe total de  inafecto del documento';
@@ -406,6 +406,7 @@ COMMENT ON COLUMN sunqubit.documentos.docu_sustento_nota IS 'campo que se aplica
 COMMENT ON COLUMN sunqubit.documentos.docu_proc_fecha IS 'Campo que especifica la hora y la fecha del procesado';
 COMMENT ON COLUMN sunqubit.documentos.docu_proc_status IS '* - Insertando a tablas cabecera y Detalle.
 N - Nuevo
+M - Modificado
 B - Bloqueo
 P - Proceso-
 E - Enviado
@@ -425,12 +426,12 @@ ALTER SEQUENCE sunqubit.documentos_docu_id_seq OWNED BY sunqubit.documentos.docu
 
 CREATE TABLE sunqubit.documentos_referenciados (
                 documentos_docu_id INTEGER NOT NULL,
-                docu_id INTEGER NOT NULL,
+                docu_asociado_id INTEGER NOT NULL,
                 CONSTRAINT documentos_referenciados_pk PRIMARY KEY (documentos_docu_id)
 );
 COMMENT ON TABLE sunqubit.documentos_referenciados IS 'tabla que relaciona los documentos de refenrencias';
 COMMENT ON COLUMN sunqubit.documentos_referenciados.documentos_docu_id IS 'Campo PK autoincremental';
-COMMENT ON COLUMN sunqubit.documentos_referenciados.docu_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.documentos_referenciados.docu_asociado_id IS 'Campo PK autoincremental';
 
 
 CREATE SEQUENCE sunqubit.detalle_documentos_dedo_id_seq;
@@ -439,17 +440,18 @@ CREATE TABLE sunqubit.detalle_documentos (
                 dedo_id INTEGER NOT NULL DEFAULT nextval('sunqubit.detalle_documentos_dedo_id_seq'),
                 docu_id INTEGER NOT NULL,
                 dedo_orden INTEGER NOT NULL,
-                dedo_codigo_producto VARCHAR(20) NOT NULL,
+                dedo_codigo_producto VARCHAR(20),
                 dedo_descripcion VARCHAR(200) NOT NULL,
-                unme_codigo VARCHAR(5) NOT NULL,
+                unme_codigo VARCHAR(5) DEFAULT 'NIU' NOT NULL,
                 dedo_cantidad NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 dedo_precio_venta NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 dedo_subtotal NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 dedo_venta_no_onerosa NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 dedo_igv NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
-                tiai_codigo CHAR(2) NOT NULL,
-                tisc_codigo CHAR(2) NOT NULL,
+                dedo_isc NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 dedo_descuento NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
+                tiai_codigo CHAR(2),
+                tisc_codigo CHAR(2),
                 CONSTRAINT detalle_documentos_pk PRIMARY KEY (dedo_id)
 );
 COMMENT ON TABLE sunqubit.detalle_documentos IS 'Tabla que contiene el detalle de los Items de una docuemnto';
@@ -464,13 +466,10 @@ COMMENT ON COLUMN sunqubit.detalle_documentos.dedo_precio_venta IS 'campo con el
 COMMENT ON COLUMN sunqubit.detalle_documentos.dedo_subtotal IS 'Campo con el importe subtotal del item cantidad * precio';
 COMMENT ON COLUMN sunqubit.detalle_documentos.dedo_venta_no_onerosa IS 'Campo con el valor referencial unitario por ítem en operaciones no onerosas ( gratuito)';
 COMMENT ON COLUMN sunqubit.detalle_documentos.dedo_igv IS 'Campo con el importe IGV del Item';
-COMMENT ON COLUMN sunqubit.detalle_documentos.tiai_codigo IS 'Campo con el tipo de afectacion
-
-10 Gravado - Operación Onerosa (uso comun)
-
-verificar CATALOGO No. 07';
-COMMENT ON COLUMN sunqubit.detalle_documentos.tisc_codigo IS 'Campo PK código del impuesto ISC';
+COMMENT ON COLUMN sunqubit.detalle_documentos.dedo_isc IS 'Campo con el valor del impuesto ISC de tenerlo';
 COMMENT ON COLUMN sunqubit.detalle_documentos.dedo_descuento IS 'campo caso de tener un descuento en algun producto';
+COMMENT ON COLUMN sunqubit.detalle_documentos.tiai_codigo IS 'Campo clave con el codigo de afectacion IGV';
+COMMENT ON COLUMN sunqubit.detalle_documentos.tisc_codigo IS 'Campo Clave con el codigo de ISC';
 
 
 ALTER SEQUENCE sunqubit.detalle_documentos_dedo_id_seq OWNED BY sunqubit.detalle_documentos.dedo_id;
@@ -489,20 +488,6 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE sunqubit.detalle_documentos ADD CONSTRAINT tipos_isc_detalle_documentos_fk
-FOREIGN KEY (tisc_codigo)
-REFERENCES sunqubit.tipos_isc (tisc_codigo)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
-ALTER TABLE sunqubit.detalle_documentos ADD CONSTRAINT tipos_afectacion_igv_detalle_documentos_fk
-FOREIGN KEY (tiai_codigo)
-REFERENCES sunqubit.tipos_afectacion_igv (tiai_codigo)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
-
 ALTER TABLE sunqubit.detalle_documentos ADD CONSTRAINT unidades_medida_detalle_documentos_fk
 FOREIGN KEY (unme_codigo)
 REFERENCES sunqubit.unidades_medida (unme_codigo)
@@ -511,8 +496,8 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE sunqubit.documentos ADD CONSTRAINT moneda_documentos_fk
-FOREIGN KEY (mone_id)
-REFERENCES sunqubit.monedas (mone_id)
+FOREIGN KEY (mone_codigo)
+REFERENCES sunqubit.monedas (mone_codigo)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
@@ -560,7 +545,7 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE sunqubit.documentos_referenciados ADD CONSTRAINT documentos_documentos_referenciados_fk
-FOREIGN KEY (docu_id)
+FOREIGN KEY (docu_asociado_id)
 REFERENCES sunqubit.documentos (docu_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
