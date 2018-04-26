@@ -9,4 +9,8 @@
     <select id="getAll" resultMap="TipoOperacionMap">
         SELECT * FROM sunqubit.tipos_operaciones;
     </select>
+    
+    <select id="tiopExist" parameterType="String" resultType="long">
+        SELECT count(*) FROM sunqubit.tipos_operaciones WHERE tiop_codigo = #{tiopCodigo};
+    </select>
 </mapper>

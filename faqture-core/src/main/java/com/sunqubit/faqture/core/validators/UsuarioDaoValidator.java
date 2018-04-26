@@ -24,9 +24,8 @@ public class UsuarioDaoValidator {
             throw new ValidatorException("la longitud del atributo 'loginName' no debe exceder los 20 caracteres");
 
 		try {
-    		if (usuarioDao.loginNameExist(userLoginName)) {
+    		if (usuarioDao.loginNameExist(userLoginName))
                 throw new ValidatorException("El nombre de inicio de sesión ya existe");
-            }
     	} catch (Exception ex) {
     		throw new ValidatorException(ex.getMessage());
     	}

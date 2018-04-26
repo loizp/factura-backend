@@ -38,4 +38,20 @@ public class ContribuyenteDao implements IContribuyenteDao {
 		}
 	}
 
+	@Override
+	public Boolean contExist(Long contId) throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
+			if (mapper.contExist(contId) > 0) 
+				return true;
+			return false;
+		} catch (PersistenceException pe) {
+			LOGGER.info(pe.getMessage());
+			throw new Exception("Ocurrió un error en la verificación de existencia del contribuyente");
+		} finally {
+			session.close();
+		}
+	}
+
 }

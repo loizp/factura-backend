@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD//Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
 <mapper namespace="com.sunqubit.faqture.core.mappers.MonedaMapper">
     <resultMap id="MonedaMap" type="Moneda">
-        <id column="mone_id" property="id" />
+        <id column="mone_codigo" property="codigo" />
         <result column="mone_descripcion" property="descripcion" />
     </resultMap>
 

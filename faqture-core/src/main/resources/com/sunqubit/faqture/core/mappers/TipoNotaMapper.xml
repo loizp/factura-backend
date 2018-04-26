@@ -10,4 +10,8 @@
     <select id="getAll" resultMap="TipoNotaMap">
         SELECT * FROM sunqubit.tipos_notas;
     </select>
+    
+    <select id="tinoExist" parameterType="HashMap" resultType="long">
+        SELECT count(*) FROM sunqubit.tipos_notas WHERE tino_id = #{tinoId} AND tido_codigo = #{tidoCodigo};
+    </select>
 </mapper>

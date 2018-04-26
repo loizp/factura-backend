@@ -6,4 +6,6 @@ public interface ISucursalDao {
 	void insert(Sucursal sucursal) throws Exception;
 	
 	void update(Sucursal sucursal) throws Exception;
+	
+	Boolean sucuExist(Long sucuId, Long contId) throws Exception;
 }

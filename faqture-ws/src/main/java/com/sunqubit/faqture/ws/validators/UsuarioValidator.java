@@ -7,10 +7,6 @@ import com.sunqubit.faqture.core.validators.ValidatorException;
 
 @Component
 public class UsuarioValidator extends UsuarioDaoValidator {
-	@Override
-	public void validaUserId(long userId) throws ValidatorException {
-		super.validaUserId(userId);
-	}
 	
 	@Override
 	public void validaUserLoginName(String userLoginName) throws ValidatorException{

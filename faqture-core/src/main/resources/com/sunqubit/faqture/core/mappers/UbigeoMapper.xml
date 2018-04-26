@@ -21,4 +21,8 @@
         WHERE ubig_cod_dpto || ubig_cod_prov || ubig_cod_dist || ubig_descripcion LIKE '%' || UPPER(#{filtro}) || '%'
         LIMIT 20;
     </select>
+    
+    <select id="ubigeoExist" parameterType="long" resultType="long">
+    	SELECT * FROM sunqubit.ubigeos WHERE ubig_id = #{ubigId};
+    </select>
 </mapper>

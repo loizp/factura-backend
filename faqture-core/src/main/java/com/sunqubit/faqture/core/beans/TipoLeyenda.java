@@ -1,9 +1,8 @@
 package com.sunqubit.faqture.core.beans;
 
-public class Moneda {
+public class TipoLeyenda {
 	private String codigo;
-	private String descripcion;
-	
+	private String Descripcion;
 	
 	public String getCodigo() {
 		return codigo;
@@ -12,11 +11,9 @@ public class Moneda {
 		this.codigo = codigo;
 	}
 	public String getDescripcion() {
-		return descripcion;
+		return Descripcion;
 	}
 	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+		Descripcion = descripcion;
 	}
-
-
 }

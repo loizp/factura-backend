@@ -35,4 +35,20 @@ public class UbigeoDao implements IUbigeoDao{
 			session.close();
 		}
 	}
+
+	@Override
+	public Boolean ubigeoExist(Long ubigId) throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+	    try {
+	    	UbigeoMapper mapper = session.getMapper(UbigeoMapper.class);
+	    	if(mapper.ubigeoExist(ubigId) > 0)
+	    		return true;
+	    	return false;
+	    } catch (PersistenceException pe) {
+			LOGGER.info(pe.getMessage());
+			throw new Exception("Ocurrió un error en el filtrado de ubigeos");
+		} finally {
+			session.close();
+		}
+	}
 }

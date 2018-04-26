@@ -1,11 +1,24 @@
 package com.sunqubit.faqture.core.mappers;
 
-import com.sunqubit.faqture.core.beans.Documento;
+import java.util.HashMap;
+
+import com.sunqubit.faqture.core.beans.ComprobantePago;
+import com.sunqubit.faqture.core.beans.NotaDC;
 
 public interface DocumentoMapper {
-	void insert(Documento documento);
+	void insertCompPago(ComprobantePago comprobantePago);
 	
-	void update(Documento documento);
+	void insertNotaDC(NotaDC notaDC);
 	
-	Documento get(long docuId);
+	void updateCompPago(ComprobantePago comprobantePago);
+	
+	void updateNotaDC(NotaDC notaDC);
+	
+	ComprobantePago getCompPago(long docuId);
+	
+	NotaDC getNotaDC(long docuId);
+	
+	ComprobantePago getByNumDocC(HashMap<String, Object> hmFind);
+
+	NotaDC getByNumDocN(HashMap<String, Object> hmFind);
 }

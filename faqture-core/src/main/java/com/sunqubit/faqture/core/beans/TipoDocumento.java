@@ -4,14 +4,14 @@ import java.util.List;
 
 public class TipoDocumento {
 
-	private long codigo;
+	private String codigo;
 	private String descripcion;
 	private List<TipoNota> tiposNotas;
 	
-	public long getCodigo() {
+	public String getCodigo() {
 		return codigo;
 	}
-	public void setCodigo(long codigo) {
+	public void setCodigo(String codigo) {
 		this.codigo = codigo;
 	}
 	public String getDescripcion() {

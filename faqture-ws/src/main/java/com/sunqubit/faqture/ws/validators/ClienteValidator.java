@@ -9,23 +9,20 @@ import com.sunqubit.faqture.core.validators.ValidatorException;
 public class ClienteValidator extends ContribuyenteDaoValidator {
 	
 	@Autowired
-	private DocIdentidadValidator docIdentidadValidator;
-	
-	@Override
-	public void validaContId(long clieId) throws ValidatorException {
-		super.validaContId(clieId);
-	}
+	private CodigoDocValidator codigoDocValidator;
 	
 	@Override
 	public void validaContDoc(String clieNumero, TipoDocumentoIdentidad clieTipoDocIdentidad)
 			throws ValidatorException {
 		super.validaContDoc(clieNumero, clieTipoDocIdentidad);
 		
-		if (clieTipoDocIdentidad.getCodigo() != "0" && (clieNumero == null || clieNumero.trim().isEmpty()))
-            throw new ValidatorException("Es necesario contener el atributo 'numero' del cliente");
-		
-		if (!docIdentidadValidator.docIdentidadValido(clieNumero, clieTipoDocIdentidad.getCodigo()))
-            throw new ValidatorException("Es necesario contener el atributo 'numero' del cliente sea valido segun el tipo de documento");
+		if(clieTipoDocIdentidad.getCodigo() != "0") {
+			if (clieNumero == null || clieNumero.trim().isEmpty())
+	            throw new ValidatorException("Es necesario contener el atributo 'numero' del cliente");
+			
+			if (!codigoDocValidator.docIdentidadValido(clieNumero, clieTipoDocIdentidad.getCodigo()))
+	            throw new ValidatorException("Es necesario contener el atributo 'numero' del cliente sea válido según el tipo de documento");
+		}
 	}
 	
 	@Override

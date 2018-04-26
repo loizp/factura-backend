@@ -17,4 +17,8 @@
     <select id="docIdentidadExist" parameterType="HashMap" resultType="long">
     	SELECT count(*) FROM sunqubit.contribuyentes WHERE cont_num_doc = #{numDoc} AND tiid_codigo = #{tDocIdent};
     </select>
+    
+    <select id="contExist" parameterType="long" resultType="long">
+    	SELECT count(*) FROM sunqubit.contribuyentes WHERE cont_id = #{contId};
+    </select>
 </mapper>

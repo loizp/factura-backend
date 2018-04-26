@@ -1,5 +1,7 @@
 package com.sunqubit.faqture.core.daos;
 
+import java.util.HashMap;
+
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -40,6 +42,25 @@ public class SucursalDao implements ISucursalDao {
 		try {
 			SucursalMapper mapper = session.getMapper(SucursalMapper.class);
 			mapper.update(sucursal);
+		} catch (PersistenceException pe) {
+			LOGGER.info(pe.getMessage());
+			throw new Exception("Ocurrió un error en la actualizacion de los datos");
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public Boolean sucuExist(Long sucuId, Long contId) throws Exception {
+		HashMap<String, Object> hmFind = new HashMap<>();
+		hmFind.put("sucuId", sucuId);
+		hmFind.put("contId", contId);
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			SucursalMapper mapper = session.getMapper(SucursalMapper.class);
+			if(mapper.sucuExist(hmFind) > 0)
+				return true;
+			return false;
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
 			throw new Exception("Ocurrió un error en la actualizacion de los datos");

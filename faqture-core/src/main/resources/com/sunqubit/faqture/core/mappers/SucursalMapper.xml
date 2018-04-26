@@ -8,7 +8,6 @@
         <association property="contribuyente" javaType="Contribuyente" resultMap="com.sunqubit.faqture.core.mappers.ContribuyenteMapper.ContribuyenteMap"/>
         <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.core.mappers.UbigeoMapper.UbigeoMap"/>
         <association property="pais" javaType="Pais" resultMap="com.sunqubit.faqture.core.mappers.PaisMapper.PaisMap"/>
-        <collection property="documentos" javaType="Documento" resultMap="com.sunqubit.faqture.core.mappers.DocumentoMapper.DocumentoMap" />
     </resultMap>
 
     <insert id="insert" parameterType="Sucursal">
@@ -22,12 +21,15 @@
 			);
 	</insert>
     
-    <select id="update" parameterType="Sucursal">
+    <update id="update" parameterType="Sucursal">
         UPDATE sunqubit.sucursales
 			SET sucu_direccion=#{direccion}
 			<if test="ubigeo.id != null">, ubig_id = #{ubigeo.id}</if>
 			<if test="activo != null">, sucu_status = #{activo}</if>
-			WHERE id = #{id};
-    </select>
-
+			WHERE sucu_id = #{id};
+    </update>
+	
+	<select id="sucuExist" parameterType="HashMap" resultType="long">
+		SELECT count(*) FROM sunqubit.sucursales WHERE sucu_id = #{sucuId} AND cont_id = #{contId};
+	</select>
 </mapper>

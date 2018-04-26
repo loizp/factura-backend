@@ -6,4 +6,6 @@ import com.sunqubit.faqture.core.beans.Ubigeo;
 
 public interface UbigeoMapper {
 	List<Ubigeo> filter(String filtro);
+	
+	Long ubigeoExist(Long ubigId);
 }

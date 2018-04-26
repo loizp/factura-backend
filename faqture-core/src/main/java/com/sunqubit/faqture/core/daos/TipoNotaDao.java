@@ -1,5 +1,6 @@
 package com.sunqubit.faqture.core.daos;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -29,6 +30,25 @@ public class TipoNotaDao implements ITipoNotaDao {
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
 			throw new Exception("Ocurrió un error en el listado de los tipos de Notas");
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public Boolean tinoExist(String tidoCodigo, Long tinoId) throws Exception {
+		HashMap<String, Object> hmFind = new HashMap<>();
+		hmFind.put("tidoCodigo", tidoCodigo);
+		hmFind.put("tinoId", tinoId);
+		SqlSession session = sqlSessionFactory.openSession();
+        try {
+        	TipoNotaMapper mapper = session.getMapper(TipoNotaMapper.class);
+        	if(mapper.tinoExist(hmFind) > 0)
+        		return true;
+        	return false;
+        } catch (PersistenceException pe) {
+			LOGGER.info(pe.getMessage());
+			throw new Exception("Ocurrió un error en el verificación de existencia del tipo de Nota");
 		} finally {
 			session.close();
 		}

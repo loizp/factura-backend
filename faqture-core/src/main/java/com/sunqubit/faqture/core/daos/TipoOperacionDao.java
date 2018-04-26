@@ -34,4 +34,20 @@ public class TipoOperacionDao implements ITipoOperacionDao {
 		}
 	}
 
+	@Override
+	public Boolean tiopExist(String tiopCodigo) throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+        try {
+        	TipoOperacionMapper mapper = session.getMapper(TipoOperacionMapper.class);
+        	if(mapper.tiopExist(tiopCodigo) > 0)
+        		return true;
+        	return false;
+        } catch (PersistenceException pe) {
+			LOGGER.info(pe.getMessage());
+			throw new Exception("Ocurrió un error en el listado de los tipos de operaciones");
+		} finally {
+			session.close();
+		}
+	}
+
 }

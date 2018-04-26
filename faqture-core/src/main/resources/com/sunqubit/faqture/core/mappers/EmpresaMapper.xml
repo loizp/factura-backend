@@ -13,7 +13,6 @@
         <association property="pais" javaType="Pais" resultMap="com.sunqubit.faqture.core.mappers.PaisMapper.PaisMap"/>
         <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="com.sunqubit.faqture.core.mappers.TipoDocumentoIdentidadMapper.TipoDocumentoIdentidadMap"/>
     	<collection property="sucursales" javaType="Sucursal" resultMap="com.sunqubit.faqture.core.mappers.SucursalMapper.SucursalMap" />
-    	<collection property="documentos" javaType="Documento" resultMap="com.sunqubit.faqture.core.mappers.DocumentoMapper.DocumentoMap" />
     </resultMap>
 
 	<insert id="insert" parameterType="Empresa">

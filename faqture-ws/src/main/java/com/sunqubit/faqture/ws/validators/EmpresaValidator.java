@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.sunqubit.faqture.core.beans.TipoDocumentoIdentidad;
-import com.sunqubit.faqture.core.beans.Ubigeo;
 import com.sunqubit.faqture.core.validators.ContribuyenteDaoValidator;
 import com.sunqubit.faqture.core.validators.ValidatorException;
 
@@ -12,12 +11,7 @@ import com.sunqubit.faqture.core.validators.ValidatorException;
 public class EmpresaValidator extends ContribuyenteDaoValidator {
 	
 	@Autowired
-	private DocIdentidadValidator docIdentidadValidator;
-	
-	@Override
-	public void validaContId(long emprId) throws ValidatorException{
-		super.validaContId(emprId);
-	}
+	private CodigoDocValidator codigoDocValidator;
 	
 	@Override
 	public void validaContDoc(String emprDoc, TipoDocumentoIdentidad emprTipoDocIdentidad) throws ValidatorException {
@@ -28,8 +22,8 @@ public class EmpresaValidator extends ContribuyenteDaoValidator {
 		if(emprDoc.trim().isEmpty())
 			throw new ValidatorException("Es necesario que el atributo 'numeroDocumento' de la empresa");
 		
-		if(!docIdentidadValidator.docIdentidadValido(emprDoc, emprTipoDocIdentidad.getCodigo())) {
-			throw new ValidatorException("Es necesario que el atributo 'numeroDocumento' sea valido segun el tipo de documento");
+		if(!codigoDocValidator.docIdentidadValido(emprDoc, emprTipoDocIdentidad.getCodigo())) {
+			throw new ValidatorException("Es necesario que el atributo 'numeroDocumento' sea válido según el tipo de documento");
 		}
 	}
 	
@@ -55,11 +49,6 @@ public class EmpresaValidator extends ContribuyenteDaoValidator {
 		
 		if (emprDireccion.isEmpty() || !emprDireccion.matches("^[\\w- ]+(\\.[\\w- ]+)*#[\\w- ]+(\\.[\\w- ]+)*$"))
             throw new ValidatorException("Es necesario que el atributo 'direccion' debe estar correctamente expresado");
-	}
-	
-	@Override
-	public void validaContUnigeo(Ubigeo emprUbigeo) throws ValidatorException{
-		super.validaContUnigeo(emprUbigeo);
 	}
 	
 	@Override

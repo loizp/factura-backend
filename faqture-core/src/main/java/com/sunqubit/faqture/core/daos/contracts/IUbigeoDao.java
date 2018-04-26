@@ -6,4 +6,6 @@ import com.sunqubit.faqture.core.beans.Ubigeo;
 
 public interface IUbigeoDao {
 	List<Ubigeo> filter(String filtro) throws Exception;
+	
+	Boolean ubigeoExist(Long ubigId) throws Exception;
 }

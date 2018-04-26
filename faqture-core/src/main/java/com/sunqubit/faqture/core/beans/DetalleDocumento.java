@@ -4,16 +4,20 @@ import java.math.BigDecimal;
 
 public class DetalleDocumento {
 	private long id;
-	private Documento documento;
+	private ComprobantePago comprobantePago;
 	private long orden;
 	private String codigoProducto;
 	private String descripcion;
 	private UnidadMedida unidadMedida;
 	private BigDecimal cantidad;
 	private BigDecimal precioVenta;
+	private BigDecimal descuento;
 	private BigDecimal ventaNoOnerosa;
 	private BigDecimal igv;
+	private BigDecimal isc;
+	private BigDecimal subtotal;
 	private TipoAfectacionIgv tipoAfectacionIgv;
+	private TipoIsc tipoIsc;
 	
 	public long getId() {
 		return id;
@@ -21,11 +25,11 @@ public class DetalleDocumento {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public Documento getDocumento() {
-		return documento;
+	public ComprobantePago getCpmprobanteDocumento() {
+		return comprobantePago;
 	}
-	public void setDocumento(Documento documento) {
-		this.documento = documento;
+	public void setComprobanteDocumento(ComprobantePago comprobantePago) {
+		this.comprobantePago = comprobantePago;
 	}
 	public long getOrden() {
 		return orden;
@@ -63,6 +67,12 @@ public class DetalleDocumento {
 	public void setPrecioVenta(BigDecimal precioVenta) {
 		this.precioVenta = precioVenta;
 	}
+	public BigDecimal getDescuento() {
+		return descuento;
+	}
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
+	}
 	public BigDecimal getVentaNoOnerosa() {
 		return ventaNoOnerosa;
 	}
@@ -75,11 +85,28 @@ public class DetalleDocumento {
 	public void setIgv(BigDecimal igv) {
 		this.igv = igv;
 	}
+	public BigDecimal getIsc() {
+		return isc;
+	}
+	public void setIsc(BigDecimal isc) {
+		this.isc = isc;
+	}
+	public BigDecimal getSubtotal() {
+		return subtotal;
+	}
+	public void setSubtotal(BigDecimal subtotal) {
+		this.subtotal = subtotal;
+	}
 	public TipoAfectacionIgv getTipoAfectacionIgv() {
 		return tipoAfectacionIgv;
 	}
 	public void setTipoAfectacionIgv(TipoAfectacionIgv tipoAfectacionIgv) {
 		this.tipoAfectacionIgv = tipoAfectacionIgv;
 	}
-
+	public TipoIsc getTipoIsc() {
+		return tipoIsc;
+	}
+	public void setTipoIsc(TipoIsc tipoIsc) {
+		this.tipoIsc = tipoIsc;
+	}
 }

@@ -6,12 +6,16 @@ import org.springframework.stereotype.Component;
 import com.sunqubit.faqture.core.beans.TipoDocumentoIdentidad;
 import com.sunqubit.faqture.core.beans.Ubigeo;
 import com.sunqubit.faqture.core.daos.contracts.IContribuyenteDao;
+import com.sunqubit.faqture.core.daos.contracts.IUbigeoDao;
 
 @Component
 public class ContribuyenteDaoValidator {
 	
 	@Autowired
     private IContribuyenteDao contribuyenteDao;
+	
+	@Autowired
+	private IUbigeoDao ubigeoDao;
 	
 	public void validaContId(long contId) throws ValidatorException{
 		if (Long.valueOf(contId) == null)
@@ -71,6 +75,13 @@ public class ContribuyenteDaoValidator {
 	public void validaContUnigeo(Ubigeo contUbigeo) throws ValidatorException{
 		if (contUbigeo == null || Long.valueOf(contUbigeo.getId()) == null)
             throw new ValidatorException("Es necesario contener el atributo 'ubigeo' del contribuyente");
+		
+		try {
+			if (!ubigeoDao.ubigeoExist(contUbigeo.getId()))
+				throw new ValidatorException("Es necesario contener el atributo 'ubigeo' del documento exista");
+		} catch (Exception ex) {
+    		throw new ValidatorException(ex.getMessage());
+    	}
 	}
 	
 	public void validaContTipoDocIdentidad(TipoDocumentoIdentidad contTipoDocIdentidad) throws ValidatorException{
