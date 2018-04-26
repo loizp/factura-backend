@@ -18,7 +18,7 @@ INSERT INTO tipos_documentos (tido_codigo, tido_descripcion)
         ('20', 'COMPROBANTE DE RETENCION'),
         ('31', 'GUIA DE REMISIÓN TRANSPORTISTA'),
         ('40', 'COMPROBANTE DE PERCEPCION'),
-        ('40', 'COMPROBANTE DE PERCEPCION - VENTA INTERNA (FÍSICO-FORMATO IMPRESO)'),
+        ('41', 'COMPROBANTE DE PERCEPCION - VENTA INTERNA (FÍSICO-FORMATO IMPRESO)'),
         ('56', 'COMPROBANTE DE PAGO SEAE'),
         ('71', 'GUIA DE REMISIÓN REMITENTE COMPLEMENTARIA'),
         ('72', 'GUIA DE REMISIÓN TRANSPORTISTA COMPLEMENTARIA');
@@ -26,7 +26,7 @@ INSERT INTO tipos_documentos (tido_codigo, tido_descripcion)
 --- Tabla: monedas
 --- Catálogo No. 02: Códigos de Tipo de Monedas
 -------------------------------------------------------------------------------
-INSERT INTO monedas (mone_id, mone_descripcion)	
+INSERT INTO monedas (mone_codigo, mone_descripcion)	
     VALUES ('AED', 'UAE Dirham'),
         ('AFN', 'Afghani'),
         ('ALL', 'Lek'),
