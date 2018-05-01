@@ -9,13 +9,13 @@ public class DetalleDocumento {
 	private String codigoProducto;
 	private String descripcion;
 	private UnidadMedida unidadMedida;
-	private BigDecimal cantidad;
-	private BigDecimal precioVenta;
-	private BigDecimal descuento;
-	private BigDecimal ventaNoOnerosa;
-	private BigDecimal igv;
-	private BigDecimal isc;
-	private BigDecimal subtotal;
+	private BigDecimal cantidad = BigDecimal.valueOf(0.00);
+	private BigDecimal precioVenta = BigDecimal.valueOf(0.00);
+	private BigDecimal descuento = BigDecimal.valueOf(0.00);
+	private BigDecimal ventaNoOnerosa = BigDecimal.valueOf(0.00);
+	private BigDecimal igv = BigDecimal.valueOf(0.00);
+	private BigDecimal isc = BigDecimal.valueOf(0.00);
+	private BigDecimal subtotal = BigDecimal.valueOf(0.00);
 	private TipoAfectacionIgv tipoAfectacionIgv;
 	private TipoIsc tipoIsc;
 	

@@ -9,7 +9,7 @@ public class Contribuyente {
 	private String nombreComercial;
 	private String direccion;
 	private String urbanizacion;
-	private boolean activo;
+	private boolean activo = true;
 	private TipoDocumentoIdentidad tipoDocumentoIdentidad;
 	private Ubigeo ubigeo;
 	private Pais pais;

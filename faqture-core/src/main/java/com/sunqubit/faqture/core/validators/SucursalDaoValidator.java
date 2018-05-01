@@ -14,12 +14,12 @@ public class SucursalDaoValidator {
 	private IUbigeoDao ubigeoDao;
 	
 	public void validaSucuId(long sucuId) throws ValidatorException{
-		if (Long.valueOf(sucuId) == null)
+		if (sucuId < 1)
             throw new ValidatorException("Es necesario contener el atributo 'id' de la sucursal");
 	}
 	
 	public void validaSucuContribuyente(Contribuyente sucuContribuyente) throws ValidatorException{
-		if (sucuContribuyente == null || Long.valueOf(sucuContribuyente.getId()) == null)
+		if (sucuContribuyente == null || sucuContribuyente.getId() < 1)
             throw new ValidatorException("Es necesario contener el atributo 'contribuyente' de la sucursal");
 	}
 	
@@ -32,7 +32,7 @@ public class SucursalDaoValidator {
 	}
 	
 	public void validaSucuUnigeo(Ubigeo sucuUbigeo) throws ValidatorException{
-		if (sucuUbigeo == null || Long.valueOf(sucuUbigeo.getId()) == null)
+		if (sucuUbigeo == null || sucuUbigeo.getId() < 1)
             throw new ValidatorException("Es necesario contener el atributo 'ubigeo' de la sucursal");
 		
 		try {

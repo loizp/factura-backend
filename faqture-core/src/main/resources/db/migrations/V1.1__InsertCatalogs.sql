@@ -3698,4 +3698,23 @@ INSERT INTO tipos_operaciones (tiop_codigo, tiop_descripcion)
     	('05','Venta Itinerante'),
     	('06','Factura Guía'),
     	('07','Venta Arroz Pilado'),
-    	('08','Factura - Comprobante de Percepción');
+    	('08','Factura - Comprobante de Percepción')
+    	('10 Factura - Guía remitente'),
+    	('11', 'Factura - Guía transportista'),
+    	('12', 'Boleta de venta – Comprobante de Percepción'),
+    	('13', 'Gasto Deducible Persona Natural');
+-------------------------------------------------------------------------------
+--- Tabla: tipos_leyendas
+--- Catálogo No. 52: Código de Leyendas
+-------------------------------------------------------------------------------
+INSERT INTO tipos_leyendas (tley_codigo, tley_descripcion)
+    VALUES ('1000', 'Monto en Letras'),
+        ('1002', 'TRANSFERENCIA GRATUITA DE UN BIEN Y/O SERVICIO PRESTADO GRATUITAMENTE'),
+        ('2000', 'COMPROBANTE DE PERCEPCIÓN'),
+        ('2001', 'BIENES TRANSFERIDOS EN LA AMAZONÍA REGIÓN SELVAPARA SER CONSUMIDOS EN LA MISMA'),
+        ('2002', 'SERVICIOS PRESTADOS EN LA AMAZONÍA REGIÓN SELVA PARA SER CONSUMIDOS EN LA MISMA'),
+        ('2003', 'CONTRATOS DE CONSTRUCCIÓN EJECUTADOS EN LA AMAZONÍA REGIÓN SELVA'),
+        ('2004', 'Agencia de Viaje - Paquete turístico'),
+        ('2005', 'Venta realizada por emisor itinerante'),
+        ('2006', 'Operación sujeta a detracción'),
+        ('3000', 'Código interno generado por el software de Facturación');

@@ -36,7 +36,7 @@
         <result column="docu_anulado" property="anulado"/>
         <!-- DocumentoBase -->
         <association property="tipoDocumento" javaType="TipoDocumento" resultMap="com.sunqubit.faqture.core.mappers.TipoDocumentoMapper.TipoDocumentoMap"/>
-        <association property="empresa" javaType="Empresa" resultMap="com.sunqubit.faqture.core.mappers.EmpresaMapper.EmpresaMap" />
+        <association property="empresa" javaType="Contribuyente" resultMap="com.sunqubit.faqture.core.mappers.ContribuyenteMapper.ContBaseMap"/>
         <association property="emprSucursal" javaType="Sucursal">
     		<id property="id" column="sucu_emisor_id"/>
     		<result property="direccion" column="sucu_emisor_direccion"/>
@@ -45,7 +45,7 @@
         <association property="tipoLeyenda" javaType="TipoLeyenda" resultMap="com.sunqubit.faqture.core.mappers.TipoLeyendaMapper.TipoLeyendaMap" />
         <association property="moneda" javaType="Moneda" resultMap="com.sunqubit.faqture.core.mappers.MonedaMapper.MonedaMap" />
         <!-- ComprobantePago -->
-        <association property="cliente" javaType="Cliente">
+        <association property="cliente" javaType="Contribuyente">
     		<id property="id" column="cont_clie_id"/>
     		<result property="numeroDocumento" column="cont_clie_numDoc"/>
     		<result property="nombreLegal" column="cont_clie_nombreLeg"/>
@@ -84,7 +84,7 @@
         <result column="docu_igv" property="igv" />
         <!-- DocumentoBase -->
         <association property="tipoDocumento" javaType="TipoDocumento" resultMap="com.sunqubit.faqture.core.mappers.TipoDocumentoMapper.TipoDocumentoMap"/>
-        <association property="empresa" javaType="Empresa" resultMap="com.sunqubit.faqture.core.mappers.EmpresaMapper.EmpresaMap" />
+        <association property="empresa" javaType="Contribuyente" resultMap="com.sunqubit.faqture.core.mappers.ContribuyenteMapper.ContBaseMap" />
         <association property="emprSucursal" javaType="Sucursal" resultMap="com.sunqubit.faqture.core.mappers.SucursalMapper.SucursalMap" />
         <association property="tipoLeyenda" javaType="TipoLeyenda" resultMap="com.sunqubit.faqture.core.mappers.TipoLeyendaMapper.TipoLeyendaMap" />
         <association property="moneda" javaType="Moneda" resultMap="com.sunqubit.faqture.core.mappers.MonedaMapper.MonedaMap" />
@@ -102,83 +102,67 @@
     	<selectKey keyProperty="id" resultType="long" order="BEFORE">
 			SELECT NEXTVAL('sunqubit.documentos_docu_id_seq');
     	</selectKey>
-    	INSERT INTO sunqubit.documentos (docu_id, docu_fecha_emision, docu_numero
-    		<if test="tipoLeyenda.codigo != null AND leyenda != null">, docu_leyenda</if>
+    	INSERT INTO sunqubit.documentos (docu_id, docu_fecha_emision, docu_numero, docu_anulado
+    		<if test="tipoLeyenda != null and leyenda != null">, docu_leyenda</if>
     		<if test="observacion != null">, docu_observacion</if>
-    		, docu_proc_fecha
-    		<if test="estadoProceso != null">, docu_proc_status</if>
-    		, tido_codigo, cont_id
-    		<if test="emprSucursal.id != null">, sucu_emisor_id</if>
-    		<if test="tipoLeyenda.codigo != null">, tley_codigo</if>
-    		<if test="moneda.codigo != null">, mone_codigo</if>
-    		<if test="enviarSunat != null">, docu_enviar_sunat</if>
-    		, cont_clie_id
-    		<if test="clieSucursal.id != null">, sucu_clie_id</if>
+    		, docu_proc_fecha, docu_proc_status, tido_codigo, cont_id
+    		<if test="emprSucursal != null">, sucu_emisor_id</if>
+    		<if test="tipoLeyenda != null">, tley_codigo</if>
+    		<if test="moneda != null">, mone_codigo</if>
+			, docu_enviar_sunat, cont_clie_id
+    		<if test="clieSucursal != null">, sucu_clie_id</if>
     		, tiop_codigo
     		<if test="fechaVencimiento != null">, docu_fecha_vencimiento</if>
     		, docu_subtotal, docu_grabada, docu_inafecta, docu_exonerada, docu_gratuita, docu_descuento, docu_igv, docu_isc, docu_otros_tributos, docu_otros_cargos, docu_total
-    		<if test="vededor != null">, docu_vendedor</if>
+    		<if test="vendedor != null">, docu_vendedor</if>
     		<if test="emailCliente != null">, docu_clie_email</if>
-    		<if test="anulado != null">, docu_anulado</if>
     		)
-			VALUES (#{id}, #{fechaEmision}, #{numero}
-				<if test="tipoLeyenda.codigo != null AND leyenda != null">, #{leyenda}</if>
-				<if test="observacion != null">, #{observacion}</if>
-				, #{fechaProceso}
-				<if test="estadoProceso != null">, #{estadoProceso}</if>
-				, #{tipoDocumento.codigo}, #{empresa.id}
-				<if test="emprSucursal.id != null">, #{emprSucursal.id}</if>
-				<if test="tipoLeyenda.codigo != null">, #{tipoLeyenda.codigo}</if>
-				<if test="moneda.codigo != null">, #{moneda.codigo}</if>
-				<if test="enviarSunat != null">, #{enviarSunat}</if>
-				, #{cliente.id}
-				<if test="clieSucursal.id != null">, #{clieSucursal.id}</if>
-				, #{tipoOperacion.codigo}
-				<if test="fechaVencimiento != null">, #{fechaVencimiento}</if>
-				, #{subtotal}, #{grabada}, #{inafecta}, #{exonerada}, #{gratuita}, #{descuento}, #{igv}, #{isc}, #{otrosTributos}, #{otrosCargos}, #{total}
-				<if test="vededor != null">, #{vendedor}</if>
-	    		<if test="emailCliente != null">, #{emailCliente}</if>
-	    		<if test="anulado != null">, #{anulado}</if>
-				);
+		VALUES (#{id}, #{fechaEmision}, #{numero}, #{anulado}
+			<if test="tipoLeyenda != null and leyenda != null">, #{leyenda}</if>
+			<if test="observacion != null">, #{observacion}</if>
+			, #{fechaProceso}, #{estadoProceso}, #{tipoDocumento.codigo}, #{empresa.id}
+			<if test="emprSucursal != null">, #{emprSucursal.id}</if>
+			<if test="tipoLeyenda != null">, #{tipoLeyenda.codigo}</if>
+			<if test="moneda != null">, #{moneda.codigo}</if>
+			, #{enviarSunat}, #{cliente.id}
+			<if test="clieSucursal != null">, #{clieSucursal.id}</if>
+			, #{tipoOperacion.codigo}
+			<if test="fechaVencimiento != null">, #{fechaVencimiento}</if>
+			, #{subtotal}, #{grabada}, #{inafecta}, #{exonerada}, #{gratuita}, #{descuento}, #{igv}, #{isc}, #{otrosTributos}, #{otrosCargos}, #{total}
+			<if test="vendedor != null">, #{vendedor}</if>
+	    	<if test="emailCliente != null">, #{emailCliente}</if>
+			);
 				
 		<if test="docsReferenciados != null">
 			<foreach item="docRef" collection="docsReferenciados">
 				<if test="docRef.id != null">
 					INSERT INTO sunqubit.documentos_referenciados (documentos_docu_id, docu_asociado_id)
-						VALUES (#{id}, #{docRef.id});
+					VALUES (#{id}, #{docRef.id});
 				</if>
     		</foreach>
 		</if>
 		
 		<if test="detallesDocumento != null">
 			<foreach item="item" collection="detallesDocumento">
-				<if test="item.orden != null AND item.descripcion != null AND item.cantidad != null item.precioVenta != null item.subtotal != null">
+				<if test="item.orden != null and item.descripcion != null and item.cantidad != null and item.precioVenta != null and item.subtotal != null">
 					INSERT INTO sunqubit.detalle_documentos (docu_id, dedo_orden
 						<if test="item.codigoProducto != null">, dedo_codigo_producto</if>
 						, dedo_descripcion
-						<if test="item.unidadMedida.id != null">, unme_codigo</if>
-						, dedo_cantidad, dedo_precio_venta
-						<if test="item.descuento != null">, dedo_descuento</if>
-						<if test="item.ventaNoOnerosa != null">, dedo_venta_no_onerosa</if>
+						<if test="item.unidadMedida != null">, unme_codigo</if>
+						, dedo_cantidad, dedo_precio_venta, dedo_descuento, dedo_venta_no_onerosa
 						<if test="item.tipoAfectacionIgv.codigo != null">, tiai_codigo</if>
-						<if test="item.tipoAfectacionIgv.codigo != null AND item.igv != null">, dedo_igv</if>
+						, dedo_igv, dedo_isc, dedo_subtotal
 						<if test="item.tipoIsc.codigo != null">tisc_codigo</if>
-						<if test="item.tipoIsc.codigo != null AND item.isc != null">, dedo_isc</if>
-						, dedo_subtotal
 						)
-						VALUES (#{id}, #{item.orden}
-							<if test="item.codigoProducto != null">, #{item.codigoProducto}</if>
-							, #{item.descripcion}
-							<if test="item.unidadMedida.id != null">, #{item.unidadMedida.id}</if>
-							, #{item.cantidad}, #{item.precioVenta}
-							<if test="item.descuento != null">, #{item.descuento}</if>
-							<if test="item.ventaNoOnerosa != null">, #{item.ventaNoOnerosa}</if>
-							<if test="item.tipoAfectacionIgv.codigo != null">, #{item.tipoAfectacionIgv.codigo}</if>
-							<if test="item.tipoAfectacionIgv.codigo != null AND item.igv != null">, #{item.igv}</if>
-							<if test="item.tipoIsc.codigo != null">#{item.tipoIsc.codigo}</if>
-							<if test="item.tipoIsc.codigo != null AND item.isc != null">, #{item.isc}</if>
-							, #{item.subtotal}
-							);
+					VALUES (#{id}, #{item.orden}
+						<if test="item.codigoProducto != null">, #{item.codigoProducto}</if>
+						, #{item.descripcion}
+						<if test="item.unidadMedida != null">, #{item.unidadMedida.id}</if>
+						, #{item.cantidad}, #{item.precioVenta}, #{item.descuento}, #{item.ventaNoOnerosa}
+						<if test="item.tipoAfectacionIgv.codigo != null">, #{item.tipoAfectacionIgv.codigo}</if>
+						, #{item.igv}, #{item.isc}, #{item.subtotal}
+						<if test="item.tipoIsc.codigo != null">#{item.tipoIsc.codigo}</if>
+						);
 				</if>
     		</foreach>
 		</if>
@@ -186,56 +170,55 @@
     
     <update id="updateCompPago" parameterType="ComprobantePago">
     	UPDATE sunqubit.documentos 
-			SET docu_proc_fecha = #{fechaProceso}, docu_proc_status = #{estadoProceso}
-				<if test="observacion != null">docu_observacion = #{observacion}</if>
-				<if test="enviarSunat != null">docu_enviar_sunat = #{enviarSunat}</if>
-				<if test="linkPdf != null">docu_link_pdf = #{linkPdf}</if>
-				<if test="linkXml != null">docu_link_xml = #{linkXml}</if>
-				<if test="hashSunat != null">docu_hash_sunat = #{hashSunat}</if>
-				<if test="linkCdr != null">docu_link_cdr = #{linkCdr}</if>
-				<if test="cdrStatus != null">docu_cdr_status = #{cdrStatus}</if>
-				<if test="cdrNota != null">docu_cdr_nota = #{cdrNota}</if>
-				<if test="cdrObservacion != null">docu_cdr_observacion = #{cdrObservacion}</if>
-				<if test="anulado != null">docu_anulado = #{anulado}</if>
-				<if test="fechaVencimiento != null">docu_fecha_vencimiento = #{fechaVencimiento}</if>
-				<if test="emailCliente != null">docu_clie_email = #{emailCliente}</if>
-			WHERE docu_id = #{id};
+		SET docu_proc_fecha = #{fechaProceso}, docu_proc_status = #{estadoProceso}
+			,docu_observacion = #{observacion}, docu_enviar_sunat = #{enviarSunat}
+			<if test="linkPdf != null">, docu_link_pdf = #{linkPdf}</if>
+			<if test="linkXml != null">, docu_link_xml = #{linkXml}</if>
+			<if test="hashSunat != null">, docu_hash_sunat = #{hashSunat}</if>
+			<if test="linkCdr != null">, docu_link_cdr = #{linkCdr}</if>
+			<if test="cdrStatus != null">, docu_cdr_status = #{cdrStatus}</if>
+			<if test="cdrNota != null">, docu_cdr_nota = #{cdrNota}</if>
+			<if test="cdrObservacion != null">, docu_cdr_observacion = #{cdrObservacion}</if>
+			, docu_anulado = #{anulado}
+			<if test="fechaVencimiento != null">, docu_fecha_vencimiento = #{fechaVencimiento}</if>
+			<if test="emailCliente != null">, docu_clie_email = #{emailCliente}</if>
+		WHERE docu_id = #{id};
     </update>
     
     <select id="getCompPago" parameterType="long" resultMap="ComprobantePagoMap">
         SELECT d.*, td.*, e.*, es.sucu_id AS sucu_emisor_id, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_status AS sucu_emisor_status,
         	tl.*, m.*, c.cont_id AS cont_clie_id, c.cont_num_doc AS cont_clie_numDoc, c.cont_nombre_legal AS cont_clie_nombreLeg,
-        	c.cont_nombre_comercial AS cont_clie_nombreCom, c.cont_direccion AS cont_clie_direccion, cs.*, to.*, dr.*, dd.*
-        	FROM sunqubit.documentos AS d
+        	c.cont_nombre_comercial AS cont_clie_nombreCom, c.cont_direccion AS cont_clie_direccion, cs.*, top.*, dr.*, dd.*
+        FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
-        	INNER JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
+        	LEFT JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
         	INNER JOIN sunqubit.tipos_leyendas AS tl ON tl.tley_codigo = d.tley_codigo
         	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
         	INNER JOIN sunqubit.contribuyentes AS c ON c.cont_id = d.cont_clie_id
-        	INNER JOIN sunqubit.sucursales AS cs ON cs.sucu_id = d.sucu_clie_id
-        	INNER JOIN sunqubit.tipos_operaciones AS to ON to.tiop_codigo = d.tiop_codigo
-        	INNER JOIN sunqubit.documentos_referenciados AS dr ON dr.documentos_docu_id = d.docu_id
-        	INNER JOIN sunqubit.detalle_documentos AS dd ON da.docu_id = d.docu_id
-        	WHERE d.docu_id = #{docuId};
+        	LEFT JOIN sunqubit.sucursales AS cs ON cs.sucu_id = d.sucu_clie_id
+        	INNER JOIN sunqubit.tipos_operaciones AS top ON top.tiop_codigo = d.tiop_codigo
+        	LEFT JOIN sunqubit.documentos_referenciados AS dr ON dr.documentos_docu_id = d.docu_id
+        	LEFT JOIN sunqubit.detalle_documentos AS dd ON dd.docu_id = d.docu_id
+        WHERE d.docu_id = #{docuId} AND (d.tido_codigo = '01' OR d.tido_codigo = '03');
     </select>
     
     <select id="getByNumDocC" parameterType="HashMap" resultMap="ComprobantePagoMap">
         SELECT d.*, td.*, e.*, es.sucu_id AS sucu_emisor_id, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_status AS sucu_emisor_status,
         	tl.*, m.*, c.cont_id AS cont_clie_id, c.cont_num_doc AS cont_clie_numDoc, c.cont_nombre_legal AS cont_clie_nombreLeg,
-        	c.cont_nombre_comercial AS cont_clie_nombreCom, c.cont_direccion AS cont_clie_direccion, cs.*, to.*, dr.*, dd.*
-        	FROM sunqubit.documentos AS d
+        	c.cont_nombre_comercial AS cont_clie_nombreCom, c.cont_direccion AS cont_clie_direccion, cs.*, top.*, dr.*, dd.*
+        FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
-        	INNER JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
+        	LEFT JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
         	INNER JOIN sunqubit.tipos_leyendas AS tl ON tl.tley_codigo = d.tley_codigo
         	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
         	INNER JOIN sunqubit.contribuyentes AS c ON c.cont_id = d.cont_clie_id
-        	INNER JOIN sunqubit.sucursales AS cs ON cs.sucu_id = d.sucu_clie_id
-        	INNER JOIN sunqubit.tipos_operaciones AS to ON to.tiop_codigo = d.tiop_codigo
-        	INNER JOIN sunqubit.documentos_referenciados AS dr ON dr.documentos_docu_id = d.docu_id
-        	INNER JOIN sunqubit.detalle_documentos AS dd ON da.docu_id = d.docu_id
-        	WHERE d.docu_numero = #{documento.numero} AND d.cont_id = #{empresa.id} AND d.tido_codigo = #{documento.tipoDocumento.codigo};
+        	LEFT JOIN sunqubit.sucursales AS cs ON cs.sucu_id = d.sucu_clie_id
+        	INNER JOIN sunqubit.tipos_operaciones AS top ON top.tiop_codigo = d.tiop_codigo
+        	LEFT JOIN sunqubit.documentos_referenciados AS dr ON dr.documentos_docu_id = d.docu_id
+        	LEFT JOIN sunqubit.detalle_documentos AS dd ON dd.docu_id = d.docu_id
+        WHERE d.docu_numero = #{documento.numero} AND d.cont_id = #{empresa.id} AND d.tido_codigo = #{documento.tipoDocumento.codigo};
     </select>
     
     <insert id="insertNotaDC" parameterType="NotaDC">
@@ -243,35 +226,29 @@
 			SELECT NEXTVAL('sunqubit.documentos_docu_id_seq');
     	</selectKey>
     	INSERT INTO sunqubit.documentos (docu_id, docu_fecha_emision, docu_numero
-    		<if test="tipoLeyenda.codigo != null AND leyenda != null">, docu_leyenda</if>
+    		<if test="tipoLeyenda.codigo != null and leyenda != null">, docu_leyenda</if>
     		<if test="observacion != null">, docu_observacion</if>
-    		, docu_proc_fecha
-    		<if test="estadoProceso != null">, docu_proc_status</if>
-    		, tido_codigo, cont_id
+    		, docu_proc_fecha, docu_proc_status, tido_codigo, cont_id
     		<if test="emprSucursal.id != null">, sucu_emisor_id</if>
     		<if test="tipoLeyenda.codigo != null">, tley_codigo</if>
     		<if test="moneda.codigo != null">, mone_codigo</if>
-    		<if test="enviarSunat != null">, docu_enviar_sunat</if>
-    		, tino_id, docu_sustento_nota, docu_igv
+    		, docu_enviar_sunat, tino_id, docu_sustento_nota, docu_igv
     		)
-			VALUES (#{id}, #{fechaEmision}, #{numero}
-				<if test="tipoLeyenda.codigo != null AND leyenda != null">, #{leyenda}</if>
-				<if test="observacion != null">, #{observacion}</if>
-				, #{fechaProceso}
-				<if test="estadoProceso != null">, #{estadoProceso}</if>
-				, #{tipoDocumento.codigo}, #{empresa.id}
-				<if test="emprSucursal.id != null">, #{emprSucursal.id}</if>
-				<if test="tipoLeyenda.codigo != null">, #{tipoLeyenda.codigo}</if>
-				<if test="moneda.codigo != null">, #{moneda.codigo}</if>
-				<if test="enviarSunat != null">, #{enviarSunat}</if>
-				, #{tipoNota.id}, #{sustentoNota}, #{igv}
-				);
+		VALUES (#{id}, #{fechaEmision}, #{numero}
+			<if test="tipoLeyenda.codigo != null and leyenda != null">, #{leyenda}</if>
+			<if test="observacion != null">, #{observacion}</if>
+			, #{fechaProceso}, #{estadoProceso}, #{tipoDocumento.codigo}, #{empresa.id}
+			<if test="emprSucursal.id != null">, #{emprSucursal.id}</if>
+			<if test="tipoLeyenda.codigo != null">, #{tipoLeyenda.codigo}</if>
+			<if test="moneda.codigo != null">, #{moneda.codigo}</if>
+			, #{enviarSunat}, #{tipoNota.id}, #{sustentoNota}, #{igv}
+			);
 				
 		<if test="docsReferenciados != null">
 			<foreach item="docRef" collection="docsReferenciados">
 				<if test="docRef.id != null">
 					INSERT INTO sunqubit.documentos_referenciados (documentos_docu_id, docu_asociado_id)
-						VALUES (#{id}, #{docRef.id});
+					VALUES (#{id}, #{docRef.id});
 				</if>
     		</foreach>
 		</if>
@@ -279,43 +256,47 @@
     
     <update id="updateNotaDC" parameterType="NotaDC">
     	UPDATE sunqubit.documentos 
-			SET docu_proc_fecha = #{fechaProceso}, docu_proc_status = #{estadoProceso}
-				<if test="observacion != null">docu_observacion = #{observacion}</if>
-				<if test="enviarSunat != null">docu_enviar_sunat = #{enviarSunat}</if>
-				<if test="linkPdf != null">docu_link_pdf = #{linkPdf}</if>
-				<if test="linkXml != null">docu_link_xml = #{linkXml}</if>
-				<if test="hashSunat != null">docu_hash_sunat = #{hashSunat}</if>
-				<if test="linkCdr != null">docu_link_cdr = #{linkCdr}</if>
-				<if test="cdrStatus != null">docu_cdr_status = #{cdrStatus}</if>
-				<if test="cdrNota != null">docu_cdr_nota = #{cdrNota}</if>
-				<if test="cdrObservacion != null">docu_cdr_observacion = #{cdrObservacion}</if>
-				<if test="sustentoNota != null">docu_sustento_nota = #{sustentoNota}</if>
-			WHERE docu_id = #{id};
+		SET docu_proc_fecha = #{fechaProceso}, docu_proc_status = #{estadoProceso}
+			, docu_enviar_sunat = #{enviarSunat},
+			<if test="observacion != null">docu_observacion = #{observacion}</if>
+			<if test="linkPdf != null">docu_link_pdf = #{linkPdf}</if>
+			<if test="linkXml != null">docu_link_xml = #{linkXml}</if>
+			<if test="hashSunat != null">docu_hash_sunat = #{hashSunat}</if>
+			<if test="linkCdr != null">docu_link_cdr = #{linkCdr}</if>
+			<if test="cdrStatus != null">docu_cdr_status = #{cdrStatus}</if>
+			<if test="cdrNota != null">docu_cdr_nota = #{cdrNota}</if>
+			<if test="cdrObservacion != null">docu_cdr_observacion = #{cdrObservacion}</if>
+			<if test="sustentoNota != null">docu_sustento_nota = #{sustentoNota}</if>
+		WHERE docu_id = #{id};
     </update>
     
     <select id="getNotaDC" parameterType="long" resultMap="NotaDCMap">
-        SELECT d.*, td.*, e.*, es.*, tl.*, m.*, dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero, dr.docu_fecha_emision AS docu_asociado_fechaEmi
-        	FROM sunqubit.documentos AS d
+        SELECT d.*, td.*, e.*, es.*, tl.*, mo.*, dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero,
+        	dr.docu_fecha_emision AS docu_asociado_fechaEmi, tn.*
+        FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
-        	INNER JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
+        	LEFT JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
         	INNER JOIN sunqubit.tipos_leyendas AS tl ON tl.tley_codigo = d.tley_codigo
-        	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
-        	INNER JOIN sunqubit.documentos_referenciados AS dri ON dri.documentos_docu_id = d.docu_id
-        	INNER JOIN sunqubit.documentos AS dr ON dr.docu_id = dri.docu_asociado_id
-        	WHERE d.docu_id = #{docuId};
+        	INNER JOIN sunqubit.monedas AS mo ON mo.mone_codigo = d.mone_codigo
+        	INNER JOIN sunqubit.tipos_notas AS tn ON tn.tino_id = d.tino_id
+        	LEFT JOIN sunqubit.documentos_referenciados AS dri ON dri.documentos_docu_id = d.docu_id
+        	LEFT JOIN sunqubit.documentos AS dr ON dr.docu_id = dri.docu_asociado_id
+        WHERE d.docu_id = #{docuId}  AND (d.tido_codigo = '07' OR d.tido_codigo = '08');
     </select>
     
     <select id="getByNumDocN" parameterType="HashMap" resultMap="NotaDCMap">
-        SELECT d.*, td.*, e.*, es.*, tl.*, m.*, dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero, dr.docu_fecha_emision AS docu_asociado_fechaEmi
-        	FROM sunqubit.documentos AS d
+        SELECT d.*, td.*, e.*, es.*, tl.*, mo.*, dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero,
+        	dr.docu_fecha_emision AS docu_asociado_fechaEmi, tn.*
+        FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
-        	INNER JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
+        	LEFT JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
         	INNER JOIN sunqubit.tipos_leyendas AS tl ON tl.tley_codigo = d.tley_codigo
-        	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
-        	INNER JOIN sunqubit.documentos_referenciados AS dri ON dri.documentos_docu_id = d.docu_id
-        	INNER JOIN sunqubit.documentos AS dr ON dr.docu_id = dri.docu_asociado_id
-        	WHERE d.docu_numero = #{documento.numero} AND d.cont_id = #{empresa.id} AND d.tido_codigo = #{documento.tipoDocumento.codigo};
+        	INNER JOIN sunqubit.monedas AS mo ON mo.mone_codigo = d.mone_codigo
+        	INNER JOIN sunqubit.tipos_notas AS tn ON tn.tino_id = d.tino_id
+        	LEFT JOIN sunqubit.documentos_referenciados AS dri ON dri.documentos_docu_id = d.docu_id
+        	LEFT JOIN sunqubit.documentos AS dr ON dr.docu_id = dri.docu_asociado_id
+        WHERE d.docu_numero = #{documento.numero} AND d.cont_id = #{empresa.id} AND d.tido_codigo = #{documento.tipoDocumento.codigo};
     </select>
 </mapper>

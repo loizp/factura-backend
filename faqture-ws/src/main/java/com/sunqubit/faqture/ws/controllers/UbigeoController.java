@@ -16,12 +16,6 @@ public class UbigeoController {
 
     @Autowired
     private UbigeoService ubigeoService;
-    
-    @GetMapping(value = "/get", headers="Accept=application/json", produces={"application/json"})
-    public @ResponseBody
-    ResponseEntity<?> getList(@PathVariable("filtro") String filtro) {
-        return ResponseEntity.ok(ubigeoService.filter(""));
-    }
 
     @GetMapping(value = "/get/{filtro}", headers="Accept=application/json", produces={"application/json"})
     public @ResponseBody

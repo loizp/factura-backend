@@ -12,7 +12,7 @@ public class UsuarioDaoValidator {
     private IUsuarioDao usuarioDao;
 	
 	public void validaUserId(long userId) throws ValidatorException{
-		if (Long.valueOf(userId) == null)
+		if (userId < 1)
             throw new ValidatorException("Es necesario contener el atributo 'id' del usuario");
 	}
 	

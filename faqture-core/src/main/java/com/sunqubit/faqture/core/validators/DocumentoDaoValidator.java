@@ -1,6 +1,6 @@
 package com.sunqubit.faqture.core.validators;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,11 +33,11 @@ public class DocumentoDaoValidator {
 	private ITipoNotaDao tipoNotaDao;
     
 	public void validaDocuId(long docuId) throws ValidatorException{
-		if (Long.valueOf(docuId) == null)
+		if (docuId < 1)
             throw new ValidatorException("Es necesario contener el atributo 'id' del documento");
 	}
 	
-	public void validaDocuFechaEmision(Date docuFechaEmision) throws ValidatorException{
+	public void validaDocuFechaEmision(Timestamp docuFechaEmision) throws ValidatorException{
 		if (docuFechaEmision == null)
             throw new ValidatorException("Es necesario contener el atributo 'fechaEmision' del documento");
 	}
@@ -71,12 +71,12 @@ public class DocumentoDaoValidator {
             throw new ValidatorException("la longitud del atributo 'observacion' no debe exceder los 250 caracteres");
 	}
 	
-	public void validaDocuFechaProceso(Date docuFechaProceso) throws ValidatorException{
+	public void validaDocuFechaProceso(Timestamp docuFechaProceso) throws ValidatorException{
 		if (docuFechaProceso == null)
             throw new ValidatorException("Es necesario contener el atributo 'fechaProceso' del documento");
 	}
 	
-	public void validaDocuEstadoProceso(Date docuFechaProceso, String docuEstadoProceso) throws ValidatorException{
+	public void validaDocuEstadoProceso(Timestamp docuFechaProceso, String docuEstadoProceso) throws ValidatorException{
 		this.validaDocuFechaProceso(docuFechaProceso);
 		
 		if (docuEstadoProceso == null)
@@ -95,7 +95,7 @@ public class DocumentoDaoValidator {
 	}
 	
 	public void validaDocuEmpresa(Contribuyente docuEmpresa) throws ValidatorException{
-		if (docuEmpresa == null || Long.valueOf(docuEmpresa.getId()) == null)
+		if (docuEmpresa == null || docuEmpresa.getId() < 1)
             throw new ValidatorException("Es necesario contener el atributo 'empresa' del documento");
 		
 		try {
@@ -109,7 +109,7 @@ public class DocumentoDaoValidator {
 	public void validaDocuEmprSucursal(Contribuyente docuEmpresa, Sucursal docuEmprSucursal) throws ValidatorException{
 		this.validaDocuEmpresa(docuEmpresa);
 		
-		if (docuEmprSucursal == null || Long.valueOf(docuEmprSucursal.getId()) == null)
+		if (docuEmprSucursal == null || docuEmprSucursal.getId() < 1)
             throw new ValidatorException("Es necesario contener el atributo 'emprSucursal' del documento");
 		
 		try {
@@ -193,7 +193,7 @@ public class DocumentoDaoValidator {
 	}
 	
 	public void validaDocuCliente(Contribuyente docuCliente) throws ValidatorException{
-		if (docuCliente == null || Long.valueOf(docuCliente.getId()) == null)
+		if (docuCliente == null || docuCliente.getId() < 1)
             throw new ValidatorException("Es necesario contener el atributo 'cliente' del documento");
 		
 		try {
@@ -207,7 +207,7 @@ public class DocumentoDaoValidator {
 	public void validaDocuClieSucursal(Contribuyente docuCliente, Sucursal docuClieSucursal) throws ValidatorException{
 		this.validaDocuCliente(docuCliente);
 		
-		if (docuClieSucursal == null || Long.valueOf(docuClieSucursal.getId()) == null)
+		if (docuClieSucursal == null || docuClieSucursal.getId() < 1)
             throw new ValidatorException("Es necesario contener el atributo 'clieSucursal' del documento");
 		
 		try {
@@ -249,7 +249,7 @@ public class DocumentoDaoValidator {
 	public void validaDocuTipoNota(TipoDocumento docuTipoDocumento, TipoNota docuTipoNota) throws ValidatorException{
 		this.validaDocuTipoDocumento(docuTipoDocumento);
 		
-		if (docuTipoNota == null || Long.valueOf(docuTipoNota.getId()) == null)
+		if (docuTipoNota == null || docuTipoNota.getId() < 1)
             throw new ValidatorException("Es necesario contener el atributo 'tipoNota' del documento");
 		
 		try {

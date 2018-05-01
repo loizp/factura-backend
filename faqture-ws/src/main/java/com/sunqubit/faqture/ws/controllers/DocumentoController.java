@@ -2,6 +2,8 @@ package com.sunqubit.faqture.ws.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +29,15 @@ public class DocumentoController {
 	@PostMapping(value = "/add/ncd", headers="Accept=application/json", produces={"application/json"})
 	public @ResponseBody ResponseEntity<?> insert(@RequestBody NotaDC notaDC){
 		return ResponseEntity.ok(documentoService.insert(notaDC));
+	}
+	
+	@GetMapping(value = "/get/bf/{id}", headers="Accept=application/json", produces={"application/json"})
+	public @ResponseBody ResponseEntity<?> getC(@PathVariable("id") long id) {
+		return ResponseEntity.ok(documentoService.getC(id));
+	}
+	
+	@GetMapping(value = "/get/ncd/{id}", headers="Accept=application/json", produces={"application/json"})
+	public @ResponseBody ResponseEntity<?> getN(@PathVariable("id") long id) {
+		return ResponseEntity.ok(documentoService.getN(id));
 	}
 }

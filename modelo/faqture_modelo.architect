@@ -43,7 +43,7 @@ R000 Retenciones</remarks>
     <column id="COL9" populated="true" UUID="14a545c5-b674-4bb1-86ef-7ad8c001e2ce" autoIncrement="false" autoIncrementSequenceName="documentos_sucu_clie_id_seq" defaultValue="" name="sucu_clie_id" nullable="1" physicalName="sucu_clie_id" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
      <remarks>Campo clave con el id de la sucursal en caso requiera el cliente para la emision de su documento</remarks>
     </column>
-    <column id="COL10" populated="true" UUID="29416553-0b43-460a-8e25-38ff64391d4c" autoIncrement="false" autoIncrementSequenceName="documentos_tiop_codigo_seq" defaultValue="" name="tiop_codigo" nullable="1" physicalName="tiop_codigo" precision="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL10" populated="true" UUID="29416553-0b43-460a-8e25-38ff64391d4c" autoIncrement="false" autoIncrementSequenceName="documentos_tiop_codigo_seq" defaultValue="&apos;01&apos;" name="tiop_codigo" nullable="1" physicalName="tiop_codigo" precision="2" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks>Campo clave con la con el tipo de operacion a realizar en el caso de especificarlo</remarks>
     </column>
     <column id="COL11" populated="true" UUID="8e92eae8-a279-4daf-8b5b-26cdab23e99c" autoIncrement="false" autoIncrementSequenceName="documentos_docu_fecha_vencimiento_seq" defaultValue="" name="docu_fecha_vencimiento" nullable="1" physicalName="docu_fecha_vencimiento" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="93" userDefinedTypeUUID="6497d8de-0e00-40d6-a42e-e2adca83be64" >
@@ -58,7 +58,7 @@ R000 Retenciones</remarks>
     <column id="COL14" populated="true" UUID="a1136634-f080-4515-9568-7348e757cc01" autoIncrement="false" autoIncrementSequenceName="documentos_mone_id_seq" defaultValue="&apos;PEN&apos;" name="mone_codigo" nullable="0" physicalName="mone_codigo" precision="3" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks>Campo clave para saber el tipo de moneda usado en el docuemnto</remarks>
     </column>
-    <column id="COL15" populated="true" UUID="889e54b0-85cc-4521-989c-6cce1522eb84" autoIncrement="false" autoIncrementSequenceName="documentos_tley_codigo_seq" defaultValue="" name="tley_codigo" nullable="1" physicalName="tley_codigo" precision="4" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
+    <column id="COL15" populated="true" UUID="889e54b0-85cc-4521-989c-6cce1522eb84" autoIncrement="false" autoIncrementSequenceName="documentos_tley_codigo_seq" defaultValue="&apos;1000&apos;" name="tley_codigo" nullable="1" physicalName="tley_codigo" precision="4" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks>Campo clave de tipos de leyenda en caso de tener</remarks>
     </column>
     <column id="COL16" populated="true" UUID="3ce49f9e-8593-4cdc-828b-ca7ae8173017" autoIncrement="false" autoIncrementSequenceName="documentos_docu_leyenda_seq" defaultValue="" name="docu_leyenda" nullable="1" physicalName="docu_leyenda" precision="250" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
@@ -94,7 +94,7 @@ R000 Retenciones</remarks>
     <column id="COL26" populated="true" UUID="781c6ebf-47a4-4fc6-b3b6-a62c45af27b2" autoIncrement="false" autoIncrementSequenceName="documentos_docu_tasa_otros_tributos_seq" defaultValue="0.00" name="docu_otros_cargos" nullable="0" physicalName="docu_otros_cargos" precision="15" referenceCount="1" scale="2" sourceDataTypeName="UserDefinedSQLType" type="2" userDefinedTypeUUID="115245ce-612c-4d6a-b559-6dd903dd959a" >
      <remarks>Campo con el importe de otros cargos</remarks>
     </column>
-    <column id="COL27" populated="true" UUID="5db4994d-4cf0-4784-9980-aa7c33d3f64c" autoIncrement="false" autoIncrementSequenceName="documentos_docu_total_seq" defaultValue="0.00" name="docu_total" nullable="0" physicalName="docu_total" precision="0" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL27" populated="true" UUID="5db4994d-4cf0-4784-9980-aa7c33d3f64c" autoIncrement="false" autoIncrementSequenceName="documentos_docu_total_seq" defaultValue="0.00" name="docu_total" nullable="0" physicalName="docu_total" precision="15" referenceCount="1" scale="2" sourceDataTypeName="UserDefinedSQLType" type="2" userDefinedTypeUUID="115245ce-612c-4d6a-b559-6dd903dd959a" >
      <remarks>Campo con importe total  del documento
  importe total retenido+ igv + inafectos + exonerados + otros cargos + isc + otros tributos.
 

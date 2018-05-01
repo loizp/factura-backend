@@ -11,12 +11,12 @@ import com.sunqubit.faqture.core.beans.UnidadMedida;
 public class DetalleDocumentoDaoValidator {
 	
 	public void validaDedoId(long dedoId) throws ValidatorException{
-		if (Long.valueOf(dedoId) == null)
+		if (dedoId < 1)
             throw new ValidatorException("Es necesario contener el atributo 'id' del detalle");
 	}
 	
 	public void validaDedoCompPago(ComprobantePago dedoCompPago)throws ValidatorException{
-		if (dedoCompPago == null || Long.valueOf(dedoCompPago.getId()) == null)
+		if (dedoCompPago == null || dedoCompPago.getId() < 1)
             throw new ValidatorException("Es necesario contener el atributo 'comprobantePago' del detalle");
 	}
 	

@@ -7,7 +7,7 @@ public class Sucursal {
 	private String direccion;
 	private Contribuyente contribuyente;
 	private Ubigeo ubigeo;
-	private Boolean activo;
+	private Boolean activo = true;
 	private Pais pais;
 	private List<Documento> documentos;
 	

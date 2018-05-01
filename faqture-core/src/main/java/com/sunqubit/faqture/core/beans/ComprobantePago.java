@@ -1,34 +1,37 @@
 package com.sunqubit.faqture.core.beans;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ComprobantePago extends Documento {
-	private Cliente cliente;
+	private Contribuyente cliente;
 	private Sucursal clieSucursal;
 	private TipoOperacion tipoOperacion;
-	private Date fechaVencimiento;
-	private BigDecimal subtotal;
-	private BigDecimal grabada;
-	private BigDecimal inafecta;
-	private BigDecimal exonerada;
-	private BigDecimal gratuita;
-	private BigDecimal descuento;
-	private BigDecimal igv;
-	private BigDecimal isc;
-	private BigDecimal otrosTributos;
-	private BigDecimal otrosCargos;
-	private BigDecimal total;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="CST")
+	private Timestamp fechaVencimiento;
+	private BigDecimal subtotal = BigDecimal.valueOf(0.00);
+	private BigDecimal grabada = BigDecimal.valueOf(0.00);
+	private BigDecimal inafecta = BigDecimal.valueOf(0.00);
+	private BigDecimal exonerada = BigDecimal.valueOf(0.00);
+	private BigDecimal gratuita = BigDecimal.valueOf(0.00);
+	private BigDecimal descuento = BigDecimal.valueOf(0.00);
+	private BigDecimal igv = BigDecimal.valueOf(0.00);
+	private BigDecimal isc = BigDecimal.valueOf(0.00);
+	private BigDecimal otrosTributos = BigDecimal.valueOf(0.00);
+	private BigDecimal otrosCargos = BigDecimal.valueOf(0.00);
+	private BigDecimal total = BigDecimal.valueOf(0.00);
 	private String vendedor;
 	private String emailCliente;
-	private Boolean anulado;
+	private Boolean anulado = false;
 	private List<DetalleDocumento> detallesDocumento;
 	
-	public Cliente getCliente() {
+	public Contribuyente getCliente() {
 		return cliente;
 	}
-	public void setCliente(Cliente cliente) {
+	public void setCliente(Contribuyente cliente) {
 		this.cliente = cliente;
 	}
 	public Sucursal getClieSucursal() {
@@ -43,10 +46,10 @@ public class ComprobantePago extends Documento {
 	public void setTipoOperacion(TipoOperacion tipoOperacion) {
 		this.tipoOperacion = tipoOperacion;
 	}
-	public Date getFechaVencimiento() {
+	public Timestamp getFechaVencimiento() {
 		return fechaVencimiento;
 	}
-	public void setFechaVencimiento(Date fechaVencimiento) {
+	public void setFechaVencimiento(Timestamp fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
 	}
 	public BigDecimal getSubtotal() {

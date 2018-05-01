@@ -8,7 +8,7 @@ public class Usuario {
 	private String password;
 	private String nombre;
 	private String email;
-	private Boolean activo;
+	private Boolean activo = true;
 	private List<RolUsuario> roles;
 	
 	public long getId() {

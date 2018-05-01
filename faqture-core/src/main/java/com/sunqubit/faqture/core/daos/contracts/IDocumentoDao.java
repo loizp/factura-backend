@@ -1,7 +1,7 @@
 package com.sunqubit.faqture.core.daos.contracts;
 
 import com.sunqubit.faqture.core.beans.ComprobantePago;
-import com.sunqubit.faqture.core.beans.Empresa;
+import com.sunqubit.faqture.core.beans.Contribuyente;
 import com.sunqubit.faqture.core.beans.NotaDC;
 
 public interface IDocumentoDao {
@@ -17,7 +17,7 @@ public interface IDocumentoDao {
 	
 	NotaDC getNotaDC(long docuId) throws Exception;
 	
-	ComprobantePago getByNumDocC(Empresa empresa, ComprobantePago comprobantePago) throws Exception;
+	ComprobantePago getByNumDocC(Contribuyente contribuyente, ComprobantePago comprobantePago) throws Exception;
 
-	NotaDC getByNumDocN(Empresa empresa, NotaDC notaDC) throws Exception;
+	NotaDC getByNumDocN(Contribuyente contribuyente, NotaDC notaDC) throws Exception;
 }

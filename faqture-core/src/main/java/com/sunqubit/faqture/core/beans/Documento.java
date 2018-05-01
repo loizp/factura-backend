@@ -1,22 +1,26 @@
 package com.sunqubit.faqture.core.beans;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Documento {
 	private long id;
-	private Date fechaEmision;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="CST")
+	private Timestamp fechaEmision;
 	private String numero;
 	private String leyenda;
 	private String observacion;
-	private Date fechaProceso;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="CST")
+	private Timestamp fechaProceso;
 	private String estadoProceso;
 	private TipoDocumento tipoDocumento;
-	private Empresa empresa;
+	private Contribuyente empresa;
 	private Sucursal emprSucursal;
 	private TipoLeyenda tipoLeyenda;
 	private Moneda moneda;
-	private Boolean enviarSunat;
+	private Boolean enviarSunat = true;
 	private String linkPdf;
 	private String linkXml;
 	private String hashSunat;
@@ -32,10 +36,10 @@ public class Documento {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public Date getFechaEmision() {
+	public Timestamp getFechaEmision() {
 		return fechaEmision;
 	}
-	public void setFechaEmision(Date fechaEmision) {
+	public void setFechaEmision(Timestamp fechaEmision) {
 		this.fechaEmision = fechaEmision;
 	}
 	public String getNumero() {
@@ -56,10 +60,10 @@ public class Documento {
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
 	}
-	public Date getFechaProceso() {
+	public Timestamp getFechaProceso() {
 		return fechaProceso;
 	}
-	public void setFechaProceso(Date fechaProceso) {
+	public void setFechaProceso(Timestamp fechaProceso) {
 		this.fechaProceso = fechaProceso;
 	}
 	public String getEstadoProceso() {
@@ -74,10 +78,10 @@ public class Documento {
 	public void setTipoDocumento(TipoDocumento tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
-	public Empresa getEmpresa() {
+	public Contribuyente getEmpresa() {
 		return empresa;
 	}
-	public void setEmpresa(Empresa empresa) {
+	public void setEmpresa(Contribuyente empresa) {
 		this.empresa = empresa;
 	}
 	public Sucursal getEmprSucursal() {
