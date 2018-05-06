@@ -120,7 +120,6 @@ public class UsuarioDao implements IUsuarioDao {
 		} finally {
 			session.close();
 		}
-		
 	}
 
 	@Override
@@ -132,6 +131,20 @@ public class UsuarioDao implements IUsuarioDao {
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
 			throw new Exception("Ocurrió un error en la identificación del usuario");
+		} finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public void dateLogin(String loginName) throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			UsuarioMapper mapper = session.getMapper(UsuarioMapper.class);
+			mapper.dateLogin(loginName);
+		} catch (PersistenceException pe) {
+			LOGGER.info(pe.getMessage());
+			throw new Exception("Ocurrió un error en la actualización de los datos");
 		} finally {
 			session.close();
 		}

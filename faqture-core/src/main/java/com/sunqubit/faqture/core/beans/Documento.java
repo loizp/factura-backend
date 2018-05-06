@@ -1,5 +1,6 @@
 package com.sunqubit.faqture.core.beans;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -10,7 +11,6 @@ public class Documento {
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="CST")
 	private Timestamp fechaEmision;
 	private String numero;
-	private String leyenda;
 	private String observacion;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="CST")
 	private Timestamp fechaProceso;
@@ -18,9 +18,9 @@ public class Documento {
 	private TipoDocumento tipoDocumento;
 	private Contribuyente empresa;
 	private Sucursal emprSucursal;
-	private TipoLeyenda tipoLeyenda;
 	private Moneda moneda;
 	private Boolean enviarSunat = true;
+	private BigDecimal tasaIgv = BigDecimal.valueOf(18.00);
 	private String linkPdf;
 	private String linkXml;
 	private String hashSunat;
@@ -28,6 +28,7 @@ public class Documento {
 	private String cdrStatus;
 	private String cdrNota;
 	private String cdrObservacion;
+	private List<Leyenda> leyendas;
 	private List<Documento> docsReferenciados;
 	
 	public long getId() {
@@ -47,12 +48,6 @@ public class Documento {
 	}
 	public void setNumero(String numero) {
 		this.numero = numero;
-	}
-	public String getLeyenda() {
-		return leyenda;
-	}
-	public void setLeyenda(String leyenda) {
-		this.leyenda = leyenda;
 	}
 	public String getObservacion() {
 		return observacion;
@@ -89,12 +84,6 @@ public class Documento {
 	}
 	public void setEmprSucursal(Sucursal emprSucursal) {
 		this.emprSucursal = emprSucursal;
-	}
-	public TipoLeyenda getTipoLeyenda() {
-		return tipoLeyenda;
-	}
-	public void setTipoLeyenda(TipoLeyenda tipoLeyenda) {
-		this.tipoLeyenda = tipoLeyenda;
 	}
 	public Moneda getMoneda() {
 		return moneda;
@@ -155,5 +144,17 @@ public class Documento {
 	}
 	public void setDocsReferenciados(List<Documento> docsReferenciados) {
 		this.docsReferenciados = docsReferenciados;
+	}
+	public List<Leyenda> getLeyendas() {
+		return leyendas;
+	}
+	public void setLeyendas(List<Leyenda> leyendas) {
+		this.leyendas = leyendas;
+	}
+	public BigDecimal getTasaIgv() {
+		return tasaIgv;
+	}
+	public void setTasaIgv(BigDecimal tasaIgv) {
+		this.tasaIgv = tasaIgv;
 	}
 }

@@ -6,7 +6,7 @@ import java.util.Date;
 
 import com.sunqubit.faqture.ws.validators.FechaHoraValidator;
 
-import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 
 
 public class AppTest {
@@ -34,7 +34,7 @@ public class AppTest {
         System.out.println(fv2.horaValida(aa));
         
         
-        LocalDateTime fecha = LocalDateTime.now();
+        //LocalDateTime fecha = LocalDateTime.now();
         
         System.out.println("fecha sql: " + java.sql.Timestamp.valueOf(fh));
         

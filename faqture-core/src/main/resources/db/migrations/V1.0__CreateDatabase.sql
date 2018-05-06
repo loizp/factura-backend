@@ -46,6 +46,8 @@ CREATE TABLE sunqubit.usuarios (
                 user_login_name VARCHAR(20) NOT NULL,
                 user_password VARCHAR(255) NOT NULL,
                 user_nombre VARCHAR(200) NOT NULL,
+                user_date_upkey TIMESTAMP,
+                user_date_login TIMESTAMP,
                 user_email VARCHAR(200) NOT NULL,
                 user_status BOOLEAN DEFAULT True NOT NULL,
                 CONSTRAINT usuarios_pk PRIMARY KEY (user_id)
@@ -55,6 +57,8 @@ COMMENT ON COLUMN sunqubit.usuarios.user_id IS 'Campo PK de la tabla usuario';
 COMMENT ON COLUMN sunqubit.usuarios.user_login_name IS 'Campo de identificación principal de usuario';
 COMMENT ON COLUMN sunqubit.usuarios.user_password IS 'campo que almacena las contraseñas de los usuarios';
 COMMENT ON COLUMN sunqubit.usuarios.user_nombre IS 'Campo con el nombre a mostrarse del usuario';
+COMMENT ON COLUMN sunqubit.usuarios.user_date_upkey IS 'Campo con la ultima fecha de cambio de contraseña';
+COMMENT ON COLUMN sunqubit.usuarios.user_date_login IS 'Campo con la fecha y hora del ultimo login exitoso que ha realizado';
 COMMENT ON COLUMN sunqubit.usuarios.user_email IS 'Campo con el email del usuario para contacto';
 COMMENT ON COLUMN sunqubit.usuarios.user_status IS 'Campo que valida el estado del usuario activo(True) o inactivo(False)';
 
@@ -228,6 +232,7 @@ CREATE TABLE sunqubit.sucursales (
                 sucu_direccion VARCHAR(200) NOT NULL,
                 sucu_status BOOLEAN DEFAULT true NOT NULL,
                 cont_id INTEGER NOT NULL,
+                sucu_urbanizacion VARCHAR(200),
                 ubig_id INTEGER,
                 pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
                 CONSTRAINT sucursales_pk PRIMARY KEY (sucu_id)
@@ -237,6 +242,7 @@ COMMENT ON COLUMN sunqubit.sucursales.sucu_id IS 'Campo PK autoincremental';
 COMMENT ON COLUMN sunqubit.sucursales.sucu_direccion IS 'Campo con la dirección de la sucursal';
 COMMENT ON COLUMN sunqubit.sucursales.sucu_status IS 'Campo que define si tendra actividad(True) o no(False) la sucursal';
 COMMENT ON COLUMN sunqubit.sucursales.cont_id IS 'Campo PK del contribuyente';
+COMMENT ON COLUMN sunqubit.sucursales.sucu_urbanizacion IS 'Campo con la urbanizacion de la sucursal';
 COMMENT ON COLUMN sunqubit.sucursales.ubig_id IS 'Campo clave referencial de la ubicacion de la sucursal';
 COMMENT ON COLUMN sunqubit.sucursales.pais_codigo IS 'Campo con el codigo de pais de la sucursal por defecto es PERU';
 
@@ -250,7 +256,9 @@ CREATE TABLE sunqubit.ubigeos (
                 ubig_cod_dpto CHAR(2) NOT NULL,
                 ubig_cod_prov CHAR(2) NOT NULL,
                 ubig_cod_dist CHAR(2) NOT NULL,
-                ubig_descripcion VARCHAR(200) NOT NULL,
+                ubig_departamento VARCHAR(200) NOT NULL,
+                ubig_provincia VARCHAR(200),
+                ubig_distrito VARCHAR(200),
                 CONSTRAINT ubigeos_pk PRIMARY KEY (ubig_id)
 );
 COMMENT ON TABLE sunqubit.ubigeos IS 'Tabla que contiene la codificación de ubicación geográfica emitida por el estado';
@@ -258,7 +266,9 @@ COMMENT ON COLUMN sunqubit.ubigeos.ubig_id IS 'Campo PK autoincremental';
 COMMENT ON COLUMN sunqubit.ubigeos.ubig_cod_dpto IS 'Campo código de ubicación del departamento';
 COMMENT ON COLUMN sunqubit.ubigeos.ubig_cod_prov IS 'Campo código de ubicación de la provincia';
 COMMENT ON COLUMN sunqubit.ubigeos.ubig_cod_dist IS 'Campo código de ubicación del distrito';
-COMMENT ON COLUMN sunqubit.ubigeos.ubig_descripcion IS 'Campo con el nombre de la ubicación geográfica';
+COMMENT ON COLUMN sunqubit.ubigeos.ubig_departamento IS 'Campo con la descripcion del departamento';
+COMMENT ON COLUMN sunqubit.ubigeos.ubig_provincia IS 'Campo con la descripcion de la provincia';
+COMMENT ON COLUMN sunqubit.ubigeos.ubig_distrito IS 'Campo con la descripcion del distrito';
 
 
 ALTER SEQUENCE sunqubit.ubigeos_ubig_id_seq OWNED BY sunqubit.ubigeos.ubig_id;
@@ -335,8 +345,7 @@ CREATE TABLE sunqubit.documentos (
                 tido_codigo CHAR(2) NOT NULL,
                 tino_id INTEGER,
                 mone_codigo CHAR(3) DEFAULT 'PEN' NOT NULL,
-                tley_codigo CHAR(4) DEFAULT '1000',
-                docu_leyenda VARCHAR(250),
+                docu_tasa_igv NUMERIC(15,2) DEFAULT 18.0 NOT NULL,
                 docu_subtotal NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_grabada NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 docu_inafecta NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
@@ -384,8 +393,7 @@ COMMENT ON COLUMN sunqubit.documentos.docu_fecha_vencimiento IS 'Campo en caso d
 COMMENT ON COLUMN sunqubit.documentos.tido_codigo IS 'Campo clave que especifica que tipo de documento es ya sea Factura, Boleta, etc.';
 COMMENT ON COLUMN sunqubit.documentos.tino_id IS 'Campo clave que indica que tipo de nota se esta emitiendo en caso de que el documento sea nota de crédito ó débito';
 COMMENT ON COLUMN sunqubit.documentos.mone_codigo IS 'Campo clave para saber el tipo de moneda usado en el docuemnto';
-COMMENT ON COLUMN sunqubit.documentos.tley_codigo IS 'Campo clave de tipos de leyenda en caso de tener';
-COMMENT ON COLUMN sunqubit.documentos.docu_leyenda IS 'Campo Leyenda del documento';
+COMMENT ON COLUMN sunqubit.documentos.docu_tasa_igv IS 'Campo con la tasa porcentual del igv';
 COMMENT ON COLUMN sunqubit.documentos.docu_subtotal IS 'Campo con el importe subtotal del documento';
 COMMENT ON COLUMN sunqubit.documentos.docu_grabada IS 'Campo que contiene el importe total de documento grabado al IGV';
 COMMENT ON COLUMN sunqubit.documentos.docu_inafecta IS 'Campo que contiene el importe total de  inafecto del documento';
@@ -424,6 +432,18 @@ COMMENT ON COLUMN sunqubit.documentos.docu_cdr_observacion IS 'Campo con la nota
 
 ALTER SEQUENCE sunqubit.documentos_docu_id_seq OWNED BY sunqubit.documentos.docu_id;
 
+CREATE TABLE sunqubit.leyendas (
+                docu_id INTEGER NOT NULL,
+                tley_codigo CHAR(4) NOT NULL,
+                Descripcion VARCHAR(200) NOT NULL,
+                CONSTRAINT leyendas_pk PRIMARY KEY (docu_id)
+);
+COMMENT ON TABLE sunqubit.leyendas IS 'Tabla que tendra las leyendas de los documentos';
+COMMENT ON COLUMN sunqubit.leyendas.docu_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.leyendas.tley_codigo IS 'Campo PK con el codigo de la leyenda a usar segun el catalogo';
+COMMENT ON COLUMN sunqubit.leyendas.Descripcion IS 'Cambo con la descripcion de la leyenda';
+
+
 CREATE TABLE sunqubit.documentos_referenciados (
                 documentos_docu_id INTEGER NOT NULL,
                 docu_asociado_id INTEGER NOT NULL,
@@ -452,6 +472,7 @@ CREATE TABLE sunqubit.detalle_documentos (
                 dedo_descuento NUMERIC(15,2) DEFAULT 0.00 NOT NULL,
                 tiai_codigo CHAR(2),
                 tisc_codigo CHAR(2),
+                mone_codigo CHAR(3) DEFAULT 'PEN' NOT NULL,
                 CONSTRAINT detalle_documentos_pk PRIMARY KEY (dedo_id)
 );
 COMMENT ON TABLE sunqubit.detalle_documentos IS 'Tabla que contiene el detalle de los Items de una docuemnto';
@@ -470,9 +491,17 @@ COMMENT ON COLUMN sunqubit.detalle_documentos.dedo_isc IS 'Campo con el valor de
 COMMENT ON COLUMN sunqubit.detalle_documentos.dedo_descuento IS 'campo caso de tener un descuento en algun producto';
 COMMENT ON COLUMN sunqubit.detalle_documentos.tiai_codigo IS 'Campo clave con el codigo de afectacion IGV';
 COMMENT ON COLUMN sunqubit.detalle_documentos.tisc_codigo IS 'Campo Clave con el codigo de ISC';
+COMMENT ON COLUMN sunqubit.detalle_documentos.mone_codigo IS 'Campo PK según el catálogo Nro 02';
 
 
 ALTER SEQUENCE sunqubit.detalle_documentos_dedo_id_seq OWNED BY sunqubit.detalle_documentos.dedo_id;
+
+ALTER TABLE sunqubit.leyendas ADD CONSTRAINT tipos_leyendas_leyendas_fk
+FOREIGN KEY (tley_codigo)
+REFERENCES sunqubit.tipos_leyendas (tley_codigo)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
 
 ALTER TABLE sunqubit.asignaciones_roles ADD CONSTRAINT roles_asignaciones_roles_fk
 FOREIGN KEY (role_id)
@@ -496,6 +525,13 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE sunqubit.documentos ADD CONSTRAINT moneda_documentos_fk
+FOREIGN KEY (mone_codigo)
+REFERENCES sunqubit.monedas (mone_codigo)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE sunqubit.detalle_documentos ADD CONSTRAINT monedas_detalle_documentos_fk
 FOREIGN KEY (mone_codigo)
 REFERENCES sunqubit.monedas (mone_codigo)
 ON DELETE NO ACTION
@@ -553,6 +589,13 @@ NOT DEFERRABLE;
 
 ALTER TABLE sunqubit.documentos_referenciados ADD CONSTRAINT documentos_documentos_referenciados_fk1
 FOREIGN KEY (documentos_docu_id)
+REFERENCES sunqubit.documentos (docu_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE sunqubit.leyendas ADD CONSTRAINT documentos_leyendas_fk
+FOREIGN KEY (docu_id)
 REFERENCES sunqubit.documentos (docu_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION

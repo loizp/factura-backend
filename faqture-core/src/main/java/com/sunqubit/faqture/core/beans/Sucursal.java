@@ -6,6 +6,7 @@ public class Sucursal {
 	private long id;
 	private String direccion;
 	private Contribuyente contribuyente;
+	private String urbanizacion;
 	private Ubigeo ubigeo;
 	private Boolean activo = true;
 	private Pais pais;
@@ -52,5 +53,11 @@ public class Sucursal {
 	}
 	public void setDocumentos(List<Documento> documentos) {
 		this.documentos = documentos;
+	}
+	public String getUrbanizacion() {
+		return urbanizacion;
+	}
+	public void setUrbanizacion(String urbanizacion) {
+		this.urbanizacion = urbanizacion;
 	}
 }

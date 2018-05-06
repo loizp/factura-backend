@@ -6,6 +6,8 @@
         <result column="user_login_name" property="loginName" />
         <result column="user_password" property="password"/>
         <result column="user_nombre" property="nombre"/>
+        <result column="user_date_upkey" property="dateUpKey"/>
+        <result column="user_date_login" property="dateLogin"/>
         <result column="user_email" property="email"/>
         <result column="user_status" property="activo"/>
         <collection property="roles" ofType="RolUsuario" resultMap="com.sunqubit.faqture.core.mappers.RolUsuarioMapper.RolUsuarioMap" />
@@ -15,8 +17,8 @@
         <selectKey keyProperty="id" resultType="long" order="BEFORE">
             SELECT NEXTVAL('sunqubit.usuarios_user_id_seq');
         </selectKey>
-        INSERT INTO sunqubit.usuarios (user_id, user_login_name, user_password, user_nombre, user_email, user_status)
-        VALUES (#{id}, #{loginName}, #{password}, #{nombre}, #{email}, #{activo});
+        INSERT INTO sunqubit.usuarios (user_id, user_login_name, user_password, user_nombre, user_date_upkey, user_email, user_status)
+        VALUES (#{id}, #{loginName}, #{password}, #{nombre}, (SELECT now()), #{email}, #{activo});
         <if test="roles != null">
             <foreach item="role" collection="roles">
                 <if test="role.id != null">
@@ -53,19 +55,25 @@
 	
     <update id="changeLoginName" parameterType="Usuario">
         UPDATE sunqubit.usuarios 
-        SET user_login_name = #{loginName}
+        SET user_login_name = #{loginName}, user_date_upkey = (SELECT now())
         WHERE user_id = #{id};
     </update>
 	
     <update id="changePassword" parameterType="Usuario">
         UPDATE sunqubit.usuarios 
-        SET user_password = #{password}
+        SET user_password = #{password}, user_date_upkey = (SELECT now())
         WHERE user_login_name = #{loginName};
     </update>
 	
     <update id="changeEmail" parameterType="Usuario">
         UPDATE sunqubit.usuarios 
         SET user_email = #{email}
+        WHERE user_login_name = #{loginName};
+    </update>
+    
+    <update id="dateLogin" parameterType="String">
+        UPDATE sunqubit.usuarios 
+        SET user_date_login = (SELECT now())
         WHERE user_login_name = #{loginName};
     </update>
 	

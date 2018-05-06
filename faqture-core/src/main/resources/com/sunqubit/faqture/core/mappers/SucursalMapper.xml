@@ -4,6 +4,7 @@
     <resultMap id="SucursalMap" type="Sucursal">
         <id column="sucu_id" property="id" />
         <result column="sucu_direccion" property="direccion" />
+        <result column="sucu_urbanizacion" property="urbanizacion" />
         <result column="sucu_status" property="activo" />
         <association property="contribuyente" javaType="Contribuyente">
         	<id column="cont_id" property="id" />

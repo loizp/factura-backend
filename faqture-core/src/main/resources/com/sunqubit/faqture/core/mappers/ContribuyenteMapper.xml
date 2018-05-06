@@ -16,10 +16,13 @@
     		<id column="sucu_id" property="id" />
         	<result column="sucu_direccion" property="direccion" />
         	<result column="sucu_status" property="activo" />
+        	<result column="sucu_urbanizacion" property="urbanizacion" />
         	<association property="ubigeo" javaType="Ubigeo">
         		<id column="sucu_ubig_id" property="id" />
         		<result column="sucu_ubig_codigo" property="codigo" />
-        		<result column="sucu_ubig_descripcion" property="descripcion" />
+        		<result column="sucu_ubig_departamento" property="departamento" />
+        		<result column="sucu_ubig_provincia" property="provincia" />
+        		<result column="sucu_ubig_distrito" property="distrito" />
         	</association>
         	<association property="pais" javaType="Pais">
         		<id column="sucu_pais_codigo" property="codigo" />
@@ -110,9 +113,9 @@
 	</update>    
     
     <select id="getById" parameterType="long" resultMap="ContribuyenteMap">
-        SELECT e.*, tdi.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_descripcion,
-        	p.*, s.sucu_id, s.sucu_direccion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
-			us.ubig_descripcion AS sucu_ubig_descripcion, ps.pais_codigo AS sucu_pais_codigo, ps.pais_nombre AS sucu_pais_nombre
+        SELECT e.*, tdi.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito,
+        	p.*, s.sucu_id, s.sucu_direccion, s.sucu_urbanizacion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
+			us.ubig_departamento AS sucu_ubig_departamento, us.ubig_provincia AS sucu_ubig_provincia, us.ubig_distrito AS sucu_ubig_distrito, ps.pais_codigo AS sucu_pais_codigo, ps.pais_nombre AS sucu_pais_nombre
 		FROM sunqubit.contribuyentes AS e
 			INNER JOIN sunqubit.tipos_documentos_identidad AS tdi ON tdi.tiid_codigo = e.tiid_codigo
 			LEFT JOIN sunqubit.ubigeos AS u ON u.ubig_id = e.ubig_id
@@ -124,9 +127,9 @@
     </select>
     
     <select id="getByDoc" parameterType="HashMap" resultMap="ContribuyenteMap">
-        SELECT e.*, tdi.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_descripcion,
-        	p.*, s.sucu_id, s.sucu_direccion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
-			us.ubig_descripcion AS sucu_ubig_descripcion, ps.pais_codigo AS sucu_pais_codigo, ps.pais_nombre AS sucu_pais_nombre
+        SELECT e.*, tdi.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito,
+        	p.*, s.sucu_id, s.sucu_direccion, s.sucu_urbanizacion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
+			us.ubig_departamento AS sucu_ubig_departamento, us.ubig_provincia AS sucu_ubig_provincia, us.ubig_distrito AS sucu_ubig_distrito, ps.pais_codigo AS sucu_pais_codigo, ps.pais_nombre AS sucu_pais_nombre
 		FROM sunqubit.contribuyentes AS e
 			INNER JOIN sunqubit.tipos_documentos_identidad AS tdi ON tdi.tiid_codigo = e.tiid_codigo
 			LEFT JOIN sunqubit.ubigeos AS u ON u.ubig_id = e.ubig_id
@@ -138,9 +141,9 @@
     </select>
     
     <select id="filterName" parameterType="string" resultMap="ContribuyenteMap">
-        SELECT e.*, tdi.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_descripcion,
-        	p.*, s.sucu_id, s.sucu_direccion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
-			us.ubig_descripcion AS sucu_ubig_descripcion, ps.pais_codigo AS sucu_pais_codigo, ps.pais_nombre AS sucu_pais_nombre
+        SELECT e.*, tdi.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito,
+        	p.*, s.sucu_id, s.sucu_direccion, s.sucu_urbanizacion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
+			us.ubig_departamento AS sucu_ubig_departamento, us.ubig_provincia AS sucu_ubig_provincia, us.ubig_distrito AS sucu_ubig_distrito, ps.pais_codigo AS sucu_pais_codigo, ps.pais_nombre AS sucu_pais_nombre
 		FROM sunqubit.contribuyentes AS e
 			INNER JOIN sunqubit.tipos_documentos_identidad AS tdi ON tdi.tiid_codigo = e.tiid_codigo
 			LEFT JOIN sunqubit.ubigeos AS u ON u.ubig_id = e.ubig_id
