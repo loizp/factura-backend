@@ -7,9 +7,12 @@
     <packaging>pom</packaging>
     <modules>
         <module>faqture-core</module>
-        <module>faqture-ws</module>
         <module>faqture-sunat</module>
-    </modules>
+        <module>faqture-service</module>
+        <module>facture-dao</module>
+    <module>faqture-rest</module>
+    <module>faqture-web</module>
+  </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>

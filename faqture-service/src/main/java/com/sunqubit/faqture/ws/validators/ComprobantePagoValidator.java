@@ -44,8 +44,8 @@ public class ComprobantePagoValidator extends DocumentoDaoValidator {
 	
 	public void validaDocBaseSingle(ComprobantePago compPago) throws ValidatorException {
 		documentoBaseValidator.validaDocuFechaEmision(compPago.getFechaEmision());
-    	if(compPago.getLeyendas() != null)
-    		documentoBaseValidator.validaDocuLeyenda(compPago.getTipoLeyenda(), compPago.getLeyenda());
+    	//if(compPago.getLeyendas() != null)
+    	//	documentoBaseValidator.validaDocuLeyenda(compPago.getTipoLeyenda(), compPago.getLeyenda());
     	if(compPago.getObservacion() != null)
     		documentoBaseValidator.validaDocuObservacion(compPago.getObservacion());
     	documentoBaseValidator.validaDocuFechaProceso(compPago.getFechaProceso());

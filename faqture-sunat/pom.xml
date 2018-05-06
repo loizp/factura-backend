@@ -11,23 +11,17 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-<<<<<<< HEAD
-         <logback.version>1.2.3</logback.version>
-         <spring.version>4.3.14.RELEASE</spring.version>
+        <logback.version>1.2.3</logback.version>
+        <spring.version>4.3.14.RELEASE</spring.version>
     </properties>
     
     <dependencies>
-         <dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-          <dependency>
-=======
-        <spring.version>4.3.14.RELEASE</spring.version>
-        <logback.version>1.2.3</logback.version>
-    </properties>
-    <dependencies>
+        </dependency>     
+    
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
@@ -65,19 +59,16 @@
             <version>7.0.42</version>
         </dependency>
         <dependency>
->>>>>>> 62e3d6734a4085e920f45c5220af49a9bdde2c4c
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
-        </dependency>
-<<<<<<< HEAD
-        
-=======
+        </dependency>       
+
         <dependency>
             <groupId>com.sunqubit</groupId>
             <artifactId>faqture-core</artifactId>
             <version>1.0</version>
         </dependency>
->>>>>>> 62e3d6734a4085e920f45c5220af49a9bdde2c4c
+
     </dependencies>
 </project>
