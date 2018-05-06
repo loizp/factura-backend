@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class NotaDC extends Documento {
 	private TipoNota tipoNota;
 	private String sustentoNota;
-	private BigDecimal igv;
+	private BigDecimal igv = BigDecimal.valueOf(0.00);
 	
 	public TipoNota getTipoNota() {
 		return tipoNota;

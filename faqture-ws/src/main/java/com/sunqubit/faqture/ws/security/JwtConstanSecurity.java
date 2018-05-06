@@ -5,7 +5,6 @@ public class JwtConstanSecurity {
 		public static final String LOGIN_URL = "/login";
 		public static final String REFRESH_TOKEN_URL = "/token";
 		public static final String HEADER_AUTHORIZACION_KEY = "Authorization";
-		public static final String TOKEN_BEARER_PREFIX = "Bearer ";
 		// JWT
 		public static final String ISSUER_INFO = "https://www.faqture.com/";
 		public static final String SUPER_SECRET_KEY = "@utHL0g1n";

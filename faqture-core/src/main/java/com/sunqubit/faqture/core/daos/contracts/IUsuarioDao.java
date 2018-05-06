@@ -13,6 +13,8 @@ public interface IUsuarioDao {
 	
 	void changeLoginName (Usuario usuario) throws Exception;
 	
+	void dateLogin (String loginName) throws Exception;
+	
 	Usuario login(String loginName) throws Exception;
 	
 	Boolean loginNameExist(String loginName) throws Exception;

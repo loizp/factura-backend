@@ -1,6 +1,7 @@
 package com.sunqubit.faqture.ws.validators;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.sunqubit.faqture.core.beans.Contribuyente;
 import com.sunqubit.faqture.core.beans.NotaDC;
@@ -8,6 +9,7 @@ import com.sunqubit.faqture.core.beans.TipoDocumento;
 import com.sunqubit.faqture.core.validators.DocumentoDaoValidator;
 import com.sunqubit.faqture.core.validators.ValidatorException;
 
+@Component
 public class NotaDCValidator extends DocumentoDaoValidator {
 	
 	@Autowired
@@ -29,7 +31,7 @@ public class NotaDCValidator extends DocumentoDaoValidator {
 	public void validaDocuSustentoNota(String docuSustentoNota) throws ValidatorException {
 		super.validaDocuSustentoNota(docuSustentoNota);
 		
-		if (docuSustentoNota.trim().isEmpty() || !docuSustentoNota.trim().matches("^[\\w- ]{2,}$"))
+		if (docuSustentoNota.trim().isEmpty() || !docuSustentoNota.trim().matches("^[A-Za-z][\\w- \\.]*$"))
             throw new ValidatorException("Es necesario que el atributo 'sustentoNota' debe estar correctamente expresado");
 	}
 	

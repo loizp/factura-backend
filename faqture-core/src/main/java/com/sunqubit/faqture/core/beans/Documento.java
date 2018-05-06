@@ -1,22 +1,26 @@
 package com.sunqubit.faqture.core.beans;
 
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Documento {
 	private long id;
-	private Date fechaEmision;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="CST")
+	private Timestamp fechaEmision;
 	private String numero;
-	private String leyenda;
 	private String observacion;
-	private Date fechaProceso;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="CST")
+	private Timestamp fechaProceso;
 	private String estadoProceso;
 	private TipoDocumento tipoDocumento;
-	private Empresa empresa;
+	private Contribuyente empresa;
 	private Sucursal emprSucursal;
-	private TipoLeyenda tipoLeyenda;
 	private Moneda moneda;
-	private Boolean enviarSunat;
+	private Boolean enviarSunat = true;
+	private BigDecimal tasaIgv = BigDecimal.valueOf(18.00);
 	private String linkPdf;
 	private String linkXml;
 	private String hashSunat;
@@ -24,6 +28,7 @@ public class Documento {
 	private String cdrStatus;
 	private String cdrNota;
 	private String cdrObservacion;
+	private List<Leyenda> leyendas;
 	private List<Documento> docsReferenciados;
 	
 	public long getId() {
@@ -32,10 +37,10 @@ public class Documento {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public Date getFechaEmision() {
+	public Timestamp getFechaEmision() {
 		return fechaEmision;
 	}
-	public void setFechaEmision(Date fechaEmision) {
+	public void setFechaEmision(Timestamp fechaEmision) {
 		this.fechaEmision = fechaEmision;
 	}
 	public String getNumero() {
@@ -44,22 +49,16 @@ public class Documento {
 	public void setNumero(String numero) {
 		this.numero = numero;
 	}
-	public String getLeyenda() {
-		return leyenda;
-	}
-	public void setLeyenda(String leyenda) {
-		this.leyenda = leyenda;
-	}
 	public String getObservacion() {
 		return observacion;
 	}
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
 	}
-	public Date getFechaProceso() {
+	public Timestamp getFechaProceso() {
 		return fechaProceso;
 	}
-	public void setFechaProceso(Date fechaProceso) {
+	public void setFechaProceso(Timestamp fechaProceso) {
 		this.fechaProceso = fechaProceso;
 	}
 	public String getEstadoProceso() {
@@ -74,10 +73,10 @@ public class Documento {
 	public void setTipoDocumento(TipoDocumento tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
-	public Empresa getEmpresa() {
+	public Contribuyente getEmpresa() {
 		return empresa;
 	}
-	public void setEmpresa(Empresa empresa) {
+	public void setEmpresa(Contribuyente empresa) {
 		this.empresa = empresa;
 	}
 	public Sucursal getEmprSucursal() {
@@ -85,12 +84,6 @@ public class Documento {
 	}
 	public void setEmprSucursal(Sucursal emprSucursal) {
 		this.emprSucursal = emprSucursal;
-	}
-	public TipoLeyenda getTipoLeyenda() {
-		return tipoLeyenda;
-	}
-	public void setTipoLeyenda(TipoLeyenda tipoLeyenda) {
-		this.tipoLeyenda = tipoLeyenda;
 	}
 	public Moneda getMoneda() {
 		return moneda;
@@ -151,5 +144,17 @@ public class Documento {
 	}
 	public void setDocsReferenciados(List<Documento> docsReferenciados) {
 		this.docsReferenciados = docsReferenciados;
+	}
+	public List<Leyenda> getLeyendas() {
+		return leyendas;
+	}
+	public void setLeyendas(List<Leyenda> leyendas) {
+		this.leyendas = leyendas;
+	}
+	public BigDecimal getTasaIgv() {
+		return tasaIgv;
+	}
+	public void setTasaIgv(BigDecimal tasaIgv) {
+		this.tasaIgv = tasaIgv;
 	}
 }

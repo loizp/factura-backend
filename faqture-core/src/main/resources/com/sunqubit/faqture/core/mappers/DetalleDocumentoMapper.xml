@@ -24,28 +24,20 @@
 			<if test="codigoProducto != null">, dedo_codigo_producto</if>
 			, dedo_descripcion
 			<if test="unidadMedida.id != null">, unme_codigo</if>
-			, dedo_cantidad, dedo_precio_venta
-			<if test="descuento != null">, dedo_descuento</if>
-			<if test="ventaNoOnerosa != null">, dedo_venta_no_onerosa</if>
+			, dedo_cantidad, dedo_precio_venta, dedo_descuento, dedo_venta_no_onerosa
 			<if test="tipoAfectacionIgv.codigo != null">, tiai_codigo</if>
-			<if test="tipoAfectacionIgv.codigo != null AND igv != null">, dedo_igv</if>
+			, dedo_igv, dedo_isc, dedo_subtotal
 			<if test="tipoIsc.codigo != null">tisc_codigo</if>
-			<if test="tipoIsc.codigo != null AND isc != null">, dedo_isc</if>
-			, dedo_subtotal
 			)
-			VALUES (#{comprobantePago.id}, #{orden}
-				<if test="codigoProducto != null">, #{codigoProducto}</if>
-				, #{descripcion}
-				<if test="unidadMedida.id != null">, #{unidadMedida.id}</if>
-				, #{cantidad}, #{precioVenta}
-				<if test="descuento != null">, #{descuento}</if>
-				<if test="ventaNoOnerosa != null">, #{ventaNoOnerosa}</if>
-				<if test="tipoAfectacionIgv.codigo != null">, #{tipoAfectacionIgv.codigo}</if>
-				<if test="tipoAfectacionIgv.codigo != null AND igv != null">, #{igv}</if>
-				<if test="tipoIsc.codigo != null">#{item.tipoIsc.codigo}</if>
-				<if test="tipoIsc.codigo != null AND isc != null">, #{isc}</if>
-				, #{subtotal}
-				);
+		VALUES (#{comprobantePago.id}, #{orden}
+			<if test="codigoProducto != null">, #{codigoProducto}</if>
+			, #{descripcion}
+			<if test="unidadMedida.id != null">, #{unidadMedida.id}</if>
+			, #{cantidad}, #{precioVenta}, #{descuento}, #{ventaNoOnerosa}
+			<if test="tipoAfectacionIgv.codigo != null">, #{tipoAfectacionIgv.codigo}</if>
+			, #{igv}, #{isc}, #{subtotal}
+			<if test="tipoIsc.codigo != null">#{item.tipoIsc.codigo}</if>
+			);
     </insert>
     
     <select id="getDetalleDoc" parameterType="long" resultMap="DetalleDocumentoMap">

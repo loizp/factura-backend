@@ -13,9 +13,9 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<spring.version>4.3.14.RELEASE</spring.version>
 		<spring.security.version>4.2.5.RELEASE</spring.security.version>
-		<spring.mobile.version>1.1.5.RELEASE</spring.mobile.version>
 		<jjwt.version>0.7.0</jjwt.version>
 		<jstl.version>1.2</jstl.version>
+		<Jackson.version>2.9.4</Jackson.version>
 		<logback.version>1.2.3</logback.version>
 	</properties>
 	<dependencies>
@@ -61,9 +61,24 @@
 			<version>${jjwt.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.9.2</version>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+    		<version>${Jackson.version}</version>
+		</dependency>
+		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-core</artifactId>
+    		<version>${Jackson.version}</version>
+		</dependency>
+		<dependency>
+    		<groupId>com.fasterxml.jackson.datatype</groupId>
+    		<artifactId>jackson-datatype-jsr310</artifactId>
+    		<version>${Jackson.version}</version>
+		</dependency>
+		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-annotations</artifactId>
+    		<version>${Jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sunqubit.faqture.core.beans.ComprobantePago;
-import com.sunqubit.faqture.core.beans.Empresa;
+import com.sunqubit.faqture.core.beans.Contribuyente;
 import com.sunqubit.faqture.core.beans.NotaDC;
 import com.sunqubit.faqture.core.daos.contracts.IDocumentoDao;
 import com.sunqubit.faqture.core.mappers.DocumentoMapper;
@@ -109,7 +109,7 @@ public class DocumentoDao implements IDocumentoDao {
 	}
 
 	@Override
-	public ComprobantePago getByNumDocC(Empresa empresa, ComprobantePago comprobantePago) throws Exception {
+	public ComprobantePago getByNumDocC(Contribuyente empresa, ComprobantePago comprobantePago) throws Exception {
 		HashMap<String, Object> hmFind = new HashMap<>();
 		hmFind.put("empresa", empresa);
 		hmFind.put("documento", comprobantePago);
@@ -126,7 +126,7 @@ public class DocumentoDao implements IDocumentoDao {
 	}
 	
 	@Override
-	public NotaDC getByNumDocN(Empresa empresa, NotaDC notaDC) throws Exception {
+	public NotaDC getByNumDocN(Contribuyente empresa, NotaDC notaDC) throws Exception {
 		HashMap<String, Object> hmFind = new HashMap<>();
 		hmFind.put("empresa", empresa);
 		hmFind.put("documento", notaDC);

@@ -57,8 +57,8 @@ public class CodigoDocValidator {
 	}
 	
 	public Boolean numNotaValido(String numDoc, String tipoDoc) {
-		if((tipoDoc != "07" && tipoDoc != "08") || !numDoc.matches("^[FB][A-Z0-9]{3}-[0-9]{1,8}$"))
-			return false;
-		return true;
+		if((tipoDoc.equals("07") || tipoDoc.equals("08")) && numDoc.matches("^[FB][A-Z0-9]{3}-[0-9]{1,8}$"))
+			return true;
+		return false;
 	}
 }

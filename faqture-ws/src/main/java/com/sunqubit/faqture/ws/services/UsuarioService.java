@@ -50,8 +50,7 @@ public class UsuarioService {
         try {
         	usuarioValidator.validaUserId(usuario.getId());
         	Usuario identifiedUser = usuarioDao.getById(usuario.getId());
-        	
-        	if(identifiedUser.getLoginName() != usuario.getLoginName()) {
+        	if(!identifiedUser.getLoginName().equals(usuario.getLoginName())) {
         		usuarioValidator.validaUserLoginName(usuario.getLoginName());
         		usuarioDao.changeLoginName(usuario);
         	}

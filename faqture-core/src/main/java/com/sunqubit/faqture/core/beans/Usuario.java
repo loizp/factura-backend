@@ -1,5 +1,6 @@
 package com.sunqubit.faqture.core.beans;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class Usuario {
@@ -7,8 +8,10 @@ public class Usuario {
 	private String loginName;
 	private String password;
 	private String nombre;
+	private Timestamp dateUpKey;
+	private Timestamp dateLogin;
 	private String email;
-	private Boolean activo;
+	private Boolean activo = true;
 	private List<RolUsuario> roles;
 	
 	public long getId() {
@@ -52,5 +55,17 @@ public class Usuario {
 	}
 	public void setRoles(List<RolUsuario> roles) {
 		this.roles = roles;
+	}
+	public Timestamp getDateUpKey() {
+		return dateUpKey;
+	}
+	public void setDateUpKey(Timestamp dateUpKey) {
+		this.dateUpKey = dateUpKey;
+	}
+	public Timestamp getDateLogin() {
+		return dateLogin;
+	}
+	public void setDateLogin(Timestamp dateLogin) {
+		this.dateLogin = dateLogin;
 	}
 }

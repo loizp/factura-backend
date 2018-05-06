@@ -4,22 +4,19 @@
     <resultMap id="UbigeoMap" type="Ubigeo">
         <id column="ubig_id" property="id" />
         <result column="ubig_codigo" property="codigo" />
-        <result column="ubig_descripcion" property="descripcion" />
+        <result column="ubig_departamento" property="departamento" />
+        <result column="ubig_provincia" property="provincia" />
+        <result column="ubig_distrito" property="distrito" />
     </resultMap>
 
     <select id="filter" resultMap="UbigeoMap">
         SELECT ubig_id, ubig_cod_dpto || ubig_cod_prov || ubig_cod_dist AS ubig_codigo,
-        CASE 
-        WHEN ubig_cod_prov || ubig_cod_dist ='0000' THEN ubig_descripcion
-        WHEN ubig_cod_dist ='00' THEN (SELECT ubig_descripcion FROM sunqubit.ubigeos as d where d.ubig_cod_dpto || d.ubig_cod_prov || d.ubig_cod_dist = u.ubig_cod_dpto || '0000')
-        || ' - ' || ubig_descripcion
-        ELSE (SELECT ubig_descripcion FROM sunqubit.ubigeos as d where d.ubig_cod_dpto || d.ubig_cod_prov || d.ubig_cod_dist = u.ubig_cod_dpto || '0000') || ' - ' ||
-        (SELECT ubig_descripcion FROM sunqubit.ubigeos as d where d.ubig_cod_dpto || d.ubig_cod_prov || d.ubig_cod_dist = u.ubig_cod_dpto || u.ubig_cod_prov || '00')
-        || ' - ' || ubig_descripcion
-        END ubig_descripcion
-        FROM sunqubit.ubigeos u
-        WHERE ubig_cod_dpto || ubig_cod_prov || ubig_cod_dist || ubig_descripcion LIKE '%' || UPPER(#{filtro}) || '%'
-        LIMIT 20;
+				ubig_departamento, ubig_provincia, ubig_distrito
+        FROM sunqubit.ubigeos
+        WHERE (ubig_cod_dpto || ubig_cod_prov || ubig_cod_dist LIKE '%' || UPPER(#{filtro}) || '%' OR
+        		ubig_departamento LIKE '%' || UPPER(#{filtro}) || '%' OR ubig_provincia LIKE '%' || UPPER(#{filtro}) || '%'
+        		OR ubig_distrito LIKE '%' || UPPER(#{filtro}) || '%') AND ubig_cod_dist != '00'
+        LIMIT 15;
     </select>
     
     <select id="ubigeoExist" parameterType="long" resultType="long">

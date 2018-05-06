@@ -1,5 +1,7 @@
 package com.sunqubit.faqture.ws.services;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +30,9 @@ public class DocumentoService {
 		Boolean ok = true;
         int code = 201;
         String msg = "El comprobante de pago fue registrado correctamente";
-        
         try {
+        	compPago.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+        	compPago.setEstadoProceso("N");
         	comprobantePagoValidator.validaDocuNumero(compPago.getEmpresa(), compPago.getTipoDocumento(), compPago.getNumero());
         	comprobantePagoValidator.validaDocBaseSingle(compPago);
         	comprobantePagoValidator.validaDocuCliente(compPago.getCliente());
@@ -40,7 +43,7 @@ public class DocumentoService {
         		comprobantePagoValidator.validaDocuVendedor(compPago.getVendedor());
         	if(compPago.getEmailCliente() != null)
         		comprobantePagoValidator.validaDocuEmailCliente(compPago.getEmailCliente());
-        	
+        	comprobantePagoValidator.validaDocAutoEmision(compPago.getEmpresa().getId(), compPago.getCliente().getId());
         	documentoDao.insert(compPago);
         } catch (ValidatorException ve) {
             ok = false;
@@ -60,11 +63,13 @@ public class DocumentoService {
         String msg = "La nota fue registrado correctamente";
         
         try {
+        	notaDC.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+        	notaDC.setEstadoProceso("N");
+        	
         	notaDCValidator.validaDocuNumero(notaDC.getEmpresa(), notaDC.getTipoDocumento(), notaDC.getNumero());
         	notaDCValidator.validaDocBaseSingle(notaDC);
         	notaDCValidator.validaDocuTipoNota(notaDC.getTipoDocumento(), notaDC.getTipoNota());
         	notaDCValidator.validaDocuSustentoNota(notaDC.getSustentoNota());
-
         	documentoDao.insert(notaDC);
         } catch (ValidatorException ve) {
             ok = false;
@@ -76,5 +81,35 @@ public class DocumentoService {
             msg = "No se puede registrar la nota debido a: " + ex.getMessage();
         }
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), null);
+	}
+	
+	public ApiRestFullResponse getC(long id) {
+	 	Boolean ok = true;
+	 	int code = 200;
+	 	String msg = "Entrega del documento solicitado";
+	 	ComprobantePago res = null;
+	 	try {
+	 		res = documentoDao.getCompPago(id);
+	 	} catch (Exception ex) {
+            ok = false;
+            code = 500;
+            msg = "No se puede obtener el comprobante de pago debido a: " + ex.getMessage();
+        }
+    	return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
+	}
+	
+	public ApiRestFullResponse getN(long id) {
+	 	Boolean ok = true;
+	 	int code = 200;
+	 	String msg = "Entrega del documento solicitado";
+	 	NotaDC res = null;
+	 	try {
+	 		res = documentoDao.getNotaDC(id);
+	 	} catch (Exception ex) {
+            ok = false;
+            code = 500;
+            msg = "No se puede obtener el comprobante de pago debido a: " + ex.getMessage();
+        }
+    	return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
 	}
 }

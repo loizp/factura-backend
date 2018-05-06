@@ -4,29 +4,29 @@
     <resultMap id="SucursalMap" type="Sucursal">
         <id column="sucu_id" property="id" />
         <result column="sucu_direccion" property="direccion" />
+        <result column="sucu_urbanizacion" property="urbanizacion" />
         <result column="sucu_status" property="activo" />
-        <association property="contribuyente" javaType="Contribuyente" resultMap="com.sunqubit.faqture.core.mappers.ContribuyenteMapper.ContribuyenteMap"/>
+        <association property="contribuyente" javaType="Contribuyente">
+        	<id column="cont_id" property="id" />
+        </association>
         <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.core.mappers.UbigeoMapper.UbigeoMap"/>
         <association property="pais" javaType="Pais" resultMap="com.sunqubit.faqture.core.mappers.PaisMapper.PaisMap"/>
     </resultMap>
 
     <insert id="insert" parameterType="Sucursal">
-    	INSERT INTO sunqubit.sucursales (cont_id, sucu_direccion
-    		<if test="activo != null">, sucu_status</if>
+    	INSERT INTO sunqubit.sucursales (cont_id, sucu_direccion, sucu_status
     		<if test="ubigeo.id != null">, ubig_id</if>
     		)
-			VALUES (#{contribuyente.id}, #{direccion}
-			<if test="activo != null">, #{activo}</if>
+			VALUES (#{contribuyente.id}, #{direccion}, #{activo}
 			<if test="ubigeo.id != null">, #{ubigeo.id}</if>
 			);
 	</insert>
     
     <update id="update" parameterType="Sucursal">
         UPDATE sunqubit.sucursales
-			SET sucu_direccion=#{direccion}
+		SET sucu_direccion=#{direccion}, sucu_status = #{activo}
 			<if test="ubigeo.id != null">, ubig_id = #{ubigeo.id}</if>
-			<if test="activo != null">, sucu_status = #{activo}</if>
-			WHERE sucu_id = #{id};
+		WHERE sucu_id = #{id};
     </update>
 	
 	<select id="sucuExist" parameterType="HashMap" resultType="long">

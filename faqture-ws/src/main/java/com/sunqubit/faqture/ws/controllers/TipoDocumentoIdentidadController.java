@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sunqubit.faqture.ws.services.TipoDocumentoIdentidadService;
 
 @RestController
-@RequestMapping("/tiposdocidentidad")
+@RequestMapping("/tidocident")
 public class TipoDocumentoIdentidadController {
 
     @Autowired

@@ -1,6 +1,7 @@
 package com.sunqubit.faqture.ws.validators;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.sunqubit.faqture.core.beans.ComprobantePago;
 import com.sunqubit.faqture.core.beans.Contribuyente;
@@ -8,6 +9,7 @@ import com.sunqubit.faqture.core.beans.TipoDocumento;
 import com.sunqubit.faqture.core.validators.DocumentoDaoValidator;
 import com.sunqubit.faqture.core.validators.ValidatorException;
 
+@Component
 public class ComprobantePagoValidator extends DocumentoDaoValidator {
 	
 	@Autowired
@@ -42,15 +44,21 @@ public class ComprobantePagoValidator extends DocumentoDaoValidator {
 	
 	public void validaDocBaseSingle(ComprobantePago compPago) throws ValidatorException {
 		documentoBaseValidator.validaDocuFechaEmision(compPago.getFechaEmision());
-    	if(compPago.getLeyenda() != null)
+    	if(compPago.getLeyendas() != null)
     		documentoBaseValidator.validaDocuLeyenda(compPago.getTipoLeyenda(), compPago.getLeyenda());
     	if(compPago.getObservacion() != null)
     		documentoBaseValidator.validaDocuObservacion(compPago.getObservacion());
     	documentoBaseValidator.validaDocuFechaProceso(compPago.getFechaProceso());
     	if(compPago.getEstadoProceso() != null)
     		documentoBaseValidator.validaDocuEstadoProceso(compPago.getFechaProceso(), compPago.getEstadoProceso());
-    	documentoBaseValidator.validaDocuMoneda(compPago.getMoneda());
+    	if(compPago.getMoneda() != null)
+    		documentoBaseValidator.validaDocuMoneda(compPago.getMoneda());
     	if(compPago.getEmprSucursal() != null)
     		documentoBaseValidator.validaDocuEmprSucursal(compPago.getEmpresa(), compPago.getEmprSucursal());
+	}
+	
+	public void validaDocAutoEmision(long docEmpresaId, long docClienteId) throws ValidatorException {
+		if(docEmpresaId == docClienteId)
+			throw new ValidatorException("El documento no puede ser emitido a si mismo");
 	}
 }

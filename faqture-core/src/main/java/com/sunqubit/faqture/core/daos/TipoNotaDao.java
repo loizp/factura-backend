@@ -9,11 +9,13 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.sunqubit.faqture.core.beans.TipoNota;
 import com.sunqubit.faqture.core.daos.contracts.ITipoNotaDao;
 import com.sunqubit.faqture.core.mappers.TipoNotaMapper;
 
+@Repository
 public class TipoNotaDao implements ITipoNotaDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TipoNotaDao.class);

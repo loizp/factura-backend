@@ -14,50 +14,25 @@ public class EmpresaValidator extends ContribuyenteDaoValidator {
 	private CodigoDocValidator codigoDocValidator;
 	
 	@Override
-	public void validaContDoc(String emprDoc, TipoDocumentoIdentidad emprTipoDocIdentidad) throws ValidatorException {
-		super.validaContDoc(emprDoc, emprTipoDocIdentidad);
+	public void validaContDoc(String contDoc, TipoDocumentoIdentidad contTipoDocIdentidad) throws ValidatorException {
+		this.validaContTipoDocIdentidad(contTipoDocIdentidad);
 		
-		this.validaContTipoDocIdentidad(emprTipoDocIdentidad);
-		
-		if(emprDoc.trim().isEmpty())
+		if(contDoc == null || contDoc.trim().isEmpty())
 			throw new ValidatorException("Es necesario que el atributo 'numeroDocumento' de la empresa");
 		
-		if(!codigoDocValidator.docIdentidadValido(emprDoc, emprTipoDocIdentidad.getCodigo())) {
+		super.validaContDoc(contDoc, contTipoDocIdentidad);
+		
+		if(!codigoDocValidator.docIdentidadValido(contDoc, contTipoDocIdentidad.getCodigo())) {
 			throw new ValidatorException("Es necesario que el atributo 'numeroDocumento' sea válido según el tipo de documento");
 		}
 	}
-	
-	@Override
-	public void validaContNombreLegal(String emprRazonSocial) throws ValidatorException{
-		super.validaContNombreLegal(emprRazonSocial);
-		
-		if (emprRazonSocial.isEmpty() || !emprRazonSocial.matches("^[\\w- ]+(\\.[\\w- ]+)*$"))
-			throw new ValidatorException("Es necesario que el atributo 'nombreLegal' solo contenga caracteres alfabéticos o númericos");
-	}
-	
-	@Override
-	public void validaContNombreComercial(String emprNombreComercial) throws ValidatorException{
-		super.validaContNombreComercial(emprNombreComercial);
-		
-		if (emprNombreComercial.isEmpty() || !emprNombreComercial.matches("^[\\w- ]+(\\.[\\w- ]+)*$"))
-			throw new ValidatorException("Es necesario que el atributo 'razonSocial' solo contenga caracteres alfabéticos o númericos");
-	}
-	
-	@Override
-	public void validaContDireccion(String emprDireccion) throws ValidatorException{
-		super.validaContDireccion(emprDireccion);
-		
-		if (emprDireccion.isEmpty() || !emprDireccion.matches("^[\\w- ]+(\\.[\\w- ]+)*#[\\w- ]+(\\.[\\w- ]+)*$"))
-            throw new ValidatorException("Es necesario que el atributo 'direccion' debe estar correctamente expresado");
-	}
-	
-	@Override
-	public void validaContTipoDocIdentidad(TipoDocumentoIdentidad emprTipoDocIdentidad) throws ValidatorException {
-		super.validaContTipoDocIdentidad(emprTipoDocIdentidad);
-		
-		String tidoPermitidos="1467A";
-		if(!tidoPermitidos.contains(emprTipoDocIdentidad.getCodigo()))
-			throw new ValidatorException("Es necesario que el atributo 'tipoDocumentoIdentidad' exija el numero de documento de la empresa");
-	} 
 
+	@Override
+	public void validaContTipoDocIdentidad(TipoDocumentoIdentidad contTipoDocIdentidad) throws ValidatorException {		
+		super.validaContTipoDocIdentidad(contTipoDocIdentidad);
+		
+		String tidoPermitidos="1467ABCD";
+		if(contTipoDocIdentidad.getCodigo().trim().isEmpty() || tidoPermitidos.indexOf(contTipoDocIdentidad.getCodigo()) == -1)
+			throw new ValidatorException("Es necesario que el atributo 'tipoDocumentoIdentidad' exija el numero de documento de la empresa");
+	}
 }

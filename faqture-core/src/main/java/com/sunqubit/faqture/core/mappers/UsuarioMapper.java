@@ -18,5 +18,7 @@ public interface UsuarioMapper {
 	
 	Long loginNameExist(String loginName);
 	
+	void dateLogin (String loginName);
+	
 	Usuario getById(long id);
 }

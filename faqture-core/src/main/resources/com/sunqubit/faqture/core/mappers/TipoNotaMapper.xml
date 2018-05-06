@@ -5,10 +5,15 @@
         <id column="tino_id" property="id" />
         <result column="tino_codigo" property="codigo" />
         <result column="tino_descripcion" property="descripcion" />
+        <association property="tipoDocumento" javaType="TipoDocumento">
+        	<id column="tido_codigo" property="codigo" />
+        	<result column="tido_descripcion" property="descripcion" />
+        </association>
     </resultMap>
 
     <select id="getAll" resultMap="TipoNotaMap">
-        SELECT * FROM sunqubit.tipos_notas;
+        SELECT * FROM sunqubit.tipos_notas
+        INNER JOIN sunqubit.tipos_documentos ON sunqubit.tipos_documentos.tido_codigo = sunqubit.tipos_notas.tido_codigo;
     </select>
     
     <select id="tinoExist" parameterType="HashMap" resultType="long">

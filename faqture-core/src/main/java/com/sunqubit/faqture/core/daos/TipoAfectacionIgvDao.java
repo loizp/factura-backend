@@ -8,11 +8,13 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.sunqubit.faqture.core.beans.TipoAfectacionIgv;
 import com.sunqubit.faqture.core.daos.contracts.ITipoAfectacionIgvDao;
 import com.sunqubit.faqture.core.mappers.TipoAfectacionIgvMapper;
 
+@Repository
 public class TipoAfectacionIgvDao implements ITipoAfectacionIgvDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(TipoAfectacionIgvDao.class);

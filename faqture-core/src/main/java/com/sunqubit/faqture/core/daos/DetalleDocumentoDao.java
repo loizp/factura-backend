@@ -8,11 +8,13 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.sunqubit.faqture.core.beans.DetalleDocumento;
 import com.sunqubit.faqture.core.daos.contracts.IDetalleDocumentoDao;
 import com.sunqubit.faqture.core.mappers.DetalleDocumentoMapper;
 
+@Repository
 public class DetalleDocumentoDao implements IDetalleDocumentoDao {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(DetalleDocumentoDao.class);

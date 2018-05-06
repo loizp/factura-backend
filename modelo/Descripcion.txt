@@ -1,0 +1,12 @@
+Luis(cliente) va a comprar un polo(producto) en la tienda Cubas E.I.R.L.(empresa), donde Carlos(vendedor) le ofrece diversos modelos de polos,
+de las cuales escoge el un par y se va a pagar a caja donde él pide una boleta(documento tipo boleta) para lo cual le piden sus datos como: 
+El número de DNI(tipo de documento de identidad), nombres y apellidos completos y su direccion(geográfica y/o email).
+
+Al recibir(via email o físico) el documento verifica los datos de la compra y observa que contiene los datos del local(empresa,sucursal), 
+un numero de serie, fecha de la compra, sus datos que entregó, una lista con la cantidad, la descripcion del producto, el precio unitario, 
+el descuesto tenia por oferta, el calculo del igv, subtotal, un total, una leyenda del valor de la compra, un enlace donde podría revisar el documento 
+en la web y la fecha de pago. Luis(cliente) contento con la compra decide ir de compra por otros modelos que no encontró en esta tienda a otra tienda.
+
+En caja al momento de la emisión del documento desde su sistema comercial, la boleta es almacenado en una base de datos la cual es recogita
+por una aplicación que prepara el documento y envia según los requerimientos de otra aplicación(tipo REST) quien recoje el documento lo valida
+y lo almacena en una base de datos una vez guardada le da formato en XML y lo envia a la SUNAT.

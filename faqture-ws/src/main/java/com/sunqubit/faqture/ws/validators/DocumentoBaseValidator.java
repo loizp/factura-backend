@@ -1,12 +1,15 @@
 package com.sunqubit.faqture.ws.validators;
 
-import java.util.Date;
+import java.sql.Timestamp;
+
+import org.springframework.stereotype.Component;
 
 import com.sunqubit.faqture.core.beans.Moneda;
 import com.sunqubit.faqture.core.beans.TipoLeyenda;
 import com.sunqubit.faqture.core.validators.DocumentoDaoValidator;
 import com.sunqubit.faqture.core.validators.ValidatorException;
 
+@Component
 public class DocumentoBaseValidator extends DocumentoDaoValidator {
 	
 	@Override
@@ -26,7 +29,7 @@ public class DocumentoBaseValidator extends DocumentoDaoValidator {
 	}
 	
 	@Override
-	public void validaDocuEstadoProceso(Date docuFechaProceso, String docuEstadoProceso) throws ValidatorException {
+	public void validaDocuEstadoProceso(Timestamp docuFechaProceso, String docuEstadoProceso) throws ValidatorException {
 		super.validaDocuEstadoProceso(docuFechaProceso, docuEstadoProceso);
 		
 		String estados = "NMBPEX";

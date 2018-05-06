@@ -4,11 +4,11 @@
     <resultMap id="TipoDocumentoMap" type="TipoDocumento">
         <id column="tido_codigo" property="codigo" />
         <result column="tido_descripcion" property="descripcion" />
-        <collection property="tiposNotas" javaType="TipoNota" resultMap="com.sunqubit.faqture.core.mappers.TipoNotaMapper.TipoNotaMap" />
+        <collection property="tiposNotas" ofType="TipoNota" resultMap="com.sunqubit.faqture.core.mappers.TipoNotaMapper.TipoNotaMap" />
     </resultMap>
 
     <select id="getAll" resultMap="TipoDocumentoMap">
         SELECT * FROM sunqubit.tipos_documentos
-        	INNER JOIN sunqubit.tipos_notas ON sunqubit.tipos_documentos.tido_codigo = sunqubit.tipos_notas.tido_codigo;
+        LEFT JOIN sunqubit.tipos_notas ON sunqubit.tipos_documentos.tido_codigo = sunqubit.tipos_notas.tido_codigo;
     </select>
 </mapper>
