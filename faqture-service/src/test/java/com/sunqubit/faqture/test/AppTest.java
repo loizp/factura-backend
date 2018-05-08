@@ -1,10 +1,12 @@
 package com.sunqubit.faqture.test;
 
+import java.math.BigDecimal;
+
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Date;
 
-import com.sunqubit.faqture.ws.validators.FechaHoraValidator;
+import com.sunqubit.faqture.service.validators.FechaHoraValidator;
 
 //import java.time.LocalDateTime;
 
@@ -17,7 +19,7 @@ public class AppTest {
     	//System.out.println("ROOT: " + passwordEncoder.encode("20f@qture$UNAT18"));
     	
     	//System.out.println("UWEB: " + passwordEncoder.encode("#WEB@pplicat10n"));
-    	
+    	/*
     	String fh = "2001-02-20 23:20:33.0";
         
         String h = "00:00:00.78 AM";
@@ -33,10 +35,10 @@ public class AppTest {
         System.out.println(aa.toString().matches(fv2.getFechaHoraRegExp()));
         System.out.println(fv2.horaValida(aa));
         
-        
+        */
         //LocalDateTime fecha = LocalDateTime.now();
         
-        System.out.println("fecha sql: " + java.sql.Timestamp.valueOf(fh));
+        //System.out.println("fecha sql: " + java.sql.Timestamp.valueOf(fh));
         
         //System.out.println(" P.M.".matches("[ ](?:([aA][mM])|([aA].[mM].))"));
         
@@ -45,5 +47,8 @@ public class AppTest {
         //String cad = cader.replaceAll("(.)\\1+", "$1");
         //System.out.println ("Resultado: " + cad);
         //System.out.println ("Resultado2: " + cad.substring(1, 2));
+        
+        BigDecimal b = new BigDecimal(0.01);
+        System.out.println(b.compareTo(BigDecimal.ZERO));
     }
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE mapper PUBLIC '-//mybatis.org//DTD//Mapper 3.0//EN' 'http://mybatis.org/dtd/mybatis-3-mapper.dtd'>
+<mapper namespace="com.sunqubit.faqture.dao.mappers.SucursalMapper">
+    <resultMap id="SucursalMap" type="Sucursal">
+        <id column="sucu_id" property="id" />
+        <result column="sucu_direccion" property="direccion" />
+        <result column="sucu_urbanizacion" property="urbanizacion" />
+        <result column="sucu_status" property="activo" />
+        <association property="contribuyente" javaType="Contribuyente">
+        	<id column="cont_id" property="id" />
+        </association>
+        <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.dao.mappers.UbigeoMapper.UbigeoMap"/>
+        <association property="pais" javaType="Pais" resultMap="com.sunqubit.faqture.dao.mappers.PaisMapper.PaisMap"/>
+    </resultMap>
+    
+    <select id="selectKey" resultType="long">
+    	SELECT NEXTVAL('sunqubit.sucursales_sucu_id_seq_1');
+    </select>
+
+    <insert id="insert" parameterType="Sucursal">
+    	INSERT INTO sunqubit.sucursales (sucu_id, cont_id, sucu_direccion, sucu_status
+    		<if test="urbanizacion != null">, sucu_urbanizacion</if>
+    		<if test="ubigeo != null">, ubig_id</if>
+    		)
+			VALUES (#{id}, #{contribuyente.id}, #{direccion}, #{activo}
+			<if test="urbanizacion != null">, #{urbanizacion}</if>
+			<if test="ubigeo != null">, #{ubigeo.id}</if>
+			);
+	</insert>
+    
+    <update id="update" parameterType="Sucursal">
+        UPDATE sunqubit.sucursales
+		SET sucu_direccion=#{direccion}, sucu_status = #{activo}
+			<if test="urbanizacion != null">, sucu_urbanizacion = #{urbanizacion}</if>
+			<if test="ubigeo != null">, ubig_id = #{ubigeo.id}</if>
+		WHERE sucu_id = #{id};
+    </update>
+	
+	<select id="sucuExist" parameterType="HashMap" resultType="long">
+		SELECT count(*) FROM sunqubit.sucursales WHERE sucu_id = #{sucuId} AND cont_id = #{contId};
+	</select>
+	
+	<select id="getList" parameterType="long" resultMap="SucursalMap">
+		SELECT * FROM sunqubit.sucursales
+			LEFT JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.sucursales.ubig_id
+		WHERE cont_id = #{contId};
+	</select>
+	
+	<select id="getExist" parameterType="Sucursal" resultType="long">
+		SELECT * FROM sunqubit.sucursales
+			LEFT JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.sucursales.ubig_id
+		WHERE cont_id = #{contribuyente.id} AND sucu_direccion = #{direccion}
+			<if test="urbanizacion != null">AND sucu_urbanizacion = #{urbanizacion}</if>
+			<if test="ubigeo != null and ubigeo.id > 1">AND ubig_id = #{ubigeo.id}</if>
+			<if test="ubigeo != null and ubigeo.codigo != null">AND sunqubit.ubigeos.ubig_cod_dpto || sunqubit.ubigeos.ubig_cod_prov || sunqubit.ubigeos.ubig_cod_dist = #{ubigeo.codigo}</if>
+	</select>
+</mapper>

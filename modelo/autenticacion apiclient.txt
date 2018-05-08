@@ -1,0 +1,21 @@
+-------------------------------
+reglas de la cuenta de usuario:
+-------------------------------
+1.- Al momento de dar de alta a una empresa para trabajar con la aplicación de faqture, por lo menos se le creará una cuenta de usuario.
+2.- De acuerdo a los requerimientos y/o contrato se crearán tantas cuentas de usuarios sean necesarias.
+3.- Cada cuenta de usuario creada contendrá obligatoriamente un nombre de usuario que es único y una contraseña que se guardará encriptada.
+4.- Por defecto las cuentas de usuarios tendran el rol de USER que no cuenta con ningun permiso.
+5.- Para que la cuenta de usuario sea usado en el AppDesktopClient deberán tener el rol APICLIENT.
+6.- La cuenta de usuario estará referenciada a una cuenta de correo para informes con respecto a la autenticación.
+-----------------------------------------
+Proceso de Autenticación AppDesktopClient 
+-----------------------------------------
+1.- Inicialmente debera autenticarse enviando los datos de la cuenta a la direccion de login del módulo REST en formato JSON.
+2.- El módulo REST recibirá los datos y enviará al modulo de Seguridad para su respectivo procesamiento.
+3.- El módulo de seguridad verificará que los datos cumplan con los parametros iniciales de seguridad y enviará al módulo de Acceso a Datos.
+4.- El Módulo de Acceso a datos consultará a la Base de Datos la informacion del usuario y devolverá la información al módulo de seguridad.
+5.- El módulo de seguridad verificará si la información de acceso es correcta con los datos de acceso entregado inicialmente.
+6.- De ser correcta los datos de autenticación procederá a generar un token JWT que será entregada al modulo REST.
+7.- El módulo REST devolverá el mensaje correcto o incorrecto de la autenticación y que en caso de ser correcto adjuntará el token respectivo.
+8.- De ahora en adelante todas las peticiones al REST por parte del AppDesktopClient seran adjuntando en la cabecera el token obtenido.
+9.- el token tiene un tiempo de validez el cual deberá ser cambiado con un nuevo proceso de login exitoso en el enlace login del REST.

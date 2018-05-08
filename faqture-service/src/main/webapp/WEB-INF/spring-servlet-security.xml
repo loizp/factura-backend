@@ -37,11 +37,11 @@
 	
 	<beans:bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource" />
 	 
-	<beans:bean id="jwtAuthenticationEntryPoint" class="com.sunqubit.faqture.ws.security.JwtAuthenticationEntryPoint" />
+	<beans:bean id="jwtAuthenticationEntryPoint" class="com.sunqubit.faqture.service.security.JwtAuthenticationEntryPoint" />
                 
-	<beans:bean id="jwtAuthenticationTokenFilter" class="com.sunqubit.faqture.ws.security.JwtAuthenticationTokenFilter" />
+	<beans:bean id="jwtAuthenticationTokenFilter" class="com.sunqubit.faqture.service.security.JwtAuthenticationTokenFilter" />
 	
-	<beans:bean id="jwtTokenUtil" class="com.sunqubit.faqture.ws.security.JwtTokenUtil" />
+	<beans:bean id="jwtTokenUtil" class="com.sunqubit.faqture.service.security.JwtTokenUtil" />
 	
     <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="userSecurityService">
@@ -51,6 +51,6 @@
 
     <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-    <beans:bean id="userSecurityService" class="com.sunqubit.faqture.ws.security.UserSecurityService" />
+    <beans:bean id="userSecurityService" class="com.sunqubit.faqture.service.security.UserSecurityService" />
 
 </beans:beans>

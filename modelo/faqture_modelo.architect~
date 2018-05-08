@@ -746,7 +746,7 @@ Debito:
     <column id="COL186" populated="true" UUID="d5db5460-ca15-4076-875f-ea69ad3ce1e9" autoIncrement="false" autoIncrementSequenceName="tipos_leyendas_tley_codigo_seq_1" defaultValue="" name="tley_codigo" nullable="0" physicalName="tley_codigo" precision="4" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="1" userDefinedTypeUUID="67ddc63f-5541-4dd1-9236-632d9d155e80" >
      <remarks>Campo PK con el codigo de la leyenda a usar segun el catalogo</remarks>
     </column>
-    <column id="COL187" populated="true" UUID="572b4e81-4422-4be0-b44f-55cf854d7c8c" autoIncrement="false" autoIncrementSequenceName="leyendas_Descripcion_seq" defaultValue="" name="Descripcion" nullable="0" physicalName="Descripcion" precision="200" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+    <column id="COL187" populated="true" UUID="572b4e81-4422-4be0-b44f-55cf854d7c8c" autoIncrement="false" autoIncrementSequenceName="leyendas_leye_descripcion_seq" defaultValue="" name="leye_descripcion" nullable="0" physicalName="leye_descripcion" precision="200" referenceCount="1" scale="0" sourceDataTypeName="UserDefinedSQLType" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
      <remarks>Cambo con la descripcion de la leyenda</remarks>
     </column>
     </folder>
@@ -808,10 +808,10 @@ Debito:
    </relationship>
   </relationships>
  </target-database>
- <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="false" target-schema="sunqubit"> </ddl-generator>
+ <ddl-generator type="ca.sqlpower.architect.ddl.PostgresDDLGenerator" allow-connection="true" target-schema="sunqubit"> </ddl-generator>
  <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
  <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
- <play-pen zoom="0.5946035575013602" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
+ <play-pen zoom="0.5946035575013602" viewportX="37" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
   <table-pane table-ref="TAB1" x="736" y="237" bgColor="0xc8b7ea" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB43" x="1136" y="1091" bgColor="0xe4e4b8" fgColor="0x000000" rounded="false" dashed="false"/>
   <table-pane table-ref="TAB62" x="1131" y="57" bgColor="0xe8cfdb" fgColor="0x000000" rounded="false" dashed="false"/>
