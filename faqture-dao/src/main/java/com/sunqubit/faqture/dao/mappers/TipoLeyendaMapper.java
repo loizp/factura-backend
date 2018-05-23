@@ -7,5 +7,5 @@ import com.sunqubit.faqture.beans.catalogs.TipoLeyenda;
 public interface TipoLeyendaMapper {
 	List<TipoLeyenda> getAll();
 	
-	Long tipoLeyendaExist(String tleyCodigo);
+	long tipoLeyendaExist(String tleyCodigo);
 }

@@ -32,7 +32,7 @@
 			solicitud) -->
 		<custom-filter before="FORM_LOGIN_FILTER"  ref="jwtAuthenticationTokenFilter" />
 		
-		<intercept-url pattern="/**" access="hasRole('ROLE_ROOT')" />
+		<intercept-url pattern="/**" access="hasRole('ROLE_APICLIENT')" />
 	</http>
 	
 	<beans:bean id="corsSource" class="org.springframework.web.cors.UrlBasedCorsConfigurationSource" />

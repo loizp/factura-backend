@@ -19,6 +19,13 @@
         LIMIT 15;
     </select>
     
+    <select id="get" resultMap="UbigeoMap">
+        SELECT ubig_id, ubig_cod_dpto || ubig_cod_prov || ubig_cod_dist AS ubig_codigo,
+				ubig_departamento, ubig_provincia, ubig_distrito
+        FROM sunqubit.ubigeos
+        WHERE (ubig_cod_dpto || ubig_cod_prov || ubig_cod_dist) = #{codigo}
+    </select>
+    
     <select id="ubigeoExist" parameterType="long" resultType="long">
     	SELECT count(*) FROM sunqubit.ubigeos WHERE ubig_id = #{ubigId};
     </select>

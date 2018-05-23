@@ -10,7 +10,14 @@
         <result column="user_date_login" property="dateLogin"/>
         <result column="user_email" property="email"/>
         <result column="user_status" property="activo"/>
+        <result column="user_solosucu" property="soloSucursales"/>
+        <association property="empresa" javaType="Contribuyente">
+    		<id property="id" column="cont_id"/>
+  		</association>
         <collection property="roles" ofType="RolUsuario" resultMap="com.sunqubit.faqture.dao.mappers.RolUsuarioMapper.RolUsuarioMap" />
+        <collection property="sucursales" ofType="Sucursal">
+    		<id property="id" column="sucu_id"/>
+    	</collection>
     </resultMap>
     
     <select id="selectKey" resultType="long">
@@ -18,14 +25,22 @@
     </select>
 
     <insert id="insert" parameterType="Usuario">
-        INSERT INTO sunqubit.usuarios (user_id, user_login_name, user_password, user_nombre, user_date_upkey, user_email, user_status)
-        VALUES (#{id}, #{loginName}, #{password}, #{nombre}, (SELECT now()), #{email}, #{activo});
+        INSERT INTO sunqubit.usuarios (user_id, user_login_name, user_password, user_nombre, user_date_upkey, user_email, user_status
+        <if test="empresa != null">, cont_id</if>, user_solosucu)
+        VALUES (#{id}, #{loginName}, #{password}, #{nombre}, (SELECT now()), #{email}, #{activo}
+        <if test="empresa != null">, #{empresa.id}</if>, #{soloSucursales});
         <if test="roles != null">
             <foreach item="role" collection="roles">
-                <if test="role.id != null">
+                <if test="role.id > 0">
                     INSERT INTO sunqubit.asignaciones_roles (user_id, role_id)
                     VALUES (#{id}, #{role.id});
                 </if>
+            </foreach>
+        </if>
+        <if test="sucursales != null">
+            <foreach item="sucursal" collection="sucursales">
+            	INSERT INTO sunqubit.usuarios_sucursales (user_id, sucu_id)
+                VALUES (#{id}, #{sucursal.id});
             </foreach>
         </if>
         <if test="roles == null">				
@@ -37,7 +52,19 @@
     <update id="update" parameterType="Usuario">
         UPDATE sunqubit.usuarios 
         SET user_nombre = #{nombre}, user_status = #{activo}
+        	<if test="empresa != null">, cont_id = #{empresa.id}</if>
+        	<if test="empresa == null">, cont_id = NULL</if>
+        	, user_solosucu = #{soloSucursales}
         WHERE user_id = #{id};
+        
+        DELETE FROM sunqubit.usuarios_sucursales
+        WHERE user_id = #{id};
+        <if test="sucursales != null">
+            <foreach item="sucursal" collection="sucursales">
+            	INSERT INTO sunqubit.usuarios_sucursales (user_id, sucu_id)
+                VALUES (#{id}, #{sucursal.id});
+            </foreach>
+        </if>
 			
         DELETE FROM sunqubit.asignaciones_roles
         WHERE user_id = #{id};
@@ -80,8 +107,9 @@
 	
     <select id="login" parameterType="String" resultMap="UsuarioMap">
         SELECT * FROM sunqubit.usuarios
-            INNER JOIN sunqubit.asignaciones_roles on sunqubit.usuarios.user_id = sunqubit.asignaciones_roles.user_id
-            INNER JOIN sunqubit.roles on sunqubit.asignaciones_roles.role_id = sunqubit.roles.role_id
+            INNER JOIN sunqubit.asignaciones_roles on sunqubit.asignaciones_roles.user_id = sunqubit.usuarios.user_id
+            INNER JOIN sunqubit.roles on sunqubit.roles.role_id = sunqubit.asignaciones_roles.role_id
+            LEFT JOIN sunqubit.usuarios_sucursales on sunqubit.usuarios_sucursales.user_id = sunqubit.usuarios.user_id
         WHERE user_login_name = #{loginName} AND user_status = true;
     </select>
     
@@ -92,8 +120,9 @@
     
     <select id="getById" parameterType="long" resultMap="UsuarioMap">
         SELECT * FROM sunqubit.usuarios
-            LEFT JOIN sunqubit.asignaciones_roles on sunqubit.usuarios.user_id = sunqubit.asignaciones_roles.user_id
-            LEFT JOIN sunqubit.roles on sunqubit.asignaciones_roles.role_id = sunqubit.roles.role_id
+            LEFT JOIN sunqubit.asignaciones_roles on sunqubit.asignaciones_roles.user_id = sunqubit.usuarios.user_id
+            LEFT JOIN sunqubit.roles on sunqubit.roles.role_id = sunqubit.asignaciones_roles.role_id
+            LEFT JOIN sunqubit.usuarios_sucursales on sunqubit.usuarios_sucursales.user_id = sunqubit.usuarios.user_id
         WHERE sunqubit.usuarios.user_id = #{id};
     </select>
 </mapper>

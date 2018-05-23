@@ -7,5 +7,7 @@ import com.sunqubit.faqture.beans.catalogs.Ubigeo;
 public interface UbigeoMapper {
 	List<Ubigeo> filter(String filtro);
 	
-	Long ubigeoExist(Long ubigId);
+	Ubigeo get(String codigo);
+	
+	long ubigeoExist(Long ubigId);
 }

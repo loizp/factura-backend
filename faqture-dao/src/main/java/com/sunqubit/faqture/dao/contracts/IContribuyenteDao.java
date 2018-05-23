@@ -6,15 +6,15 @@ import com.sunqubit.faqture.beans.core.Contribuyente;
 
 public interface IContribuyenteDao {
 
-    Long insert(Contribuyente contribuyente, String tico) throws Exception;
+    long insert(Contribuyente contribuyente, String tico) throws Exception;
 
     void update(Contribuyente contribuyente, String tico) throws Exception;
 
     void changeDoc(Contribuyente contribuyente) throws Exception;
 
-    Contribuyente getVerif(Long contId) throws Exception;
+    Contribuyente getVerif(long contId) throws Exception;
 
-    Contribuyente get(Long contId) throws Exception;
+    Contribuyente get(long contId) throws Exception;
 
     Contribuyente get(String numDoc, String tDocIdent) throws Exception;
 
@@ -22,5 +22,5 @@ public interface IContribuyenteDao {
 
     Boolean docIdentidadExist(String numero, String tDocIdent) throws Exception;
 
-    Boolean contExist(Long contId) throws Exception;
+    Boolean contExist(long contId) throws Exception;
 }

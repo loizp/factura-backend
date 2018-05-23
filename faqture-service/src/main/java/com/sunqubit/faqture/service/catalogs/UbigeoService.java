@@ -3,6 +3,7 @@ package com.sunqubit.faqture.service.catalogs;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.sunqubit.faqture.beans.catalogs.Ubigeo;
@@ -15,7 +16,8 @@ public class UbigeoService {
 
     @Autowired
     private IUbigeoDao ubigeoDao;
-
+    
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiRestFullResponse filter(String filtro) {
         Boolean ok = true;
         int code = 200;

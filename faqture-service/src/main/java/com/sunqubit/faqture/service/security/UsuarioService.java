@@ -1,9 +1,13 @@
 package com.sunqubit.faqture.service.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.sunqubit.faqture.beans.core.RolUsuario;
+import com.sunqubit.faqture.beans.core.Sucursal;
 import com.sunqubit.faqture.beans.core.Usuario;
 import com.sunqubit.faqture.beans.rest.ApiRestFullResponse;
 import com.sunqubit.faqture.beans.rest.RestFullResponseHeader;
@@ -75,6 +79,67 @@ public class UsuarioService {
             msg = "No se puede modificar el usuario debido a: " + ex.getMessage();
         } 
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), null);
+    }
+    
+    public Boolean allowService(String servicio, long emprId, long sucuId) {
+    	Usuario user = getUserActual();
+    	
+    	if(findRole(user,"ROOT"))
+    		return true;
+    	
+    	Boolean allow = false;
+    	switch (servicio) {
+		case "bfis":
+		case "bfif":
+		case "ndci":
+		case "dcpi": allow = allowInsertbf(user, emprId, sucuId); break;
+		default:break;
+		}
+    	return allow;
+    }
+    
+    private Boolean allowInsertbf(Usuario user, long emprId, long sucuId) {
+    	if(findRole(user,"APICLIENT") || findRole(user,"EMISOR")) {
+    		if(user.getSoloSucursales() && user.getSucursales() == null)
+    			return false;
+    		
+    		if(user.getEmpresa() != null) {
+    			if(user.getEmpresa().getId() == emprId)
+    				return true;
+    		}
+    		
+    		if(user.getSucursales() != null) {
+    			for (Sucursal sucu : user.getSucursales()) {
+					if(sucu.getId() == sucuId)
+						return true;
+				}
+    		}
+    	}
+    	return false;
+    }
+    
+    private Boolean findRole(Usuario user, String role) {
+    	for (RolUsuario rol : user.getRoles()) {
+    		if(rol.getRoleName().equals(role))
+    			return true;
+    	}
+    	return false;
+    }
+    
+    public Usuario getUserActual() {
+    	Usuario user = null;
+    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = null;
+		if (principal instanceof UserDetails)
+			userDetails = (UserDetails) principal;
+		
+		try {
+			user = usuarioDao.login(userDetails.getUsername());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return user;
     }
     
     private Usuario prepareUser(Usuario usuario, boolean encode) {

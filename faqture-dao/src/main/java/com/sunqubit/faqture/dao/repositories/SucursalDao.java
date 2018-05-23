@@ -24,7 +24,7 @@ public class SucursalDao implements ISucursalDao {
     private SqlSessionFactory sqlSessionFactory;
 
 	@Override
-	public Long insert(Sucursal sucursal) throws Exception {
+	public long insert(Sucursal sucursal) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			SucursalMapper mapper = session.getMapper(SucursalMapper.class);
@@ -57,7 +57,7 @@ public class SucursalDao implements ISucursalDao {
 	}
 
 	@Override
-	public Boolean sucuExist(Long sucuId, Long contId) throws Exception {
+	public Boolean sucuExist(long sucuId, long contId) throws Exception {
 		HashMap<String, Object> hmFind = new HashMap<>();
 		hmFind.put("sucuId", sucuId);
 		hmFind.put("contId", contId);
@@ -76,7 +76,7 @@ public class SucursalDao implements ISucursalDao {
 	}
 
 	@Override
-	public List<Sucursal> getList(Long contId) throws Exception {
+	public List<Sucursal> getList(long contId) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			SucursalMapper mapper = session.getMapper(SucursalMapper.class);

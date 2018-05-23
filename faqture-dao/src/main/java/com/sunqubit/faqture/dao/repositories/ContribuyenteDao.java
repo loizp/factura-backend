@@ -43,7 +43,7 @@ public class ContribuyenteDao implements IContribuyenteDao {
 	}
 
 	@Override
-	public Boolean contExist(Long contId) throws Exception {
+	public Boolean contExist(long contId) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
@@ -59,7 +59,7 @@ public class ContribuyenteDao implements IContribuyenteDao {
 	}
 
 	@Override
-	public Long insert(Contribuyente contribuyente, String tico) throws Exception {
+	public long insert(Contribuyente contribuyente, String tico) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
@@ -112,7 +112,7 @@ public class ContribuyenteDao implements IContribuyenteDao {
 	}
 
 	@Override
-	public Contribuyente getVerif(Long contId) throws Exception {
+	public Contribuyente getVerif(long contId) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
@@ -126,7 +126,7 @@ public class ContribuyenteDao implements IContribuyenteDao {
 	}
 
 	@Override
-	public Contribuyente get(Long contId) throws Exception {
+	public Contribuyente get(long contId) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);

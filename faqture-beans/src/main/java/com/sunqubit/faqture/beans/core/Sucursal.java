@@ -7,6 +7,7 @@ import com.sunqubit.faqture.beans.catalogs.Ubigeo;
 
 public class Sucursal {
 	private long id;
+	private String nombreLegal;
 	private String direccion;
 	private Contribuyente contribuyente;
 	private String urbanizacion;
@@ -20,6 +21,12 @@ public class Sucursal {
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public String getNombreLegal() {
+		return nombreLegal;
+	}
+	public void setNombreLegal(String nombreLegal) {
+		this.nombreLegal = nombreLegal;
 	}
 	public String getDireccion() {
 		return direccion;

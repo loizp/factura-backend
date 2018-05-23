@@ -7,5 +7,5 @@ import com.sunqubit.faqture.beans.catalogs.TipoOperacion;
 public interface TipoOperacionMapper {
 	List<TipoOperacion> getAll();
 	
-	Long tiopExist(String tiopCodigo);
+	long tiopExist(String tiopCodigo);
 }

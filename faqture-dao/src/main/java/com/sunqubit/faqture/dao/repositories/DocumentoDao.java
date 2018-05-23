@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sunqubit.faqture.beans.core.ComprobantePago;
-import com.sunqubit.faqture.beans.core.Contribuyente;
 import com.sunqubit.faqture.beans.core.NotaDC;
 import com.sunqubit.faqture.dao.contracts.IDocumentoDao;
 import com.sunqubit.faqture.dao.mappers.DocumentoMapper;
@@ -25,7 +24,7 @@ public class DocumentoDao implements IDocumentoDao {
     private SqlSessionFactory sqlSessionFactory;
 
 	@Override
-	public Long insert(ComprobantePago comprobantePago) throws Exception {
+	public long insert(ComprobantePago comprobantePago) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			DocumentoMapper mapper = session.getMapper(DocumentoMapper.class);
@@ -41,7 +40,7 @@ public class DocumentoDao implements IDocumentoDao {
 	}
 	
 	@Override
-	public Long insert(NotaDC notaDC) throws Exception {
+	public long insert(NotaDC notaDC) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			DocumentoMapper mapper = session.getMapper(DocumentoMapper.class);
@@ -85,7 +84,7 @@ public class DocumentoDao implements IDocumentoDao {
 	}
 
 	@Override
-	public ComprobantePago getCompPago(Long docuId) throws Exception {
+	public ComprobantePago getCompPago(long docuId) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			DocumentoMapper mapper = session.getMapper(DocumentoMapper.class);
@@ -99,7 +98,7 @@ public class DocumentoDao implements IDocumentoDao {
 	}
 	
 	@Override
-	public NotaDC getNotaDC(Long docuId) throws Exception {
+	public NotaDC getNotaDC(long docuId) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			DocumentoMapper mapper = session.getMapper(DocumentoMapper.class);
@@ -113,10 +112,11 @@ public class DocumentoDao implements IDocumentoDao {
 	}
 
 	@Override
-	public ComprobantePago getByNumDocC(Contribuyente empresa, ComprobantePago comprobantePago) throws Exception {
+	public ComprobantePago getByNumDocC(long emprId, String tidoc, String numDoc) throws Exception {
 		HashMap<String, Object> hmFind = new HashMap<>();
-		hmFind.put("empresa", empresa);
-		hmFind.put("documento", comprobantePago);
+		hmFind.put("emprId", emprId);
+		hmFind.put("tidoc", tidoc);
+		hmFind.put("numDoc", numDoc);
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			DocumentoMapper mapper = session.getMapper(DocumentoMapper.class);
@@ -130,10 +130,11 @@ public class DocumentoDao implements IDocumentoDao {
 	}
 	
 	@Override
-	public NotaDC getByNumDocN(Contribuyente empresa, NotaDC notaDC) throws Exception {
+	public NotaDC getByNumDocN(long emprId, String tidoc, String NumDoc) throws Exception {
 		HashMap<String, Object> hmFind = new HashMap<>();
-		hmFind.put("empresa", empresa);
-		hmFind.put("documento", notaDC);
+		hmFind.put("emprId", emprId);
+		hmFind.put("tidoc", tidoc);
+		hmFind.put("NumDoc", NumDoc);
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			DocumentoMapper mapper = session.getMapper(DocumentoMapper.class);

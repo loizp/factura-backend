@@ -23,5 +23,5 @@ public interface DocumentoMapper {
 
 	NotaDC getByNumDocN(HashMap<String, Object> hmFind);
 	
-	Long selectKey();
+	long selectKey();
 }

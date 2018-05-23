@@ -28,4 +28,9 @@ public class SucursalController {
     public @ResponseBody ResponseEntity<?> update(@RequestBody Sucursal sucursal){
 		return ResponseEntity.ok(sucursalService.update(sucursal));
 	}
+	
+	@PutMapping(value = "/get/{id}", headers="Accept=application/json", produces={"application/json"})
+    public @ResponseBody ResponseEntity<?> get(@RequestBody long id){
+		return ResponseEntity.ok(sucursalService.get(id));
+	}
 }

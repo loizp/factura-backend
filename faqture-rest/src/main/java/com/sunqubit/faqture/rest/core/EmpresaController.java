@@ -36,12 +36,12 @@ public class EmpresaController {
     	return ResponseEntity.ok(empresaService.filter(nombre));
     }
     
-    @GetMapping(value = "/get/{id}", headers="Accept=application/json", produces={"application/json"})
+    @GetMapping(value = "/get/one/{id}", headers="Accept=application/json", produces={"application/json"})
     public @ResponseBody ResponseEntity<?> get(@PathVariable("id") long id) {
     	return ResponseEntity.ok(empresaService.get(id));
     }
     
-    @GetMapping(value = "/get/{tido}/{doc}", headers="Accept=application/json", produces={"application/json"})
+    @GetMapping(value = "/get/one/{tido}/{doc}", headers="Accept=application/json", produces={"application/json"})
     public @ResponseBody ResponseEntity<?> get(@PathVariable("doc") String doc, @PathVariable("tido") String tido) {
     	return ResponseEntity.ok(empresaService.get(doc, tido));
     }

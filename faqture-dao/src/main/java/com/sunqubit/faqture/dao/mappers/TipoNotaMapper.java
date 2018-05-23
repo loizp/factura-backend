@@ -8,5 +8,5 @@ import com.sunqubit.faqture.beans.catalogs.TipoNota;
 public interface TipoNotaMapper {
 	List<TipoNota> getAll();
 	
-	Long tinoExist(HashMap<String, Object> hmFind);
+	long tinoExist(HashMap<String, Object> hmFind);
 }

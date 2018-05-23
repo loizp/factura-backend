@@ -1548,7 +1548,7 @@ INSERT INTO paises (pais_codigo, pais_nombre)
         ('ZM','ZAMBIA'),
         ('ZW','ZIMBABWE');
 -------------------------------------------------------------------------------	
---- Tabla: tipos_documentos_identidad
+--- Tabla: tipos_tributos
 --- Catálogo No. 05: Códigos de Tipos de Tributos
 -------------------------------------------------------------------------------
 INSERT INTO tipos_tributos (ttri_codigo, ttri_descripcion, ttri_descripcion_corta, ttri_categoria)

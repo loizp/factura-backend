@@ -4,6 +4,7 @@
     <resultMap id="ComprobantePagoMap" type="ComprobantePago">
     	<!-- DocumentoBase -->
         <id column="docu_id" property="id" />
+        <result column="docu_idsysemisor" property="idSysEmisor" />
         <result column="docu_fecha_emision" property="fechaEmision" />
         <result column="docu_numero" property="numero" />
         <result column="docu_observacion" property="observacion" />
@@ -39,6 +40,7 @@
         <association property="empresa" javaType="Contribuyente" resultMap="com.sunqubit.faqture.dao.mappers.ContribuyenteMapper.ContBaseMap"/>
         <association property="emprSucursal" javaType="Sucursal">
     		<id property="id" column="sucu_emisor_id"/>
+    		<result property="nombreLegal" column="sucu_emisor_nombrelegal"/>
     		<result property="direccion" column="sucu_emisor_direccion"/>
     		<result property="urbanizacion" column="sucu_emisor_urbanizacion"/>
     		<result property="activo" column="sucu_emisor_status"/>
@@ -57,14 +59,42 @@
         <association property="moneda" javaType="Moneda" resultMap="com.sunqubit.faqture.dao.mappers.MonedaMapper.MonedaMap" />
         <!-- ComprobantePago -->
         <association property="cliente" javaType="Contribuyente">
-    		<id property="id" column="cont_clie_id"/>
-    		<result property="numeroDocumento" column="cont_clie_numDoc"/>
-    		<result property="nombreLegal" column="cont_clie_nombreLeg"/>
-    		<result property="nombreComercial" column="cont_clie_nombreCom"/>
-    		<result property="direccion" column="cont_clie_direccion"/>
-    		<result property="urbanizacion" column="cont_clie_urbanizacion"/>
+    		<id property="id" column="clie_id"/>
+    		<result property="numeroDocumento" column="clie_numDoc"/>
+    		<result property="nombreLegal" column="clie_nombreLeg"/>
+    		<result property="nombreComercial" column="clie_nombreCom"/>
+    		<result property="direccion" column="clie_direccion"/>
+    		<result property="urbanizacion" column="clie_urbanizacion"/>
+    		<association property="ubigeo" javaType="Ubigeo">
+    			<id property="id" column="clie_ubig_id"/>
+    			<result property="codigo" column="clie_ubig_codigo"/>
+    			<result property="departamento" column="clie_ubig_dpto"/>
+    			<result property="provincia" column="clier_ubig_prov"/>
+    			<result property="distrito" column="clie_ubig_dist"/>
+  			</association>
+  			<association property="pais" javaType="Pais">
+    			<id property="codigo" column="clie_pais_codigo"/>
+    			<result property="nombre" column="clie_pais_nombre"/>
+  			</association>
   		</association>
-        <association property="clieSucursal" javaType="Sucursal" resultMap="com.sunqubit.faqture.dao.mappers.SucursalMapper.SucursalMap" />
+        <association property="clieSucursal" javaType="Sucursal">
+    		<id property="id" column="sucu_clie_id"/>
+    		<result property="nombreLegal" column="sucu_clie_nombrelegal"/>
+    		<result property="direccion" column="sucu_clie_direccion"/>
+    		<result property="urbanizacion" column="sucu_clie_urbanizacion"/>
+    		<result property="activo" column="sucu_clie_status"/>
+    		<association property="ubigeo" javaType="Ubigeo">
+    			<id property="id" column="sucu_clie_ubig_id"/>
+    			<result property="codigo" column="sucu_clie_ubig_codigo"/>
+    			<result property="departamento" column="sucu_clie_ubig_dpto"/>
+    			<result property="provincia" column="sucu_clie_ubig_prov"/>
+    			<result property="distrito" column="sucu_clie_ubig_dist"/>
+  			</association>
+  			<association property="pais" javaType="Pais">
+    			<id property="codigo" column="sucu_clie_pais_codigo"/>
+    			<result property="nombre" column="sucu_clie_pais_nombre"/>
+  			</association>
+  		</association>
         <association property="tipoOperacion" javaType="TipoOperacion" resultMap="com.sunqubit.faqture.dao.mappers.TipoOperacionMapper.TipoOperacionMap" />
     	<!-- DocumentoBase -->
     	<collection property="docsReferenciados" ofType="Documento">
@@ -81,6 +111,7 @@
     <resultMap type="NotaDC" id="NotaDCMap">
     	<!-- DocumentoBase -->
         <id column="docu_id" property="id" />
+        <result column="docu_idsysemisor" property="idSysEmisor" />
         <result column="docu_fecha_emision" property="fechaEmision" />
         <result column="docu_numero" property="numero" />
         <result column="docu_observacion" property="observacion" />
@@ -101,7 +132,24 @@
         <!-- DocumentoBase -->
         <association property="tipoDocumento" javaType="TipoDocumento" resultMap="com.sunqubit.faqture.dao.mappers.TipoDocumentoMapper.TipoDocumentoMap"/>
         <association property="empresa" javaType="Contribuyente" resultMap="com.sunqubit.faqture.dao.mappers.ContribuyenteMapper.ContBaseMap" />
-        <association property="emprSucursal" javaType="Sucursal" resultMap="com.sunqubit.faqture.dao.mappers.SucursalMapper.SucursalMap" />
+        <association property="emprSucursal" javaType="Sucursal">
+    		<id property="id" column="sucu_id"/>
+    		<result property="nombreLegal" column="sucu_nombrelegal"/>
+    		<result property="direccion" column="sucu_direccion"/>
+    		<result property="urbanizacion" column="sucu_urbanizacion"/>
+    		<result property="activo" column="sucu_status"/>
+    		<association property="ubigeo" javaType="Ubigeo">
+    			<id property="id" column="sucu_ubig_id"/>
+    			<result property="codigo" column="sucu_ubig_codigo"/>
+    			<result property="departamento" column="sucu_ubig_dpto"/>
+    			<result property="provincia" column="sucu_ubig_prov"/>
+    			<result property="distrito" column="sucu_ubig_dist"/>
+  			</association>
+  			<association property="pais" javaType="Pais">
+    			<id property="codigo" column="sucu_pais_codigo"/>
+    			<result property="nombre" column="sucu_pais_nombre"/>
+  			</association>
+  		</association>
         <association property="moneda" javaType="Moneda" resultMap="com.sunqubit.faqture.dao.mappers.MonedaMapper.MonedaMap" />
         <!-- NotaDC -->
     	<association property="tipoNota" javaType="TipoNota" resultMap="com.sunqubit.faqture.dao.mappers.TipoNotaMapper.TipoNotaMap" />
@@ -123,7 +171,7 @@
 	
     <insert id="insertCompPago" parameterType="ComprobantePago">
     	INSERT INTO sunqubit.documentos (docu_id, docu_fecha_emision, docu_numero, docu_anulado
-    		<if test="tipoLeyenda != null and leyenda != null">, docu_leyenda</if>
+    		<if test="idSysEmisor > 0">, docu_idsysemisor</if>
     		<if test="observacion != null">, docu_observacion</if>
     		, docu_proc_fecha, docu_proc_status, tido_codigo, cont_id
     		<if test="emprSucursal != null">, sucu_emisor_id</if>
@@ -138,7 +186,7 @@
     		<if test="emailCliente != null">, docu_clie_email</if>
     		)
 		VALUES (#{id}, #{fechaEmision}, #{numero}, #{anulado}
-			<if test="tipoLeyenda != null and leyenda != null">, #{leyenda}</if>
+			<if test="idSysEmisor > 0">, #{idSysEmisor}</if>
 			<if test="observacion != null">, #{observacion}</if>
 			, #{fechaProceso}, #{estadoProceso}, #{tipoDocumento.codigo}, #{empresa.id}
 			<if test="emprSucursal != null">, #{emprSucursal.id}</if>
@@ -152,10 +200,19 @@
 			<if test="vendedor != null">, #{vendedor}</if>
 	    	<if test="emailCliente != null">, #{emailCliente}</if>
 			);
+		
+		<if test="leyendas != null">
+			<foreach item="leyenda" collection="leyendas">
+				<if test="leyenda.tipoLeyenda.codigo != null">
+					INSERT INTO sunqubit.leyendas (docu_id, tley_codigo, leye_descripcion)
+					VALUES (#{id}, #{leyenda.tipoLeyenda.codigo}, #{leyenda.descripcion});
+				</if>
+    		</foreach>
+		</if>
 				
 		<if test="docsReferenciados != null">
 			<foreach item="docRef" collection="docsReferenciados">
-				<if test="docRef.id != null">
+				<if test="docRef.id > 0">
 					INSERT INTO sunqubit.documentos_referenciados (documentos_docu_id, docu_asociado_id)
 					VALUES (#{id}, #{docRef.id});
 				</if>
@@ -164,7 +221,7 @@
 		
 		<if test="detallesDocumento != null">
 			<foreach item="item" collection="detallesDocumento">
-				<if test="item.orden != null and item.descripcion != null and item.cantidad != null and item.precioVenta != null and item.subtotal != null">
+				<if test="item.orden > 0 and item.descripcion != null and item.cantidad != null and item.precioVenta != null and item.subtotal != null">
 					INSERT INTO sunqubit.detalle_documentos (docu_id, dedo_orden
 						<if test="item.codigoProducto != null">, dedo_codigo_producto</if>
 						, dedo_descripcion
@@ -206,13 +263,26 @@
     </update>
     
     <select id="getCompPago" parameterType="long" resultMap="ComprobantePagoMap">
-        SELECT d.*, td.*, e.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, 
-        	u.ubig_distrito, p.*, es.sucu_id AS sucu_emisor_id, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_urbanizacion AS sucu_emisor_urbanizacion, 
-        	es.sucu_status AS sucu_emisor_status, su.ubig_id AS sucu_emisor_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_emisor_ubig_codigo, 
-        	su.ubig_departamento AS sucu_emisor_ubig_dpto, su.ubig_provincia AS sucu_emisor_ubig_prov, su.ubig_distrito AS sucu_emisor_ubig_dist,
-        	sp.pais_codigo AS sucu_emisor_pais_codigo, sp.pais_nombre AS sucu_emisor_pais_nombre, m.*, c.cont_id AS cont_clie_id, c.cont_num_doc AS cont_clie_numDoc, 
-        	c.cont_nombre_legal AS cont_clie_nombreLeg, c.cont_nombre_comercial AS cont_clie_nombreCom, c.cont_direccion AS cont_clie_direccion, 
-        	c.cont_urbanizacion AS cont_clie_urbanizacion, cs.*, top.*, dr.*, l.*, tl.*, dd.*
+        SELECT d.*, 
+        	td.*, 
+        	e.*, 
+        	u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito, 
+        	p.*, 
+        	es.sucu_id AS sucu_emisor_id, es.sucu_nombre_legal AS sucu_emisor_nombrelegal, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_urbanizacion AS sucu_emisor_urbanizacion, es.sucu_status AS sucu_emisor_status, 
+        	su.ubig_id AS sucu_emisor_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_emisor_ubig_codigo, su.ubig_departamento AS sucu_emisor_ubig_dpto, su.ubig_provincia AS sucu_emisor_ubig_prov, su.ubig_distrito AS sucu_emisor_ubig_dist,
+        	sp.pais_codigo AS sucu_emisor_pais_codigo, sp.pais_nombre AS sucu_emisor_pais_nombre, 
+        	m.*, 
+        	c.cont_id AS clie_id, c.cont_num_doc AS clie_numDoc, c.cont_nombre_legal AS clie_nombreLeg, c.cont_nombre_comercial AS clie_nombreCom, c.cont_direccion AS clie_direccion, c.cont_urbanizacion AS clie_urbanizacion, 
+        	cu.ubig_id AS clie_ubig_id, cu.ubig_cod_dpto || cu.ubig_cod_prov || cu.ubig_cod_dist AS clie_ubig_codigo, cu.ubig_departamento AS clie_ubig_dpto, cu.ubig_provincia AS clie_ubig_prov, cu.ubig_distrito AS clie_ubig_dist,
+        	cp.pais_codigo AS clie_pais_codigo, cp.pais_nombre AS clie_pais_nombre, 
+        	cs.sucu_id AS sucu_clie_id, cs.sucu_nombre_legal AS sucu_clie_nombrelegal, cs.sucu_direccion AS sucu_clie_direccion, cs.sucu_urbanizacion AS sucu_clie_urbanizacion, cs.sucu_status AS sucu_clie_status,
+        	csu.ubig_id AS sucu_clie_ubig_id, csu.ubig_cod_dpto || csu.ubig_cod_prov || csu.ubig_cod_dist AS sucu_clie_ubig_codigo, csu.ubig_departamento AS sucu_clie_ubig_dpto, csu.ubig_provincia AS sucu_clie_ubig_prov, csu.ubig_distrito AS sucu_clie_ubig_dist,
+        	csp.pais_codigo AS sucu_clie_pais_codigo, csp.pais_nombre AS sucu_clie_pais_nombre, 
+        	top.*, 
+        	dr.*, 
+        	l.*, 
+        	tl.*, 
+        	dd.*
         FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
@@ -223,7 +293,11 @@
         	LEFT JOIN sunqubit.paises AS sp ON sp.pais_codigo = es.pais_codigo
         	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
         	INNER JOIN sunqubit.contribuyentes AS c ON c.cont_id = d.cont_clie_id
+        	LEFT JOIN sunqubit.ubigeos AS cu ON cu.ubig_id = c.ubig_id
+        	INNER JOIN sunqubit.paises AS cp ON cp.pais_codigo = c.pais_codigo
         	LEFT JOIN sunqubit.sucursales AS cs ON cs.sucu_id = d.sucu_clie_id
+        	LEFT JOIN sunqubit.ubigeos AS csu ON  csu.ubig_id = cs.ubig_id
+        	LEFT JOIN sunqubit.paises AS csp ON csp.pais_codigo = cs.pais_codigo
         	INNER JOIN sunqubit.tipos_operaciones AS top ON top.tiop_codigo = d.tiop_codigo
         	LEFT JOIN sunqubit.documentos_referenciados AS dr ON dr.documentos_docu_id = d.docu_id
         	INNER JOIN sunqubit.leyendas AS l ON l.docu_id = d.docu_id
@@ -233,13 +307,26 @@
     </select>
     
     <select id="getByNumDocC" parameterType="HashMap" resultMap="ComprobantePagoMap">
-        SELECT d.*, td.*, e.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, 
-        	u.ubig_distrito, p.*, es.sucu_id AS sucu_emisor_id, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_urbanizacion AS sucu_emisor_urbanizacion, 
-        	es.sucu_status AS sucu_emisor_status, su.ubig_id AS sucu_emisor_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_emisor_ubig_codigo, 
-        	su.ubig_departamento AS sucu_emisor_ubig_dpto, su.ubig_provincia AS sucu_emisor_ubig_prov, su.ubig_distrito AS sucu_emisor_ubig_dist,
-        	sp.pais_codigo AS sucu_emisor_pais_codigo, sp.pais_nombre AS sucu_emisor_pais_nombre, m.*, c.cont_id AS cont_clie_id, c.cont_num_doc AS cont_clie_numDoc, 
-        	c.cont_nombre_legal AS cont_clie_nombreLeg, c.cont_nombre_comercial AS cont_clie_nombreCom, c.cont_direccion AS cont_clie_direccion, 
-        	c.cont_urbanizacion AS cont_clie_urbanizacion, cs.*, top.*, dr.*, l.*, tl.*, dd.*
+        SELECT d.*, 
+        	td.*, 
+        	e.*, 
+        	u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito, 
+        	p.*, 
+        	es.sucu_id AS sucu_emisor_id, es.sucu_nombre_legal AS sucu_emisor_nombrelegal, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_urbanizacion AS sucu_emisor_urbanizacion, es.sucu_status AS sucu_emisor_status, 
+        	su.ubig_id AS sucu_emisor_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_emisor_ubig_codigo, su.ubig_departamento AS sucu_emisor_ubig_dpto, su.ubig_provincia AS sucu_emisor_ubig_prov, su.ubig_distrito AS sucu_emisor_ubig_dist,
+        	sp.pais_codigo AS sucu_emisor_pais_codigo, sp.pais_nombre AS sucu_emisor_pais_nombre, 
+        	m.*, 
+        	c.cont_id AS clie_id, c.cont_num_doc AS clie_numDoc, c.cont_nombre_legal AS clie_nombreLeg, c.cont_nombre_comercial AS clie_nombreCom, c.cont_direccion AS clie_direccion, c.cont_urbanizacion AS clie_urbanizacion, 
+        	cu.ubig_id AS clie_ubig_id, cu.ubig_cod_dpto || cu.ubig_cod_prov || cu.ubig_cod_dist AS clie_ubig_codigo, cu.ubig_departamento AS clie_ubig_dpto, cu.ubig_provincia AS clie_ubig_prov, cu.ubig_distrito AS clie_ubig_dist,
+        	cp.pais_codigo AS clie_pais_codigo, cp.pais_nombre AS clie_pais_nombre, 
+        	cs.sucu_id AS sucu_clie_id, cs.sucu_nombre_legal AS sucu_clie_nombrelegal, cs.sucu_direccion AS sucu_clie_direccion, cs.sucu_urbanizacion AS sucu_clie_urbanizacion, cs.sucu_status AS sucu_clie_status,
+        	csu.ubig_id AS sucu_clie_ubig_id, csu.ubig_cod_dpto || csu.ubig_cod_prov || csu.ubig_cod_dist AS sucu_clie_ubig_codigo, csu.ubig_departamento AS sucu_clie_ubig_dpto, csu.ubig_provincia AS sucu_clie_ubig_prov, csu.ubig_distrito AS sucu_clie_ubig_dist,
+        	csp.pais_codigo AS sucu_clie_pais_codigo, csp.pais_nombre AS sucu_clie_pais_nombre, 
+        	top.*, 
+        	dr.*, 
+        	l.*, 
+        	tl.*, 
+        	dd.*
         FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
@@ -250,38 +337,49 @@
         	LEFT JOIN sunqubit.paises AS sp ON sp.pais_codigo = es.pais_codigo
         	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
         	INNER JOIN sunqubit.contribuyentes AS c ON c.cont_id = d.cont_clie_id
+        	LEFT JOIN sunqubit.ubigeos AS cu ON cu.ubig_id = c.ubig_id
+        	INNER JOIN sunqubit.paises AS cp ON cp.pais_codigo = c.pais_codigo
         	LEFT JOIN sunqubit.sucursales AS cs ON cs.sucu_id = d.sucu_clie_id
+        	LEFT JOIN sunqubit.ubigeos AS csu ON  csu.ubig_id = cs.ubig_id
+        	LEFT JOIN sunqubit.paises AS csp ON csp.pais_codigo = cs.pais_codigo
         	INNER JOIN sunqubit.tipos_operaciones AS top ON top.tiop_codigo = d.tiop_codigo
         	LEFT JOIN sunqubit.documentos_referenciados AS dr ON dr.documentos_docu_id = d.docu_id
         	INNER JOIN sunqubit.leyendas AS l ON l.docu_id = d.docu_id
         	INNER JOIN sunqubit.tipos_leyendas AS tl ON tl.tley_codigo = l.tley_codigo
         	LEFT JOIN sunqubit.detalle_documentos AS dd ON dd.docu_id = d.docu_id
-        WHERE d.docu_numero = #{documento.numero} AND d.cont_id = #{empresa.id} AND d.tido_codigo = #{documento.tipoDocumento.codigo};
+        WHERE d.docu_numero = #{numDoc} AND d.cont_id = #{emprId} AND d.tido_codigo = #{tidoc};
     </select>
     
     <insert id="insertNotaDC" parameterType="NotaDC">
     	INSERT INTO sunqubit.documentos (docu_id, docu_fecha_emision, docu_numero
-    		<if test="tipoLeyenda.codigo != null and leyenda != null">, docu_leyenda</if>
+    		<if test="idSysEmisor > 0">, docu_idsysemisor</if>
     		<if test="observacion != null">, docu_observacion</if>
     		, docu_proc_fecha, docu_proc_status, tido_codigo, cont_id
-    		<if test="emprSucursal.id != null">, sucu_emisor_id</if>
-    		<if test="tipoLeyenda.codigo != null">, tley_codigo</if>
+    		<if test="emprSucursal != null">, sucu_emisor_id</if>
     		<if test="moneda.codigo != null">, mone_codigo</if>
     		, docu_enviar_sunat, tino_id, docu_sustento_nota, docu_igv
     		)
 		VALUES (#{id}, #{fechaEmision}, #{numero}
-			<if test="tipoLeyenda.codigo != null and leyenda != null">, #{leyenda}</if>
+			<if test="idSysEmisor > 0">, #{idSysEmisor}</if>
 			<if test="observacion != null">, #{observacion}</if>
 			, #{fechaProceso}, #{estadoProceso}, #{tipoDocumento.codigo}, #{empresa.id}
-			<if test="emprSucursal.id != null">, #{emprSucursal.id}</if>
-			<if test="tipoLeyenda.codigo != null">, #{tipoLeyenda.codigo}</if>
+			<if test="emprSucursal != null">, #{emprSucursal.id}</if>
 			<if test="moneda.codigo != null">, #{moneda.codigo}</if>
 			, #{enviarSunat}, #{tipoNota.id}, #{sustentoNota}, #{igv}
 			);
+			
+		<if test="leyendas != null">
+			<foreach item="leyenda" collection="leyendas">
+				<if test="leyenda.tipoLeyenda.codigo != null">
+					INSERT INTO sunqubit.leyendas (docu_id, tley_codigo, leye_descripcion)
+					VALUES (#{id}, #{leyenda.tipoLeyenda.codigo}, #{leyenda.descripcion});
+				</if>
+    		</foreach>
+		</if>
 				
 		<if test="docsReferenciados != null">
 			<foreach item="docRef" collection="docsReferenciados">
-				<if test="docRef.id != null">
+				<if test="docRef.id > 0">
 					INSERT INTO sunqubit.documentos_referenciados (documentos_docu_id, docu_asociado_id)
 					VALUES (#{id}, #{docRef.id});
 				</if>
@@ -306,12 +404,17 @@
     </update>
     
     <select id="getNotaDC" parameterType="long" resultMap="NotaDCMap">
-        SELECT d.*, td.*, e.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, 
-        	u.ubig_distrito, p.*, es.sucu_id AS sucu_emisor_id, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_urbanizacion AS sucu_emisor_urbanizacion, 
-        	es.sucu_status AS sucu_emisor_status, su.ubig_id AS sucu_emisor_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_emisor_ubig_codigo, 
-        	su.ubig_departamento AS sucu_emisor_ubig_dpto, su.ubig_provincia AS sucu_emisor_ubig_prov, su.ubig_distrito AS sucu_emisor_ubig_dist,
-        	sp.pais_codigo AS sucu_emisor_pais_codigo, sp.pais_nombre AS sucu_emisor_pais_nombre, m.*, dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero,
-        	dr.docu_fecha_emision AS docu_asociado_fechaEmi, tn.*
+        SELECT d.*, 
+        	td.*, 
+        	e.*, 
+        	u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito, 
+        	p.*, 
+        	es.sucu_id, es.sucu_nombre_legal, es.sucu_direccion, es.sucu_urbanizacion, es.sucu_status, 
+        	su.ubig_id AS sucu_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_ubig_codigo, su.ubig_departamento AS sucu_ubig_dpto, su.ubig_provincia AS sucu_ubig_prov, su.ubig_distrito AS sucu_ubig_dist,
+        	sp.pais_codigo AS sucu_pais_codigo, sp.pais_nombre AS sucu_pais_nombre, 
+        	m.*, 
+        	dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero, dr.docu_fecha_emision AS docu_asociado_fechaEmi, 
+        	tn.*
         FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
@@ -328,12 +431,17 @@
     </select>
     
     <select id="getByNumDocN" parameterType="HashMap" resultMap="NotaDCMap">
-        SELECT d.*, td.*, e.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, 
-        	u.ubig_distrito, p.*, es.sucu_id AS sucu_emisor_id, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_urbanizacion AS sucu_emisor_urbanizacion, 
-        	es.sucu_status AS sucu_emisor_status, su.ubig_id AS sucu_emisor_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_emisor_ubig_codigo, 
-        	su.ubig_departamento AS sucu_emisor_ubig_dpto, su.ubig_provincia AS sucu_emisor_ubig_prov, su.ubig_distrito AS sucu_emisor_ubig_dist,
-        	sp.pais_codigo AS sucu_emisor_pais_codigo, sp.pais_nombre AS sucu_emisor_pais_nombre, m.*, dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero,
-        	dr.docu_fecha_emision AS docu_asociado_fechaEmi, tn.*
+        SELECT d.*, 
+        	td.*, 
+        	e.*, 
+        	u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito, 
+        	p.*, 
+        	es.sucu_id, es.sucu_nombre_legal, es.sucu_direccion, es.sucu_urbanizacion, es.sucu_status, 
+        	su.ubig_id AS sucu_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_ubig_codigo, su.ubig_departamento AS sucu_ubig_dpto, su.ubig_provincia AS sucu_ubig_prov, su.ubig_distrito AS sucu_ubig_dist,
+        	sp.pais_codigo AS sucu_pais_codigo, sp.pais_nombre AS sucu_pais_nombre, 
+        	m.*, 
+        	dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero, dr.docu_fecha_emision AS docu_asociado_fechaEmi, 
+        	tn.*
         FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
@@ -346,6 +454,6 @@
         	INNER JOIN sunqubit.tipos_notas AS tn ON tn.tino_id = d.tino_id
         	LEFT JOIN sunqubit.documentos_referenciados AS dri ON dri.documentos_docu_id = d.docu_id
         	LEFT JOIN sunqubit.documentos AS dr ON dr.docu_id = dri.docu_asociado_id
-        WHERE d.docu_numero = #{documento.numero} AND d.cont_id = #{empresa.id} AND d.tido_codigo = #{documento.tipoDocumento.codigo};
+        WHERE d.docu_numero = #{numDoc} AND d.cont_id = #{emprId} AND d.tido_codigo = #{tidoc};
     </select>
 </mapper>

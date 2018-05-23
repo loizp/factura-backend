@@ -3,6 +3,7 @@
 <mapper namespace="com.sunqubit.faqture.dao.mappers.SucursalMapper">
     <resultMap id="SucursalMap" type="Sucursal">
         <id column="sucu_id" property="id" />
+        <result column="sucu_nombre_legal" property="nombreLegal" />
         <result column="sucu_direccion" property="direccion" />
         <result column="sucu_urbanizacion" property="urbanizacion" />
         <result column="sucu_status" property="activo" />
@@ -18,11 +19,11 @@
     </select>
 
     <insert id="insert" parameterType="Sucursal">
-    	INSERT INTO sunqubit.sucursales (sucu_id, cont_id, sucu_direccion, sucu_status
+    	INSERT INTO sunqubit.sucursales (sucu_id, cont_id, sucu_nombre_legal, sucu_direccion, sucu_status
     		<if test="urbanizacion != null">, sucu_urbanizacion</if>
     		<if test="ubigeo != null">, ubig_id</if>
     		)
-			VALUES (#{id}, #{contribuyente.id}, #{direccion}, #{activo}
+			VALUES (#{id}, #{contribuyente.id}, #{nombreLegal}, #{direccion}, #{activo}
 			<if test="urbanizacion != null">, #{urbanizacion}</if>
 			<if test="ubigeo != null">, #{ubigeo.id}</if>
 			);
@@ -30,7 +31,7 @@
     
     <update id="update" parameterType="Sucursal">
         UPDATE sunqubit.sucursales
-		SET sucu_direccion=#{direccion}, sucu_status = #{activo}
+		SET sucu_nombre_legal=#{nombreLegal}, sucu_direccion=#{direccion}, sucu_status = #{activo}
 			<if test="urbanizacion != null">, sucu_urbanizacion = #{urbanizacion}</if>
 			<if test="ubigeo != null">, ubig_id = #{ubigeo.id}</if>
 		WHERE sucu_id = #{id};
@@ -43,15 +44,16 @@
 	<select id="getList" parameterType="long" resultMap="SucursalMap">
 		SELECT * FROM sunqubit.sucursales
 			LEFT JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.sucursales.ubig_id
+			INNER JOIN sunqubit.paises ON sunqubit.paises.pais_codigo = sunqubit.sucursales.pais_codigo
 		WHERE cont_id = #{contId};
 	</select>
 	
 	<select id="getExist" parameterType="Sucursal" resultType="long">
 		SELECT * FROM sunqubit.sucursales
 			LEFT JOIN sunqubit.ubigeos ON sunqubit.ubigeos.ubig_id = sunqubit.sucursales.ubig_id
-		WHERE cont_id = #{contribuyente.id} AND sucu_direccion = #{direccion}
+		WHERE cont_id = #{contribuyente.id} AND sucu_nombre_legal = #{nombreLegal} AND sucu_direccion = #{direccion}
 			<if test="urbanizacion != null">AND sucu_urbanizacion = #{urbanizacion}</if>
-			<if test="ubigeo != null and ubigeo.id > 1">AND ubig_id = #{ubigeo.id}</if>
+			<if test="ubigeo != null and ubigeo.id > 0">AND ubig_id = #{ubigeo.id}</if>
 			<if test="ubigeo != null and ubigeo.codigo != null">AND sunqubit.ubigeos.ubig_cod_dpto || sunqubit.ubigeos.ubig_cod_prov || sunqubit.ubigeos.ubig_cod_dist = #{ubigeo.codigo}</if>
 	</select>
 </mapper>

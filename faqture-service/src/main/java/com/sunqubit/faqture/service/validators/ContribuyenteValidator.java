@@ -24,7 +24,7 @@ public class ContribuyenteValidator extends ContribuyenteDaoValidator {
 		
 		super.validaContNombreComercial(contNombreComercial);
 		
-		if (contNombreComercial.trim().isEmpty() || !contNombreComercial.matches("^[A-Za-z][\\w- \\. \\#]*$"))
+		if (contNombreComercial.trim().isEmpty() || !contNombreComercial.matches("^[\\w- \\. \\#]*$"))
 			throw new ValidatorException("Es necesario que el atributo 'nombreComercial' solo contenga caracteres alfabéticos o númericos");
 	}
 	
@@ -35,7 +35,7 @@ public class ContribuyenteValidator extends ContribuyenteDaoValidator {
 			
 		super.validaContDireccion(contDireccion);
 		
-		if (contDireccion.trim().isEmpty() || !contDireccion.matches("^[A-Za-z][\\w- \\. \\#]*$"))
+		if (contDireccion.trim().isEmpty() || !contDireccion.matches("^[A-Za-z][\\w-./ \\(\\)\\#]*$"))
             throw new ValidatorException("Es necesario que el atributo 'direccion' debe estar correctamente expresado");
 	}
 	

@@ -12,13 +12,12 @@ import com.sunqubit.faqture.service.catalogs.PaisService;
 @RestController
 @RequestMapping("/paises")
 public class PaisController {
-	
 	@Autowired
-	 private PaisService paisService;
+	private PaisService paisService;
 	 
-	 @GetMapping(value = "/get", headers="Accept=application/json", produces={"application/json"})
-	 public @ResponseBody
-	 ResponseEntity<?> getAll() {
+	@GetMapping(value = "/get", headers="Accept=application/json", produces={"application/json"})
+	public @ResponseBody
+	ResponseEntity<?> getAll() {
 		 return ResponseEntity.ok(paisService.getAll());
-	 }
+	}
 }

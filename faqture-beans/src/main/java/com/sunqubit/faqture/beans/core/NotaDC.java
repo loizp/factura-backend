@@ -8,6 +8,7 @@ public class NotaDC extends Documento {
 	private TipoNota tipoNota;
 	private String sustentoNota;
 	private BigDecimal igv = BigDecimal.valueOf(0.00);
+	private BigDecimal total = BigDecimal.valueOf(0.00);
 	
 	public TipoNota getTipoNota() {
 		return tipoNota;
@@ -26,5 +27,11 @@ public class NotaDC extends Documento {
 	}
 	public void setIgv(BigDecimal igv) {
 		this.igv = igv;
+	}
+	public BigDecimal getTotal() {
+		return total;
+	}
+	public void setTotal(BigDecimal total) {
+		this.total = total;
 	}	
 }

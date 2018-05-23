@@ -22,10 +22,12 @@ public class UsuarioDao implements IUsuarioDao {
 	
 
 	@Override
-	public void insert(Usuario usuario) throws Exception {
+	public long insert(Usuario usuario) throws Exception {
 		try (SqlSession session = sqlSessionFactory.openSession()) {
 			UsuarioMapper mapper = session.getMapper(UsuarioMapper.class);
+			usuario.setId(mapper.selectKey());
 			mapper.insert(usuario);
+			return usuario.getId();
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
 			throw new Exception("Ocurrió un error en la inserción de los datos");

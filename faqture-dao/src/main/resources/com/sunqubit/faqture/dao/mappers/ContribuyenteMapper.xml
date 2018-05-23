@@ -14,6 +14,7 @@
         <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="com.sunqubit.faqture.dao.mappers.TipoDocumentoIdentidadMapper.TipoDocumentoIdentidadMap"/>
     	<collection property="sucursales" ofType="Sucursal">
     		<id column="sucu_id" property="id" />
+    		<result column="sucu_nombre_legal" property="nombreLegal" />
         	<result column="sucu_direccion" property="direccion" />
         	<result column="sucu_status" property="activo" />
         	<result column="sucu_urbanizacion" property="urbanizacion" />
@@ -62,9 +63,9 @@
     	
 		<if test="sucursales != null">
 			<foreach item="sucursal" collection="sucursales">
-				<if test="sucursal.direccion != null and sucursal.ubigeo.id != null">
-					INSERT INTO sunqubit.sucursales (cont_id, sucu_direccion, ubig_id, sucu_status)
-					VALUES (#{id}, #{sucursal.direccion}, #{sucursal.ubigeo.id},#{sucursal.activo});
+				<if test="sucursal.nombreLegal != null and sucursal.direccion != null and sucursal.ubigeo != null">
+					INSERT INTO sunqubit.sucursales (cont_id, sucu_nombre_legal, sucu_direccion, ubig_id, sucu_status)
+					VALUES (#{id}, #{sucursal.nombreLegal}, #{sucursal.direccion}, #{sucursal.ubigeo.id},#{sucursal.activo});
 				</if>
     		</foreach>
 		</if>

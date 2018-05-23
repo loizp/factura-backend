@@ -23,10 +23,10 @@ public class UsuarioValidator extends UsuarioDaoValidator {
 	public void validaUserPassword(String userPassword) throws ValidatorException{
 		super.validaUserPassword(userPassword);
 		
-		if (userPassword.length() < 8 || userPassword.length() > 20)
-            throw new ValidatorException("Es necesario contener el atributo 'password' del usuario al menos 8 caracteres y no exeda los 20 caracteres");
+		if (userPassword.length() < 8 || userPassword.length() > 25)
+            throw new ValidatorException("Es necesario contener el atributo 'password' del usuario al menos 8 caracteres y no exeda los 25 caracteres");
 		
-		if(!userPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$_!%#-*?&])[A-Za-z\\d$@$_!%#-*?&]{8,20}[^'\\s]"))
+		if(!userPassword.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$_!%#-.*?&])[A-Za-z\\d$@_!%#-.*?&]{8,25}"))
 			 throw new ValidatorException("Es necesario contener el atributo 'password' debe estar contener al menos una letra minusculas, letra mayusculas, numero, simbolo y sin espacios");
 	}
 	

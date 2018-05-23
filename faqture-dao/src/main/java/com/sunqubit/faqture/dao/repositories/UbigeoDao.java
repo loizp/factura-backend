@@ -51,4 +51,18 @@ public class UbigeoDao implements IUbigeoDao{
 			session.close();
 		}
 	}
+
+	@Override
+	public Ubigeo get(String codigo) throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+	    try {
+	    	UbigeoMapper mapper = session.getMapper(UbigeoMapper.class);
+	    	return mapper.get(codigo);
+	    } catch (PersistenceException pe) {
+			LOGGER.info(pe.getMessage());
+			throw new Exception("Ocurrió un error en el filtrado de ubigeos");
+		} finally {
+			session.close();
+		}
+	}
 }

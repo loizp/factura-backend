@@ -3,15 +3,15 @@ package com.sunqubit.faqture.beans.core;
 import com.sunqubit.faqture.beans.catalogs.TipoLeyenda;
 
 public class Leyenda {
-	private ComprobantePago empresa;
+	private Documento documento;
 	private TipoLeyenda tipoLeyenda;
 	private String descripcion;
 	
-	public ComprobantePago getEmpresa() {
-		return empresa;
+	public Documento getDocumento() {
+		return documento;
 	}
-	public void setEmpresa(ComprobantePago empresa) {
-		this.empresa = empresa;
+	public void setDocumento(Documento documento) {
+		this.documento = documento;
 	}
 	public TipoLeyenda getTipoLeyenda() {
 		return tipoLeyenda;

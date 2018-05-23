@@ -1,24 +1,34 @@
 package com.sunqubit.faqture.service.core;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sunqubit.faqture.beans.catalogs.TipoLeyenda;
 import com.sunqubit.faqture.beans.core.ComprobantePago;
 import com.sunqubit.faqture.beans.core.Contribuyente;
+import com.sunqubit.faqture.beans.core.Leyenda;
 import com.sunqubit.faqture.beans.core.NotaDC;
 import com.sunqubit.faqture.beans.core.Sucursal;
 import com.sunqubit.faqture.beans.rest.ApiRestFullResponse;
 import com.sunqubit.faqture.beans.rest.RestFullResponseHeader;
 import com.sunqubit.faqture.dao.contracts.IDocumentoDao;
 import com.sunqubit.faqture.dao.validators.ValidatorException;
+import com.sunqubit.faqture.service.security.UsuarioService;
+import com.sunqubit.faqture.service.utils.LeyendaUtil;
 import com.sunqubit.faqture.service.validators.ComprobantePagoValidator;
 import com.sunqubit.faqture.service.validators.NotaDCValidator;
 
 @Service
 public class DocumentoService {
+	
+	@Autowired
+	private UsuarioService usuarioService;
 
     @Autowired
     private IDocumentoDao documentoDao;
@@ -34,6 +44,9 @@ public class DocumentoService {
     
     @Autowired
     private SucursalService sucursalService;
+    
+    @Autowired
+    private LeyendaUtil leyendaUtil;
 
     public ApiRestFullResponse insertSimple(ComprobantePago compPago) {
         Boolean ok = true;
@@ -43,23 +56,30 @@ public class DocumentoService {
         try {
             compPago.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
             compPago.setEstadoProceso("N");
+            compPago.setLeyendas(preparaLeyenda(compPago.getLeyendas(), compPago.getTotal(), compPago.getMoneda().getCodigo()));
             comprobantePagoValidator.validaDocuNumero(compPago.getEmpresa(), compPago.getTipoDocumento(), compPago.getNumero());
             comprobantePagoValidator.validaDocBaseSinple(compPago);
-            comprobantePagoValidator.validaDocuCliente(compPago.getCliente());
-            comprobantePagoValidator.validaDocuClienteFactura(compPago.getCliente().getId(), compPago.getTipoDocumento().getCodigo());
-            if (compPago.getClieSucursal() != null) {
-                comprobantePagoValidator.validaDocuClieSucursal(compPago.getCliente(), compPago.getClieSucursal());
+            if(usuarioService.allowService("bfis",compPago.getEmpresa().getId(), compPago.getEmprSucursal().getId())) {
+	            comprobantePagoValidator.validaDocuCliente(compPago.getCliente());
+	            comprobantePagoValidator.validaDocuClienteFactura(compPago.getCliente().getId(), compPago.getTipoDocumento().getCodigo());
+	            if (compPago.getClieSucursal() != null) {
+	                comprobantePagoValidator.validaDocuClieSucursal(compPago.getCliente(), compPago.getClieSucursal());
+	            }
+	            comprobantePagoValidator.validaDocuTipoOperacion(compPago.getTipoOperacion());
+	            if (compPago.getVendedor() != null) {
+	                comprobantePagoValidator.validaDocuVendedor(compPago.getVendedor());
+	            }
+	            if (compPago.getEmailCliente() != null) {
+	                comprobantePagoValidator.validaDocuEmailCliente(compPago.getEmailCliente());
+	            }
+	            comprobantePagoValidator.validaDocAutoEmision(compPago.getEmpresa().getId(), compPago.getCliente().getId());
+	            comprobantePagoValidator.validaDocuDetalleItems(compPago.getDetallesDocumento());
+	            res = documentoDao.insert(compPago);
+            } else {
+            	ok = false;
+                code = 403;
+                msg = "El usuario no esta autorizado insertar este documento";
             }
-            comprobantePagoValidator.validaDocuTipoOperacion(compPago.getTipoOperacion());
-            if (compPago.getVendedor() != null) {
-                comprobantePagoValidator.validaDocuVendedor(compPago.getVendedor());
-            }
-            if (compPago.getEmailCliente() != null) {
-                comprobantePagoValidator.validaDocuEmailCliente(compPago.getEmailCliente());
-            }
-            comprobantePagoValidator.validaDocAutoEmision(compPago.getEmpresa().getId(), compPago.getCliente().getId());
-            comprobantePagoValidator.validaDocuDetalleItems(compPago.getDetallesDocumento());
-            res = documentoDao.insert(compPago);
         } catch (ValidatorException ve) {
             ok = false;
             code = 400;
@@ -81,48 +101,76 @@ public class DocumentoService {
         try {
         	compPago.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
             compPago.setEstadoProceso("N");
+            compPago.setLeyendas(preparaLeyenda(compPago.getLeyendas(), compPago.getTotal(), compPago.getMoneda().getCodigo()));
             comprobantePagoValidator.validaDocuNumero(compPago.getEmpresa(), compPago.getTipoDocumento(), compPago.getNumero());
             comprobantePagoValidator.validaDocBaseSinple(compPago);
-            comprobantePagoValidator.validaDocuTipoOperacion(compPago.getTipoOperacion());
-            comprobantePagoValidator.validaDocClienteFull(compPago.getCliente(), compPago.getClieSucursal());
-            if (compPago.getVendedor() != null) {
-                comprobantePagoValidator.validaDocuVendedor(compPago.getVendedor());
-            }
-            if (compPago.getEmailCliente() != null) {
-                comprobantePagoValidator.validaDocuEmailCliente(compPago.getEmailCliente());
-            }
-            comprobantePagoValidator.validaDocuDetalleItems(compPago.getDetallesDocumento());
-            HashMap<String, Object> dataC = registrarClienteCP(compPago.getCliente());
-            if((boolean) dataC.get("ok")) {
-            	compPago.getCliente().setId((long) dataC.get("clie"));
-            	comprobantePagoValidator.validaDocuClienteFactura(compPago.getCliente().getId(), compPago.getTipoDocumento().getCodigo());
-            	if(dataC.get("sucu") != null) {
-            		compPago.setClieSucursal((Sucursal) dataC.get("sucu"));
-            	}
-            	comprobantePagoValidator.validaDocAutoEmision(compPago.getEmpresa().getId(), compPago.getCliente().getId());
-            	if(compPago.getClieSucursal() != null) {
-            		if(compPago.getClieSucursal().getId() > 0)
-            			comprobantePagoValidator.validaDocuClieSucursal(compPago.getCliente(), compPago.getClieSucursal());
-            		else {
-            			servicio = sucursalService.insert(compPago.getClieSucursal());
-            			ok = servicio.getResponse().isSuccess();
-            			if(servicio.getResponse().isSuccess()) {
-            				compPago.getClieSucursal().setId((long) servicio.getData());
-            			}
-            			else {
-                            code = servicio.getResponse().getCode();
+            if(usuarioService.allowService("bfif",compPago.getEmpresa().getId(), compPago.getEmprSucursal().getId())) {
+            	servicio = getC(compPago.getEmpresa().getId(), compPago.getTipoDocumento().getCodigo(), compPago.getNumero());
+            	ok = servicio.getResponse().isSuccess();
+            	if(servicio.getResponse().isSuccess()) {
+            		ComprobantePago cpdata = (ComprobantePago) servicio.getData();
+            		if(cpdata != null) {
+            			compPago.setId(cpdata.getId());
+            			if(!cpdata.getEstadoProceso().equals("C")) {
+            				servicio = updateC(compPago);
+            				ok = servicio.getResponse().isSuccess();
+            				code = servicio.getResponse().getCode();
                             msg = servicio.getResponse().getMessage();
+            			} else {
+            				ok = false;
+            				code = 400;
+            				msg = "El documento ya existe y ya completó su entrega a la SUNAT";
             			}
+            		} else {
+		            	comprobantePagoValidator.validaDocuTipoOperacion(compPago.getTipoOperacion());
+			            comprobantePagoValidator.validaDocClienteFull(compPago.getCliente(), compPago.getClieSucursal());
+			            if (compPago.getVendedor() != null) {
+			                comprobantePagoValidator.validaDocuVendedor(compPago.getVendedor());
+			            }
+			            if (compPago.getEmailCliente() != null) {
+			                comprobantePagoValidator.validaDocuEmailCliente(compPago.getEmailCliente());
+			            }
+			            comprobantePagoValidator.validaDocuDetalleItems(compPago.getDetallesDocumento());
+			            HashMap<String, Object> dataC = registrarClienteCP(compPago.getCliente());
+			            if((boolean) dataC.get("ok")) {
+			            	compPago.getCliente().setId((long) dataC.get("clie"));
+			            	comprobantePagoValidator.validaDocuClienteFactura(compPago.getCliente().getId(), compPago.getTipoDocumento().getCodigo());
+			            	if(dataC.get("sucu") != null) {
+			            		compPago.setClieSucursal((Sucursal) dataC.get("sucu"));
+			            	}
+			            	comprobantePagoValidator.validaDocAutoEmision(compPago.getEmpresa().getId(), compPago.getCliente().getId());
+			            	if(compPago.getClieSucursal() != null) {
+			            		if(compPago.getClieSucursal().getId() > 0)
+			            			comprobantePagoValidator.validaDocuClieSucursal(compPago.getCliente(), compPago.getClieSucursal());
+			            		else {
+			            			servicio = sucursalService.insert(compPago.getClieSucursal());
+			            			ok = servicio.getResponse().isSuccess();
+			            			if(servicio.getResponse().isSuccess()) {
+			            				compPago.getClieSucursal().setId((long) servicio.getData());
+			            			} else {
+			                            code = servicio.getResponse().getCode();
+			                            msg = servicio.getResponse().getMessage();
+			            			}
+			            		}
+			            	}
+			            	comprobantePagoValidator.validaDocAutoEmision(compPago.getEmpresa().getId(), compPago.getCliente().getId());
+			            } else {
+			            	ok = (Boolean) dataC.get("ok");
+			                code = (int) dataC.get("code");
+			                msg = (String) dataC.get("msg");
+			            }
+			            if(ok)
+			            	res = documentoDao.insert(compPago);
             		}
-            		comprobantePagoValidator.validaDocAutoEmision(compPago.getEmpresa().getId(), compPago.getCliente().getId());
+            	} else {
+            		code = servicio.getResponse().getCode();
+                    msg = servicio.getResponse().getMessage();
             	}
             } else {
-            	ok = (Boolean) dataC.get("ok");
-                code = (int) dataC.get("code");
-                msg = (String) dataC.get("msg");
+            	ok = false;
+                code = 403;
+                msg = "El usuario no esta autorizado insertar este documento";
             }
-            if(ok)
-            	res = documentoDao.insert(compPago);
         } catch (ValidatorException ve) {
 			ok = false;
             code = 400;
@@ -132,8 +180,53 @@ public class DocumentoService {
             code = 500;
             msg = "No se puede registrar el comprobante de pago debido a: " + ex.getMessage();
         }
-        
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
+    }
+    
+    public ApiRestFullResponse updateC(ComprobantePago compPago) {
+    	Boolean ok = true;
+        int code = 201;
+        String msg = "El comprobante de pago fue registrado correctamente";
+        try {
+        	compPago.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+            compPago.setEstadoProceso("M");
+            comprobantePagoValidator.validaDocuId(compPago.getId());
+            documentoDao.update(compPago);
+        } catch (ValidatorException ve) {
+            ok = false;
+            code = 400;
+            msg = "No se puede modificar la empresa debido a: " + ve.getMessage();
+		} catch (Exception e) {
+			ok = false;
+            code = 500;
+            msg = "No se puede modificar la empresa debido a: " + e.getMessage();
+		}
+        return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), null);
+    }
+    
+    private List<Leyenda> preparaLeyenda(List<Leyenda> leyendas, BigDecimal Number, String moneda) {
+    	List<Leyenda> leyendasDoc = new ArrayList<>();
+    	switch (moneda) {
+			case "USD": moneda = "Dolares Americanos";break;
+			default:moneda = "Soles";break;
+		}
+    	TipoLeyenda tipoLeyenda = new TipoLeyenda();
+    	tipoLeyenda.setCodigo("1000");
+    	Leyenda leyenda = new Leyenda();
+    	leyenda.setTipoLeyenda(tipoLeyenda);;
+    	leyenda.setDescripcion(leyendaUtil.numberToLetterES(Number, ".", moneda, 2));
+    	
+    	if(leyendas == null)
+    		leyendasDoc.add(leyenda);
+    	else {
+    		Boolean existe = false;
+    		for (Leyenda leye : leyendas) {
+    			leyendasDoc.add(leye);
+				if(leye.getTipoLeyenda().getCodigo().equals("1000")) existe = true;
+			}
+    		if(!existe) leyendasDoc.add(leyenda);
+    	}
+    	return leyendasDoc;
     }
 
     public ApiRestFullResponse insert(NotaDC notaDC) {
@@ -144,12 +237,18 @@ public class DocumentoService {
         try {
             notaDC.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
             notaDC.setEstadoProceso("N");
-
+            notaDC.setLeyendas(preparaLeyenda(notaDC.getLeyendas(), notaDC.getTotal(), notaDC.getMoneda().getCodigo()));
             notaDCValidator.validaDocuNumero(notaDC.getEmpresa(), notaDC.getTipoDocumento(), notaDC.getNumero());
             notaDCValidator.validaDocBaseSinple(notaDC);
-            notaDCValidator.validaDocuTipoNota(notaDC.getTipoDocumento(), notaDC.getTipoNota());
-            notaDCValidator.validaDocuSustentoNota(notaDC.getSustentoNota());
-            res = documentoDao.insert(notaDC);
+            if(usuarioService.allowService("ndci",notaDC.getEmpresa().getId(), notaDC.getEmprSucursal().getId())) {
+	            notaDCValidator.validaDocuTipoNota(notaDC.getTipoDocumento(), notaDC.getTipoNota());
+	            notaDCValidator.validaDocuSustentoNota(notaDC.getSustentoNota());
+	            res = documentoDao.insert(notaDC);
+            } else {
+            	ok = false;
+                code = 403;
+                msg = "El usuario no esta autorizado insertar este documento";
+            }
         } catch (ValidatorException ve) {
             ok = false;
             code = 400;
@@ -160,6 +259,27 @@ public class DocumentoService {
             msg = "No se puede registrar la nota debido a: " + ex.getMessage();
         }
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
+    }
+    
+    public ApiRestFullResponse updateN(NotaDC notaDC) {
+    	Boolean ok = true;
+        int code = 201;
+        String msg = "El comprobante de pago fue registrado correctamente";
+        try {
+        	notaDC.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+        	notaDC.setEstadoProceso("M");
+            comprobantePagoValidator.validaDocuId(notaDC.getId());
+            documentoDao.update(notaDC);
+        } catch (ValidatorException ve) {
+            ok = false;
+            code = 400;
+            msg = "No se puede modificar la empresa debido a: " + ve.getMessage();
+		} catch (Exception e) {
+			ok = false;
+            code = 500;
+            msg = "No se puede modificar la empresa debido a: " + e.getMessage();
+		}
+        return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), null);
     }
 
     public ApiRestFullResponse getC(long id) {
@@ -176,6 +296,21 @@ public class DocumentoService {
         }
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
     }
+    
+    public ApiRestFullResponse getC(long emprId, String tidoc, String numDoc) {
+    	Boolean ok = true;
+        int code = 200;
+        String msg = "Entrega del documento solicitado";
+        ComprobantePago res = null;
+        try {
+            res = documentoDao.getByNumDocC(emprId, tidoc, numDoc);
+        } catch (Exception ex) {
+            ok = false;
+            code = 500;
+            msg = "No se puede obtener el comprobante de pago debido a: " + ex.getMessage();
+        }
+        return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
+    }
 
     public ApiRestFullResponse getN(long id) {
         Boolean ok = true;
@@ -184,6 +319,21 @@ public class DocumentoService {
         NotaDC res = null;
         try {
             res = documentoDao.getNotaDC(id);
+        } catch (Exception ex) {
+            ok = false;
+            code = 500;
+            msg = "No se puede obtener el comprobante de pago debido a: " + ex.getMessage();
+        }
+        return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
+    }
+    
+    public ApiRestFullResponse getN(long emprId, String tidoc, String numDoc) {
+    	Boolean ok = true;
+        int code = 200;
+        String msg = "Entrega del documento solicitado";
+        NotaDC res = null;
+        try {
+            res = documentoDao.getByNumDocN(emprId, tidoc, numDoc);
         } catch (Exception ex) {
             ok = false;
             code = 500;
@@ -233,23 +383,19 @@ public class DocumentoService {
                 if(servicio.getResponse().isSuccess()) {
                 	 clie = (Contribuyente) servicio.getData();
                 	 if(clie != null) {
-                		 if (!isClient(cliente, clie, 1)) {
-                			 res.replace("ok",false);
-                			 res.replace("code",400);
-                			 res.replace("msg","El Cliente es inconsistente");
-                    		 creaclie = false;
-                		 } else {                				 
+                		 if (isClient(cliente, clie, 1)) {
                 			 res.replace("clie", clie.getId());
-                			 if(!isClient(cliente, clie, 2)) {
-                				 sucu.setContribuyente(clie);
-                				 sucu.setDireccion(cliente.getDireccion());
-                				 sucu.setUrbanizacion(cliente.getUrbanizacion());
-                				 sucu.setPais(cliente.getPais());
-                				 sucu.setUbigeo(cliente.getUbigeo());
-                				 sucu.setActivo(cliente.isActivo());
-                				 res.replace("sucu", sucu);
-                			 }
+                		 } else {                				 
+                			 sucu.setContribuyente(clie);
+                			 sucu.setNombreLegal(cliente.getNombreLegal());
+                			 sucu.setDireccion(cliente.getDireccion());
+                			 sucu.setUrbanizacion(cliente.getUrbanizacion());
+                			 sucu.setPais(cliente.getPais());
+                			 sucu.setUbigeo(cliente.getUbigeo());
+                			 sucu.setActivo(cliente.isActivo());
+                			 res.replace("sucu", sucu);
                 		 }
+                		 creaclie = false;
                 	 }
                 } else {
                 	res.replace("code",servicio.getResponse().getCode());
@@ -275,15 +421,24 @@ public class DocumentoService {
     	if((tipo == 0) && clienteCP.getNumeroDocumento() != null && !clienteCP.getNumeroDocumento().equals(clienteDB.getNumeroDocumento()))
     		return false;
     	
-    	if((tipo == 0 || tipo == 2) && clienteCP.getNombreComercial() != null && !clienteCP.getNombreComercial().equals(clienteDB.getNombreComercial()))
+    	if((tipo == 0) && clienteCP.getNombreComercial() != null && !clienteCP.getNombreComercial().equals(clienteDB.getNombreComercial()))
+    		return false;
+    	
+    	if((tipo == 0 && tipo == 1) && clienteCP.getDireccion() != null && !clienteCP.getDireccion().equals(clienteDB.getDireccion()))
     		return false;
     	
     	if((tipo == 0) && clienteCP.getTipoDocumentoIdentidad() != null && !clienteCP.getTipoDocumentoIdentidad().equals(clienteDB.getTipoDocumentoIdentidad()))
     		return false;
     	
-    	if((tipo == 0 || tipo == 1) && clienteCP.getUbigeo() != null && !clienteCP.getUbigeo().equals(clienteDB.getUbigeo()))
-    		return false;
-    	
+    	if((tipo == 0 || tipo == 1) && clienteCP.getUbigeo() != null) {
+    		if(clienteCP.getUbigeo().getCodigo() != null) {
+    			if(!clienteCP.getUbigeo().getCodigo().equals(clienteDB.getUbigeo().getCodigo()))
+    				return false;
+    		} else {
+    			if(clienteCP.getUbigeo().getId() != clienteDB.getUbigeo().getId())
+    				return false;
+    		}
+    	}
     	return true;
     }
 }

@@ -23,6 +23,14 @@ public class SucursalDaoValidator {
             throw new ValidatorException("Es necesario contener el atributo 'contribuyente' de la sucursal");
 	}
 	
+	public void validaSucuNombreLegal(String sucuNombreLegal) throws ValidatorException{
+		if (sucuNombreLegal == null)
+            throw new ValidatorException("Es necesario contener el atributo 'nombreLegal' de la sucursal");
+		
+		if (sucuNombreLegal.length() > 200)
+            throw new ValidatorException("la longitud del atributo 'nombreLegal' no debe exceder los 200 caracteres");
+	}
+	
 	public void validaSucuDireccion(String sucuDireccion) throws ValidatorException{
 		if (sucuDireccion == null)
             throw new ValidatorException("Es necesario contener el atributo 'direccion' de la sucursal");

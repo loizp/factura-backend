@@ -10,11 +10,11 @@ public interface SucursalMapper {
 	
 	void update(Sucursal sucursal);
 	
-	Long sucuExist(HashMap<String, Object> hmFind);
+	long sucuExist(HashMap<String, Object> hmFind);
 	
-	List<Sucursal> getList(Long contId);
+	List<Sucursal> getList(long contId);
 	
 	Sucursal getExist(Sucursal sucursal);
 	
-	Long selectKey();
+	long selectKey();
 }

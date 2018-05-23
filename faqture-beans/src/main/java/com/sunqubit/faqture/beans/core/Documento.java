@@ -4,18 +4,18 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sunqubit.faqture.beans.catalogs.Moneda;
 import com.sunqubit.faqture.beans.catalogs.TipoDocumento;
 
 public class Documento {
 
     private long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "CST")
+    private long idSysEmisor = 0;
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "CST")
     private Timestamp fechaEmision;
     private String numero;
     private String observacion;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "CST")
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "CST")
     private Timestamp fechaProceso;
     private String estadoProceso = "N";
     private TipoDocumento tipoDocumento;
@@ -42,7 +42,15 @@ public class Documento {
         this.id = id;
     }
 
-    public Timestamp getFechaEmision() {
+	public Long getIdSysEmisor() {
+		return idSysEmisor;
+	}
+
+	public void setIdSysEmisor(Long idSysEmisor) {
+		this.idSysEmisor = idSysEmisor;
+	}
+
+	public Timestamp getFechaEmision() {
         return fechaEmision;
     }
 

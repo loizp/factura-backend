@@ -4,7 +4,7 @@ import com.sunqubit.faqture.beans.core.Usuario;
 
 public interface IUsuarioDao {
 
-    void insert(Usuario usuario) throws Exception;
+    long insert(Usuario usuario) throws Exception;
 
     void update(Usuario usuario) throws Exception;
 

@@ -1,7 +1,7 @@
 package com.sunqubit.faqture.beans.core;
 
 public class RolUsuario {
-	private Long id;
+	private long id;
 	private String roleName;
 	
 	public RolUsuario() {

@@ -1,6 +1,7 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --- CREANDO LA ESTRUCTURA DE LA BASE DE DATOS
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 CREATE TABLE sunqubit.tipos_leyendas (
                 tley_codigo CHAR(4) NOT NULL,
                 tley_descripcion VARCHAR(200) NOT NULL,
@@ -50,6 +51,8 @@ CREATE TABLE sunqubit.usuarios (
                 user_date_login TIMESTAMP,
                 user_email VARCHAR(200) NOT NULL,
                 user_status BOOLEAN DEFAULT True NOT NULL,
+                cont_id INTEGER,
+                user_solosucu BOOLEAN DEFAULT false NOT NULL,
                 CONSTRAINT usuarios_pk PRIMARY KEY (user_id)
 );
 COMMENT ON TABLE sunqubit.usuarios IS 'Tabla que contendra los datos de los usuarios que se autenticaran para el uso del servicio';
@@ -61,6 +64,8 @@ COMMENT ON COLUMN sunqubit.usuarios.user_date_upkey IS 'Campo con la ultima fech
 COMMENT ON COLUMN sunqubit.usuarios.user_date_login IS 'Campo con la fecha y hora del ultimo login exitoso que ha realizado';
 COMMENT ON COLUMN sunqubit.usuarios.user_email IS 'Campo con el email del usuario para contacto';
 COMMENT ON COLUMN sunqubit.usuarios.user_status IS 'Campo que valida el estado del usuario activo(True) o inactivo(False)';
+COMMENT ON COLUMN sunqubit.usuarios.cont_id IS 'Campo clave en caso de ser asignado a una empresa';
+COMMENT ON COLUMN sunqubit.usuarios.user_solosucu IS 'Campo que indica que el usuario esta asignado solo a sucursales';
 
 
 ALTER SEQUENCE sunqubit.usuarios_user_id_seq OWNED BY sunqubit.usuarios.user_id;
@@ -68,6 +73,16 @@ ALTER SEQUENCE sunqubit.usuarios_user_id_seq OWNED BY sunqubit.usuarios.user_id;
 CREATE UNIQUE INDEX usuarios_idx
  ON sunqubit.usuarios
  ( user_login_name );
+
+CREATE TABLE sunqubit.usuarios_sucursales (
+                user_id INTEGER NOT NULL,
+                sucu_id INTEGER NOT NULL,
+                CONSTRAINT usuarios_sucursales_pk PRIMARY KEY (user_id)
+);
+COMMENT ON TABLE sunqubit.usuarios_sucursales IS 'Tabla que contiene las sucursales asignadas al usuario';
+COMMENT ON COLUMN sunqubit.usuarios_sucursales.user_id IS 'Campo PK de la tabla usuario';
+COMMENT ON COLUMN sunqubit.usuarios_sucursales.sucu_id IS 'Campo clave de las sucursales asignadas en caso de ser asi';
+
 
 CREATE SEQUENCE sunqubit.asignaciones_roles_arol_id_seq;
 
@@ -232,6 +247,7 @@ CREATE TABLE sunqubit.sucursales (
                 sucu_direccion VARCHAR(200) NOT NULL,
                 sucu_status BOOLEAN DEFAULT true NOT NULL,
                 cont_id INTEGER NOT NULL,
+                sucu_nombre_legal VARCHAR(200) NOT NULL,
                 sucu_urbanizacion VARCHAR(200),
                 ubig_id INTEGER,
                 pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
@@ -242,6 +258,7 @@ COMMENT ON COLUMN sunqubit.sucursales.sucu_id IS 'Campo PK autoincremental';
 COMMENT ON COLUMN sunqubit.sucursales.sucu_direccion IS 'Campo con la dirección de la sucursal';
 COMMENT ON COLUMN sunqubit.sucursales.sucu_status IS 'Campo que define si tendra actividad(True) o no(False) la sucursal';
 COMMENT ON COLUMN sunqubit.sucursales.cont_id IS 'Campo PK del contribuyente';
+COMMENT ON COLUMN sunqubit.sucursales.sucu_nombre_legal IS 'Campo que almacena en caso el nombre legal del contribuyente este campo ayudará en caso de existir diferentes nombres para el mismo num de documento';
 COMMENT ON COLUMN sunqubit.sucursales.sucu_urbanizacion IS 'Campo con la urbanizacion de la sucursal';
 COMMENT ON COLUMN sunqubit.sucursales.ubig_id IS 'Campo clave referencial de la ubicacion de la sucursal';
 COMMENT ON COLUMN sunqubit.sucursales.pais_codigo IS 'Campo con el codigo de pais de la sucursal por defecto es PERU';
@@ -333,6 +350,7 @@ CREATE SEQUENCE sunqubit.documentos_docu_id_seq;
 
 CREATE TABLE sunqubit.documentos (
                 docu_id INTEGER NOT NULL DEFAULT nextval('sunqubit.documentos_docu_id_seq'),
+                docu_idsysemisor INTEGER,
                 cont_id INTEGER NOT NULL,
                 sucu_emisor_id INTEGER,
                 docu_numero VARCHAR(20) NOT NULL,
@@ -375,6 +393,7 @@ CREATE TABLE sunqubit.documentos (
 );
 COMMENT ON TABLE sunqubit.documentos IS 'Tabla principal del sistema que contiene los documentos que son captado y enviados a las SUNAT';
 COMMENT ON COLUMN sunqubit.documentos.docu_id IS 'Campo PK autoincremental';
+COMMENT ON COLUMN sunqubit.documentos.docu_idsysemisor IS 'Campo con el id del documento en el sistema actual del cliente en caso de tenerlo';
 COMMENT ON COLUMN sunqubit.documentos.cont_id IS 'Campo PK del contribuyente';
 COMMENT ON COLUMN sunqubit.documentos.sucu_emisor_id IS 'Campo clave referencia de sucursal en caso de tener sucursal';
 COMMENT ON COLUMN sunqubit.documentos.docu_numero IS 'Campo que identifica al documento segun el correlativo de la empresa emisora
@@ -435,13 +454,13 @@ ALTER SEQUENCE sunqubit.documentos_docu_id_seq OWNED BY sunqubit.documentos.docu
 CREATE TABLE sunqubit.leyendas (
                 docu_id INTEGER NOT NULL,
                 tley_codigo CHAR(4) NOT NULL,
-                Descripcion VARCHAR(200) NOT NULL,
+                leye_descripcion VARCHAR(200) NOT NULL,
                 CONSTRAINT leyendas_pk PRIMARY KEY (docu_id)
 );
 COMMENT ON TABLE sunqubit.leyendas IS 'Tabla que tendra las leyendas de los documentos';
 COMMENT ON COLUMN sunqubit.leyendas.docu_id IS 'Campo PK autoincremental';
 COMMENT ON COLUMN sunqubit.leyendas.tley_codigo IS 'Campo PK con el codigo de la leyenda a usar segun el catalogo';
-COMMENT ON COLUMN sunqubit.leyendas.Descripcion IS 'Cambo con la descripcion de la leyenda';
+COMMENT ON COLUMN sunqubit.leyendas.leye_descripcion IS 'Cambo con la descripcion de la leyenda';
 
 
 CREATE TABLE sunqubit.documentos_referenciados (
@@ -511,6 +530,13 @@ ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE sunqubit.asignaciones_roles ADD CONSTRAINT usuarios_asignaciones_roles_fk
+FOREIGN KEY (user_id)
+REFERENCES sunqubit.usuarios (user_id)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE sunqubit.usuarios_sucursales ADD CONSTRAINT usuarios_usuarios_sucursales_fk
 FOREIGN KEY (user_id)
 REFERENCES sunqubit.usuarios (user_id)
 ON DELETE NO ACTION

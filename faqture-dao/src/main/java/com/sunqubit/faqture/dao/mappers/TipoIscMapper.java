@@ -7,5 +7,5 @@ import com.sunqubit.faqture.beans.catalogs.TipoIsc;
 public interface TipoIscMapper {
 	List<TipoIsc> getAll();
 	
-	Long tipoIscExist(String tiscCodigo);
+	long tipoIscExist(String tiscCodigo);
 }

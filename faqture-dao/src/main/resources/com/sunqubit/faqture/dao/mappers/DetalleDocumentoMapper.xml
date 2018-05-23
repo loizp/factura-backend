@@ -13,7 +13,9 @@
         <result column="dedo_igv" property="igv" />
         <result column="dedo_isc" property="isc" />
         <result column="dedo_subtotal" property="subtotal" />
-        <association property="comprobantePago" javaType="ComprobantePago" resultMap="com.sunqubit.faqture.dao.mappers.DocumentoMapper.ComprobantePagoMap"/>
+        <association property="comprobantePago" javaType="ComprobantePago">
+    		<id property="id" column="docu_id"/>
+  		</association>
         <association property="unidadMedida" javaType="UnidadMedida" resultMap="com.sunqubit.faqture.dao.mappers.UnidadMedidaMapper.UnidadMedidaMap"/>
         <association property="tipoAfectacionIgv" javaType="TipoAfectacionIgv" resultMap="com.sunqubit.faqture.dao.mappers.TipoAfectacionIgvMapper.TipoAfectacionIgvMap"/>
     	<association property="tipoIsc" javaType="TipoIsc" resultMap="com.sunqubit.faqture.dao.mappers.TipoIscMapper.TipoIscMap"/>

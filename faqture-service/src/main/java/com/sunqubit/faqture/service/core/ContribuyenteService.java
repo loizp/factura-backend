@@ -11,6 +11,7 @@ import com.sunqubit.faqture.beans.core.Contribuyente;
 import com.sunqubit.faqture.beans.rest.ApiRestFullResponse;
 import com.sunqubit.faqture.beans.rest.RestFullResponseHeader;
 import com.sunqubit.faqture.dao.contracts.IContribuyenteDao;
+import com.sunqubit.faqture.dao.contracts.IUbigeoDao;
 import com.sunqubit.faqture.dao.validators.ValidatorException;
 import com.sunqubit.faqture.service.validators.ClienteValidator;
 import com.sunqubit.faqture.service.validators.ContribuyenteValidator;
@@ -20,9 +21,12 @@ import com.sunqubit.faqture.service.validators.EmpresaValidator;
 public class ContribuyenteService {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ContribuyenteService.class);
-
-    @Autowired
+	
+	@Autowired
     private IContribuyenteDao contribuyenteDao;
+	
+	@Autowired
+	private IUbigeoDao ubigeoDao;
     
     @Autowired
     private EmpresaValidator empresaValidator;
@@ -73,8 +77,11 @@ public class ContribuyenteService {
 				contribuyenteValidator.validaContNombreComercial(cliente.getNombreComercial());
 			if(cliente.getUrbanizacion() != null)
         		contribuyenteValidator.validaContUrbanizacion(cliente.getUrbanizacion());
-			if(cliente.getUbigeo() != null)
+			if(cliente.getUbigeo() != null) {
+				if(cliente.getUbigeo().getCodigo() != null && cliente.getUbigeo().getId() < 1)
+					cliente.setUbigeo(ubigeoDao.get(cliente.getUbigeo().getCodigo()));
 				contribuyenteValidator.validaContUnigeo(cliente.getUbigeo());
+			}
 			res = contribuyenteDao.insert(cliente,"C");
 		} catch (ValidatorException ve) {
 			ok = false;

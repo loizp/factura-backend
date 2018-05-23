@@ -12,8 +12,24 @@ public class Usuario {
 	private Timestamp dateLogin;
 	private String email;
 	private Boolean activo = true;
+	private Contribuyente empresa;
+	private Boolean soloSucursales = false;
 	private List<RolUsuario> roles;
+	private List<Sucursal> sucursales;
 	
+
+	public Boolean getSoloSucursales() {
+		return soloSucursales;
+	}
+	public void setSoloSucursales(Boolean soloSucursales) {
+		this.soloSucursales = soloSucursales;
+	}
+	public List<Sucursal> getSucursales() {
+		return sucursales;
+	}
+	public void setSucursales(List<Sucursal> sucursales) {
+		this.sucursales = sucursales;
+	}
 	public long getId() {
 		return id;
 	}
@@ -67,5 +83,11 @@ public class Usuario {
 	}
 	public void setDateLogin(Timestamp dateLogin) {
 		this.dateLogin = dateLogin;
+	}
+	public Contribuyente getEmpresa() {
+		return empresa;
+	}
+	public void setEmpresa(Contribuyente empresa) {
+		this.empresa = empresa;
 	}
 }

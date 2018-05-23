@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+//import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sunqubit.faqture.beans.catalogs.TipoOperacion;
 
 public class ComprobantePago extends Documento {
 	private Contribuyente cliente;
 	private Sucursal clieSucursal;
 	private TipoOperacion tipoOperacion;
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="CST")
+	//@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone="CST")
 	private Timestamp fechaVencimiento;
 	private BigDecimal subtotal = BigDecimal.valueOf(0.00);
 	private BigDecimal grabada = BigDecimal.valueOf(0.00);

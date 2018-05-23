@@ -24,9 +24,9 @@ public interface ContribuyenteMapper {
 	
 	List<Contribuyente> filterName(String nombre);
 	
-	Long docIdentidadExist(HashMap<String, String> hmFind);
+	long docIdentidadExist(HashMap<String, String> hmFind);
 	
-	Long contExist(Long contId);
+	long contExist(long contId);
 	
-	Long selectKey();
+	long selectKey();
 }
