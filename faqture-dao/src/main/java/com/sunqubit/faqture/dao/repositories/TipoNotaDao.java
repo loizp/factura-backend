@@ -31,7 +31,12 @@ public class TipoNotaDao implements ITipoNotaDao {
         	return mapper.getAll();
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los tipos de Notas");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el listado de los Tipos de Notas");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el listado de los Tipos de Notas");
 		} finally {
 			session.close();
 		}
@@ -50,7 +55,12 @@ public class TipoNotaDao implements ITipoNotaDao {
         	return false;
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el verificación de existencia del tipo de Nota");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la verificación de existencia del Tipo de Nota");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la verificación de existencia del Tipo de Nota");
 		} finally {
 			session.close();
 		}

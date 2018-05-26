@@ -13,7 +13,7 @@ public class ContribuyenteValidator extends ContribuyenteDaoValidator {
 	public void validaContNombreLegal(String contNombreLegal) throws ValidatorException{
 		super.validaContNombreLegal(contNombreLegal);
 		
-		if (contNombreLegal.trim().isEmpty() || !contNombreLegal.matches("^[A-Za-z][\\w- \\. \\#]*$"))
+		if (contNombreLegal.trim().isEmpty() || !contNombreLegal.matches("^[A-Za-z][\\w-.# ]*$"))
 			throw new ValidatorException("Es necesario que el atributo 'nombreLegal' solo contenga caracteres alfabéticos o númericos");
 	}
 	
@@ -24,7 +24,7 @@ public class ContribuyenteValidator extends ContribuyenteDaoValidator {
 		
 		super.validaContNombreComercial(contNombreComercial);
 		
-		if (contNombreComercial.trim().isEmpty() || !contNombreComercial.matches("^[\\w- \\. \\#]*$"))
+		if (contNombreComercial.trim().isEmpty() || !contNombreComercial.matches("^[\\w-.#\\(\\)/ ]*$"))
 			throw new ValidatorException("Es necesario que el atributo 'nombreComercial' solo contenga caracteres alfabéticos o númericos");
 	}
 	
@@ -35,7 +35,7 @@ public class ContribuyenteValidator extends ContribuyenteDaoValidator {
 			
 		super.validaContDireccion(contDireccion);
 		
-		if (contDireccion.trim().isEmpty() || !contDireccion.matches("^[A-Za-z][\\w-./ \\(\\)\\#]*$"))
+		if (contDireccion.trim().isEmpty() || !contDireccion.matches("^[\\w-.#\\(\\)/ ]*$"))
             throw new ValidatorException("Es necesario que el atributo 'direccion' debe estar correctamente expresado");
 	}
 	
@@ -46,7 +46,7 @@ public class ContribuyenteValidator extends ContribuyenteDaoValidator {
 		
 		super.validaContUrbanizacion(contUrbanizacion);
 		
-		if (contUrbanizacion.trim().isEmpty() || !contUrbanizacion.matches("^[A-Za-z][\\w- \\. \\#]*$"))
+		if (contUrbanizacion.trim().isEmpty() || !contUrbanizacion.matches("^[\\w-.#\\(\\)/ ]*$"))
             throw new ValidatorException("Es necesario que el atributo 'urbanizacion' debe estar correctamente expresado");
 	}
 	

@@ -36,7 +36,12 @@ public class SucursalDao implements ISucursalDao {
 			return sucursal.getId();
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la inserción de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la inserción de los datos de la Sucursal");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la inserción de los datos de la Sucursal");
 		} finally {
 			session.close();
 		}
@@ -50,7 +55,12 @@ public class SucursalDao implements ISucursalDao {
 			mapper.update(sucursal);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualizacion de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la actualización de los datos de la Sucursal");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización de los datos de la Sucursal");
 		} finally {
 			session.close();
 		}
@@ -69,7 +79,12 @@ public class SucursalDao implements ISucursalDao {
 			return false;
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualización de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la verificación de existencia de la Sucursal");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la verificación de existencia de la Sucursal");
 		} finally {
 			session.close();
 		}
@@ -83,7 +98,12 @@ public class SucursalDao implements ISucursalDao {
 			return mapper.getList(contId);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la obtención de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la obtención del listado de Sucursales");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención del listado de Sucursales");
 		} finally {
 			session.close();
 		}

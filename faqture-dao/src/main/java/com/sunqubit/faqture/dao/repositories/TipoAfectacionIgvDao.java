@@ -30,7 +30,12 @@ public class TipoAfectacionIgvDao implements ITipoAfectacionIgvDao {
         	return mapper.getAll();
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los tipos de afectacion IGV");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el listado de los Tipos de afectacion IGV");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el listado de los Tipos de afectacion IGV");
 		} finally {
 			session.close();
 		}
@@ -46,7 +51,12 @@ public class TipoAfectacionIgvDao implements ITipoAfectacionIgvDao {
         	return false;
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los tipos de afectacion IGV");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el verificación de existencia de los Tipos de afectacion IGV");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el verificación de existencia de los Tipos de afectacion IGV");
 		} finally {
 			session.close();
 		}

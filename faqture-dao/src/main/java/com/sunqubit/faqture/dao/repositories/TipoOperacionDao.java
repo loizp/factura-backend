@@ -30,7 +30,12 @@ public class TipoOperacionDao implements ITipoOperacionDao {
         	return mapper.getAll();
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los tipos de operaciones");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el listado de los Tipos de operaciones");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el listado de los Tipos de operaciones");
 		} finally {
 			session.close();
 		}
@@ -46,7 +51,12 @@ public class TipoOperacionDao implements ITipoOperacionDao {
         	return false;
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los tipos de operaciones");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la verificación de existencia del Tipo de operacion");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la verificación de existencia del Tipo de operacion");
 		} finally {
 			session.close();
 		}

@@ -26,12 +26,14 @@ public class NotaDC extends Documento {
 		return igv;
 	}
 	public void setIgv(BigDecimal igv) {
+		if(igv == null) igv = BigDecimal.valueOf(0.00);
 		this.igv = igv;
 	}
 	public BigDecimal getTotal() {
 		return total;
 	}
 	public void setTotal(BigDecimal total) {
+		if(total == null) total = BigDecimal.valueOf(0.00);
 		this.total = total;
 	}	
 }

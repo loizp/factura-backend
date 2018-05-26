@@ -13,7 +13,8 @@ public class Contribuyente {
 	private String nombreComercial;
 	private String direccion;
 	private String urbanizacion;
-	private boolean activo = true;
+	private String email;
+	private String telefono;
 	private TipoDocumentoIdentidad tipoDocumentoIdentidad;
 	private Ubigeo ubigeo;
 	private Pais pais;
@@ -55,12 +56,6 @@ public class Contribuyente {
 	public void setUrbanizacion(String urbanizacion) {
 		this.urbanizacion = urbanizacion;
 	}
-	public boolean isActivo() {
-		return activo;
-	}
-	public void setActivo(boolean activo) {
-		this.activo = activo;
-	}
 	public TipoDocumentoIdentidad getTipoDocumentoIdentidad() {
 		return tipoDocumentoIdentidad;
 	}
@@ -77,6 +72,10 @@ public class Contribuyente {
 		return pais;
 	}
 	public void setPais(Pais pais) {
+		if(pais == null) {
+			pais = new Pais();
+			pais.setCodigo("PE");
+		}
 		this.pais = pais;
 	}
 	public List<Sucursal> getSucursales() {
@@ -84,5 +83,17 @@ public class Contribuyente {
 	}
 	public void setSucursales(List<Sucursal> sucursales) {
 		this.sucursales = sucursales;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getTelefono() {
+		return telefono;
+	}
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 }

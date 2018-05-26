@@ -30,7 +30,12 @@ public class TipoLeyendaDao implements ITipoLeyendaDao {
         	return mapper.getAll();
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los tipos de leyendas");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el listado de los Tipos de leyendas");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el listado de los Tipos de leyendas");
 		} finally {
 			session.close();
 		}
@@ -45,8 +50,13 @@ public class TipoLeyendaDao implements ITipoLeyendaDao {
                 return true;
         	return false;
         } catch (PersistenceException pe) {
-        	LOGGER.info(pe.getMessage());
-        	throw new Exception("Ocurrió un error en el listado de los tipos de leyendas");
+			LOGGER.info(pe.getMessage());
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la verificación de existencia del Tipo de leyenda");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la verificación de existencia del Tipo de leyenda");
         } finally {
         	session.close();
         }

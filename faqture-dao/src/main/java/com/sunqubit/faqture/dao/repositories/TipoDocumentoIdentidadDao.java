@@ -30,7 +30,12 @@ public class TipoDocumentoIdentidadDao implements ITipoDocumentoIdentidadDao {
             return mapper.getAll();
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los tipos de documentos de identidad");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el listado de los Tipos de documentos de identidad");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el listado de los Tipos de documentos de identidad");
 		} finally {
 			session.close();
 		}

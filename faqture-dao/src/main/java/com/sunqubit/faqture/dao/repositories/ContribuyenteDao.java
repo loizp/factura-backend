@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.sunqubit.faqture.beans.core.Contribuyente;
+import com.sunqubit.faqture.beans.core.Empresa;
+import com.sunqubit.faqture.beans.utils.StoreManager;
 import com.sunqubit.faqture.dao.contracts.IContribuyenteDao;
 import com.sunqubit.faqture.dao.mappers.ContribuyenteMapper;
 
@@ -36,7 +38,12 @@ public class ContribuyenteDao implements IContribuyenteDao {
 			return false;
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la verificación de existencia del contribuyente");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la verificación de existencia del docuIdentidad del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la verificación de existencia del docuIdentidad del contribuyente");
 		} finally {
 			session.close();
 		}
@@ -52,6 +59,11 @@ public class ContribuyenteDao implements IContribuyenteDao {
 			return false;
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la verificación de existencia del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
 			throw new Exception("Ocurrió un error en la verificación de existencia del contribuyente");
 		} finally {
 			session.close();
@@ -59,42 +71,85 @@ public class ContribuyenteDao implements IContribuyenteDao {
 	}
 
 	@Override
-	public long insert(Contribuyente contribuyente, String tico) throws Exception {
+	public long insert(Empresa empresa) throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
+			empresa.setId(mapper.selectKey());
+			mapper.insertE(empresa);
+			StoreManager.getDirectorio(1, empresa.getTipoDocumentoIdentidad().getCodigo(), empresa.getNumeroDocumento(), null);
+			return empresa.getId();
+		} catch (PersistenceException pe) {
+			LOGGER.info(pe.getMessage());
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la inserción de los datos del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la verificación de existencia del contribuyente");
+		} finally {
+			session.close();
+		}
+	}
+	
+	@Override
+	public long insert(Contribuyente contribuyente) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
 			contribuyente.setId(mapper.selectKey());
-			if(tico == "E")
-				mapper.insertE(contribuyente);
-			else if (tico == "C") {
-				mapper.insertC(contribuyente);
-			}
+			mapper.insertC(contribuyente);
 			return contribuyente.getId();
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la inserción de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la inserción de los datos del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la verificación de existencia del contribuyente");
 		} finally {
 			session.close();
 		}
 	}
 
 	@Override
-	public void update(Contribuyente contribuyente, String tico) throws Exception {
+	public void update(Empresa empresa) throws Exception {
 		SqlSession session = sqlSessionFactory.openSession();
 		try {
 			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
-			if(tico == "E")
-				mapper.updateE(contribuyente);
-			else if (tico == "C") {
-				mapper.updateC(contribuyente);
-			}
+			mapper.updateE(empresa);
+			StoreManager.getDirectorio(1, empresa.getTipoDocumentoIdentidad().getCodigo(), empresa.getNumeroDocumento(), null);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la insercion de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la actualización de los datos del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización de los datos del contribuyente");
 		} finally {
 			session.close();
 		}
-		
+	}
+	
+	@Override
+	public void update(Contribuyente contribuyente) throws Exception {
+		SqlSession session = sqlSessionFactory.openSession();
+		try {
+			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
+			mapper.updateC(contribuyente);
+		} catch (PersistenceException pe) {
+			LOGGER.info(pe.getMessage());
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la actualización de los datos del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización de los datos del contribuyente");
+		} finally {
+			session.close();
+		}
 	}
 
 	@Override
@@ -105,7 +160,12 @@ public class ContribuyenteDao implements IContribuyenteDao {
 			mapper.changeDoc(contribuyente);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualización de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la actualización del documento del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización del documento del contribuyente");
 		} finally {
 			session.close();
 		}
@@ -119,7 +179,12 @@ public class ContribuyenteDao implements IContribuyenteDao {
 			return mapper.getVerif(contId);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la obtención del contribuyente");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la obtención de verificación del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención de verificación del contribuyente");
 		} finally {
 			session.close();
 		}
@@ -133,7 +198,12 @@ public class ContribuyenteDao implements IContribuyenteDao {
 			return mapper.getById(contId);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la obtención del contribuyente");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la obtención por id del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención por id del contribuyente");
 		} finally {
 			session.close();
 		}
@@ -150,7 +220,12 @@ public class ContribuyenteDao implements IContribuyenteDao {
 			return mapper.getByDoc(hmFind);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la obtención del contribuyente");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la obtención por numDoc del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención por numDoc del contribuyente");
 		} finally {
 			session.close();
 		}
@@ -164,7 +239,12 @@ public class ContribuyenteDao implements IContribuyenteDao {
 			return mapper.filterName(nombre);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el filtrado del contribuyente");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el filtrado del contribuyente");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la filtrado del contribuyente");
 		} finally {
 			session.close();
 		}

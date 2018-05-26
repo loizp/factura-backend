@@ -30,7 +30,12 @@ public class TipoIscDao implements ITipoIscDao {
         	return mapper.getAll();
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los tipos de ISC");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el listado de los Tipos de ISC");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el listado de los Tipos de ISC");
 		} finally {
 			session.close();
 		}
@@ -46,7 +51,12 @@ public class TipoIscDao implements ITipoIscDao {
         	return false;
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los tipos de ISC");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en verificación de existencia de los Tipos de ISC");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en verificación de existencia de los Tipos de ISC");
 		} finally {
 			session.close();
 		}

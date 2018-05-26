@@ -14,6 +14,8 @@
         <result column="docu_tasa_igv" property="tasaIgv" />
         <result column="docu_link_pdf" property="linkPdf" />
         <result column="docu_link_xml" property="linkXml" />
+        <result column="docu_link_qr" property="linkQR" />
+        <result column="docu_link_pdf417" property="linkPDF417" />
         <result column="docu_hash_sunat" property="hashSunat" />
         <result column="docu_link_cdr" property="linkCdr" />
         <result column="docu_cdr_status" property="cdrStatus" />
@@ -37,7 +39,7 @@
         <result column="docu_anulado" property="anulado"/>
         <!-- DocumentoBase -->
         <association property="tipoDocumento" javaType="TipoDocumento" resultMap="com.sunqubit.faqture.dao.mappers.TipoDocumentoMapper.TipoDocumentoMap"/>
-        <association property="empresa" javaType="Contribuyente" resultMap="com.sunqubit.faqture.dao.mappers.ContribuyenteMapper.ContBaseMap"/>
+        <association property="empresa" javaType="Empresa" resultMap="com.sunqubit.faqture.dao.mappers.ContribuyenteMapper.EmpresaBaseMap"/>
         <association property="emprSucursal" javaType="Sucursal">
     		<id property="id" column="sucu_emisor_id"/>
     		<result property="nombreLegal" column="sucu_emisor_nombrelegal"/>
@@ -65,11 +67,18 @@
     		<result property="nombreComercial" column="clie_nombreCom"/>
     		<result property="direccion" column="clie_direccion"/>
     		<result property="urbanizacion" column="clie_urbanizacion"/>
+    		<result property="email" column="clie_email"/>
+        	<result property="telefono" column="clie_telefono"/>
+    		<association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad">
+    			<id column="clie_tiid_codigo" property="codigo" />
+        		<result column="clie_tiid_descripcion" property="descripcion" />
+        		<result column="clie_tiid_descripcion_corta" property="descripcionCorta" />
+  			</association>
     		<association property="ubigeo" javaType="Ubigeo">
     			<id property="id" column="clie_ubig_id"/>
     			<result property="codigo" column="clie_ubig_codigo"/>
     			<result property="departamento" column="clie_ubig_dpto"/>
-    			<result property="provincia" column="clier_ubig_prov"/>
+    			<result property="provincia" column="clie_ubig_prov"/>
     			<result property="distrito" column="clie_ubig_dist"/>
   			</association>
   			<association property="pais" javaType="Pais">
@@ -105,7 +114,7 @@
     		<association property="tipoLeyenda" javaType="TipoLeyenda" resultMap="com.sunqubit.faqture.dao.mappers.TipoLeyendaMapper.TipoLeyendaMap" />
     	</collection>
     	<!-- ComprobantePago -->
-    	<collection property="detallesDocumento" javaType="DetalleDocumento" resultMap="com.sunqubit.faqture.dao.mappers.DetalleDocumentoMapper.DetalleDocumentoMap" />
+    	<collection property="detallesDocumento" ofType="DetalleDocumento" resultMap="com.sunqubit.faqture.dao.mappers.DetalleDocumentoMapper.DetalleDocumentoMap" />
     </resultMap>
     
     <resultMap type="NotaDC" id="NotaDCMap">
@@ -121,6 +130,8 @@
         <result column="docu_tasa_igv" property="tasaIgv" />
         <result column="docu_link_pdf" property="linkPdf" />
         <result column="docu_link_xml" property="linkXml" />
+        <result column="docu_link_qr" property="linkQR" />
+        <result column="docu_link_pdf417" property="linkPDF417" />
         <result column="docu_hash_sunat" property="hashSunat" />
         <result column="docu_link_cdr" property="linkCdr" />
         <result column="docu_cdr_status" property="cdrStatus" />
@@ -175,7 +186,6 @@
     		<if test="observacion != null">, docu_observacion</if>
     		, docu_proc_fecha, docu_proc_status, tido_codigo, cont_id
     		<if test="emprSucursal != null">, sucu_emisor_id</if>
-    		<if test="tipoLeyenda != null">, tley_codigo</if>
     		<if test="moneda != null">, mone_codigo</if>
 			, docu_enviar_sunat, cont_clie_id
     		<if test="clieSucursal != null">, sucu_clie_id</if>
@@ -190,7 +200,6 @@
 			<if test="observacion != null">, #{observacion}</if>
 			, #{fechaProceso}, #{estadoProceso}, #{tipoDocumento.codigo}, #{empresa.id}
 			<if test="emprSucursal != null">, #{emprSucursal.id}</if>
-			<if test="tipoLeyenda != null">, #{tipoLeyenda.codigo}</if>
 			<if test="moneda != null">, #{moneda.codigo}</if>
 			, #{enviarSunat}, #{cliente.id}
 			<if test="clieSucursal != null">, #{clieSucursal.id}</if>
@@ -203,7 +212,7 @@
 		
 		<if test="leyendas != null">
 			<foreach item="leyenda" collection="leyendas">
-				<if test="leyenda.tipoLeyenda.codigo != null">
+				<if test="leyenda.tipoLeyenda != null">
 					INSERT INTO sunqubit.leyendas (docu_id, tley_codigo, leye_descripcion)
 					VALUES (#{id}, #{leyenda.tipoLeyenda.codigo}, #{leyenda.descripcion});
 				</if>
@@ -222,23 +231,15 @@
 		<if test="detallesDocumento != null">
 			<foreach item="item" collection="detallesDocumento">
 				<if test="item.orden > 0 and item.descripcion != null and item.cantidad != null and item.precioVenta != null and item.subtotal != null">
-					INSERT INTO sunqubit.detalle_documentos (docu_id, dedo_orden
-						<if test="item.codigoProducto != null">, dedo_codigo_producto</if>
-						, dedo_descripcion
+					INSERT INTO sunqubit.detalle_documentos (docu_id, dedo_orden, dedo_codigo_producto, dedo_descripcion
 						<if test="item.unidadMedida != null">, unme_codigo</if>
-						, dedo_cantidad, dedo_precio_venta, dedo_descuento, dedo_venta_no_onerosa
-						<if test="item.tipoAfectacionIgv.codigo != null">, tiai_codigo</if>
-						, dedo_igv, dedo_isc, dedo_subtotal
-						<if test="item.tipoIsc.codigo != null">tisc_codigo</if>
+						, dedo_cantidad, dedo_precio_venta, dedo_descuento, dedo_venta_no_onerosa, tiai_codigo, dedo_igv, dedo_isc, dedo_subtotal
+						<if test="item.tipoIsc != null">, tisc_codigo</if>
 						)
-					VALUES (#{id}, #{item.orden}
-						<if test="item.codigoProducto != null">, #{item.codigoProducto}</if>
-						, #{item.descripcion}
-						<if test="item.unidadMedida != null">, #{item.unidadMedida.id}</if>
-						, #{item.cantidad}, #{item.precioVenta}, #{item.descuento}, #{item.ventaNoOnerosa}
-						<if test="item.tipoAfectacionIgv.codigo != null">, #{item.tipoAfectacionIgv.codigo}</if>
-						, #{item.igv}, #{item.isc}, #{item.subtotal}
-						<if test="item.tipoIsc.codigo != null">#{item.tipoIsc.codigo}</if>
+					VALUES (#{id}, #{item.orden}, #{item.codigoProducto}, #{item.descripcion}
+						<if test="item.unidadMedida != null">, #{item.unidadMedida.codigo}</if>
+						, #{item.cantidad}, #{item.precioVenta}, #{item.descuento}, #{item.ventaNoOnerosa}, #{item.tipoAfectacionIgv.codigo}, #{item.igv}, #{item.isc}, #{item.subtotal}
+						<if test="item.tipoIsc != null">, #{item.tipoIsc.codigo}</if>
 						);
 				</if>
     		</foreach>
@@ -251,6 +252,8 @@
 			,docu_observacion = #{observacion}, docu_enviar_sunat = #{enviarSunat}
 			<if test="linkPdf != null">, docu_link_pdf = #{linkPdf}</if>
 			<if test="linkXml != null">, docu_link_xml = #{linkXml}</if>
+			<if test="linkQR != null">, docu_link_qr = #{linkQR}</if>
+			<if test="linkPDF417 != null">, docu_link_pdf417 = #{linkPDF417}</if>
 			<if test="hashSunat != null">, docu_hash_sunat = #{hashSunat}</if>
 			<if test="linkCdr != null">, docu_link_cdr = #{linkCdr}</if>
 			<if test="cdrStatus != null">, docu_cdr_status = #{cdrStatus}</if>
@@ -266,43 +269,55 @@
         SELECT d.*, 
         	td.*, 
         	e.*, 
+        	etdi.*,
         	u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito, 
-        	p.*, 
+        	pa.*, 
         	es.sucu_id AS sucu_emisor_id, es.sucu_nombre_legal AS sucu_emisor_nombrelegal, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_urbanizacion AS sucu_emisor_urbanizacion, es.sucu_status AS sucu_emisor_status, 
         	su.ubig_id AS sucu_emisor_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_emisor_ubig_codigo, su.ubig_departamento AS sucu_emisor_ubig_dpto, su.ubig_provincia AS sucu_emisor_ubig_prov, su.ubig_distrito AS sucu_emisor_ubig_dist,
         	sp.pais_codigo AS sucu_emisor_pais_codigo, sp.pais_nombre AS sucu_emisor_pais_nombre, 
-        	m.*, 
-        	c.cont_id AS clie_id, c.cont_num_doc AS clie_numDoc, c.cont_nombre_legal AS clie_nombreLeg, c.cont_nombre_comercial AS clie_nombreCom, c.cont_direccion AS clie_direccion, c.cont_urbanizacion AS clie_urbanizacion, 
-        	cu.ubig_id AS clie_ubig_id, cu.ubig_cod_dpto || cu.ubig_cod_prov || cu.ubig_cod_dist AS clie_ubig_codigo, cu.ubig_departamento AS clie_ubig_dpto, cu.ubig_provincia AS clie_ubig_prov, cu.ubig_distrito AS clie_ubig_dist,
-        	cp.pais_codigo AS clie_pais_codigo, cp.pais_nombre AS clie_pais_nombre, 
-        	cs.sucu_id AS sucu_clie_id, cs.sucu_nombre_legal AS sucu_clie_nombrelegal, cs.sucu_direccion AS sucu_clie_direccion, cs.sucu_urbanizacion AS sucu_clie_urbanizacion, cs.sucu_status AS sucu_clie_status,
-        	csu.ubig_id AS sucu_clie_ubig_id, csu.ubig_cod_dpto || csu.ubig_cod_prov || csu.ubig_cod_dist AS sucu_clie_ubig_codigo, csu.ubig_departamento AS sucu_clie_ubig_dpto, csu.ubig_provincia AS sucu_clie_ubig_prov, csu.ubig_distrito AS sucu_clie_ubig_dist,
-        	csp.pais_codigo AS sucu_clie_pais_codigo, csp.pais_nombre AS sucu_clie_pais_nombre, 
+        	mo.*, 
+        	cl.cont_id AS clie_id, cl.cont_num_doc AS clie_numDoc, cl.cont_nombre_legal AS clie_nombreLeg, cl.cont_nombre_comercial AS clie_nombreCom, cl.cont_direccion AS clie_direccion, cl.cont_urbanizacion AS clie_urbanizacion, cl.cont_email AS clie_email, cl.cont_telefono AS clie_telefono,
+        	cltdi.tiid_codigo AS clie_tiid_codigo, cltdi.tiid_descripcion AS clie_tiid_descripcion, cltdi.tiid_descripcion_corta AS clie_tiid_descripcion_corta,
+        	clu.ubig_id AS clie_ubig_id, clu.ubig_cod_dpto || clu.ubig_cod_prov || clu.ubig_cod_dist AS clie_ubig_codigo, clu.ubig_departamento AS clie_ubig_dpto, clu.ubig_provincia AS clie_ubig_prov, clu.ubig_distrito AS clie_ubig_dist,
+        	clpa.pais_codigo AS clie_pais_codigo, clpa.pais_nombre AS clie_pais_nombre, 
+        	cls.sucu_id AS sucu_clie_id, cls.sucu_nombre_legal AS sucu_clie_nombrelegal, cls.sucu_direccion AS sucu_clie_direccion, cls.sucu_urbanizacion AS sucu_clie_urbanizacion, cls.sucu_status AS sucu_clie_status,
+        	clsu.ubig_id AS sucu_clie_ubig_id, clsu.ubig_cod_dpto || clsu.ubig_cod_prov || clsu.ubig_cod_dist AS sucu_clie_ubig_codigo, clsu.ubig_departamento AS sucu_clie_ubig_dpto, clsu.ubig_provincia AS sucu_clie_ubig_prov, clsu.ubig_distrito AS sucu_clie_ubig_dist,
+        	clspa.pais_codigo AS sucu_clie_pais_codigo, clspa.pais_nombre AS sucu_clie_pais_nombre, 
         	top.*, 
         	dr.*, 
         	l.*, 
         	tl.*, 
-        	dd.*
+        	dd.*,
+        	um.*,
+        	dmo.*,
+        	tig.*,
+        	tis.*
         FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
+        	INNER JOIN sunqubit.tipos_documentos_identidad AS etdi ON etdi.tiid_codigo = e.tiid_codigo
         	INNER JOIN sunqubit.ubigeos AS u ON u.ubig_id = e.ubig_id
-        	INNER JOIN sunqubit.paises AS p ON p.pais_codigo = e.pais_codigo
+        	INNER JOIN sunqubit.paises AS pa ON pa.pais_codigo = e.pais_codigo
         	LEFT JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
         	LEFT JOIN sunqubit.ubigeos AS su ON  su.ubig_id = es.ubig_id
         	LEFT JOIN sunqubit.paises AS sp ON sp.pais_codigo = es.pais_codigo
-        	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
-        	INNER JOIN sunqubit.contribuyentes AS c ON c.cont_id = d.cont_clie_id
-        	LEFT JOIN sunqubit.ubigeos AS cu ON cu.ubig_id = c.ubig_id
-        	INNER JOIN sunqubit.paises AS cp ON cp.pais_codigo = c.pais_codigo
-        	LEFT JOIN sunqubit.sucursales AS cs ON cs.sucu_id = d.sucu_clie_id
-        	LEFT JOIN sunqubit.ubigeos AS csu ON  csu.ubig_id = cs.ubig_id
-        	LEFT JOIN sunqubit.paises AS csp ON csp.pais_codigo = cs.pais_codigo
+        	INNER JOIN sunqubit.monedas AS mo ON mo.mone_codigo = d.mone_codigo
+        	INNER JOIN sunqubit.contribuyentes AS cl ON cl.cont_id = d.cont_clie_id
+        	INNER JOIN sunqubit.tipos_documentos_identidad AS cltdi ON cltdi.tiid_codigo = cl.tiid_codigo
+        	LEFT JOIN sunqubit.ubigeos AS clu ON clu.ubig_id = cl.ubig_id
+        	INNER JOIN sunqubit.paises AS clpa ON clpa.pais_codigo = cl.pais_codigo
+        	LEFT JOIN sunqubit.sucursales AS cls ON cls.sucu_id = d.sucu_clie_id
+        	LEFT JOIN sunqubit.ubigeos AS clsu ON  clsu.ubig_id = cls.ubig_id
+        	LEFT JOIN sunqubit.paises AS clspa ON clspa.pais_codigo = cls.pais_codigo
         	INNER JOIN sunqubit.tipos_operaciones AS top ON top.tiop_codigo = d.tiop_codigo
         	LEFT JOIN sunqubit.documentos_referenciados AS dr ON dr.documentos_docu_id = d.docu_id
         	INNER JOIN sunqubit.leyendas AS l ON l.docu_id = d.docu_id
         	INNER JOIN sunqubit.tipos_leyendas AS tl ON tl.tley_codigo = l.tley_codigo
         	LEFT JOIN sunqubit.detalle_documentos AS dd ON dd.docu_id = d.docu_id
+        	LEFT JOIN sunqubit.unidades_medida AS um ON um.unme_codigo = dd.unme_codigo
+    		LEFT JOIN sunqubit.monedas AS dmo ON dmo.mone_codigo = dd.mone_codigo
+    		LEFT JOIN sunqubit.tipos_afectacion_igv AS tig ON tig.tiai_codigo = dd.tiai_codigo
+    		LEFT JOIN sunqubit.tipos_isc AS tis ON tis.tisc_codigo = dd.tisc_codigo
         WHERE d.docu_id = #{docuId} AND (d.tido_codigo = '01' OR d.tido_codigo = '03');
     </select>
     
@@ -310,43 +325,55 @@
         SELECT d.*, 
         	td.*, 
         	e.*, 
+        	etdi.*,
         	u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito, 
-        	p.*, 
+        	pa.*, 
         	es.sucu_id AS sucu_emisor_id, es.sucu_nombre_legal AS sucu_emisor_nombrelegal, es.sucu_direccion AS sucu_emisor_direccion, es.sucu_urbanizacion AS sucu_emisor_urbanizacion, es.sucu_status AS sucu_emisor_status, 
         	su.ubig_id AS sucu_emisor_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_emisor_ubig_codigo, su.ubig_departamento AS sucu_emisor_ubig_dpto, su.ubig_provincia AS sucu_emisor_ubig_prov, su.ubig_distrito AS sucu_emisor_ubig_dist,
         	sp.pais_codigo AS sucu_emisor_pais_codigo, sp.pais_nombre AS sucu_emisor_pais_nombre, 
-        	m.*, 
-        	c.cont_id AS clie_id, c.cont_num_doc AS clie_numDoc, c.cont_nombre_legal AS clie_nombreLeg, c.cont_nombre_comercial AS clie_nombreCom, c.cont_direccion AS clie_direccion, c.cont_urbanizacion AS clie_urbanizacion, 
-        	cu.ubig_id AS clie_ubig_id, cu.ubig_cod_dpto || cu.ubig_cod_prov || cu.ubig_cod_dist AS clie_ubig_codigo, cu.ubig_departamento AS clie_ubig_dpto, cu.ubig_provincia AS clie_ubig_prov, cu.ubig_distrito AS clie_ubig_dist,
-        	cp.pais_codigo AS clie_pais_codigo, cp.pais_nombre AS clie_pais_nombre, 
-        	cs.sucu_id AS sucu_clie_id, cs.sucu_nombre_legal AS sucu_clie_nombrelegal, cs.sucu_direccion AS sucu_clie_direccion, cs.sucu_urbanizacion AS sucu_clie_urbanizacion, cs.sucu_status AS sucu_clie_status,
-        	csu.ubig_id AS sucu_clie_ubig_id, csu.ubig_cod_dpto || csu.ubig_cod_prov || csu.ubig_cod_dist AS sucu_clie_ubig_codigo, csu.ubig_departamento AS sucu_clie_ubig_dpto, csu.ubig_provincia AS sucu_clie_ubig_prov, csu.ubig_distrito AS sucu_clie_ubig_dist,
-        	csp.pais_codigo AS sucu_clie_pais_codigo, csp.pais_nombre AS sucu_clie_pais_nombre, 
+        	mo.*, 
+        	cl.cont_id AS clie_id, cl.cont_num_doc AS clie_numDoc, cl.cont_nombre_legal AS clie_nombreLeg, cl.cont_nombre_comercial AS clie_nombreCom, cl.cont_direccion AS clie_direccion, cl.cont_urbanizacion AS clie_urbanizacion, cl.cont_email AS clie_email, cl.cont_telefono AS clie_telefono,
+        	cltdi.tiid_codigo AS clie_tiid_codigo, cltdi.tiid_descripcion AS clie_tiid_descripcion, cltdi.tiid_descripcion_corta AS clie_tiid_descripcion_corta,
+        	clu.ubig_id AS clie_ubig_id, clu.ubig_cod_dpto || clu.ubig_cod_prov || clu.ubig_cod_dist AS clie_ubig_codigo, clu.ubig_departamento AS clie_ubig_dpto, clu.ubig_provincia AS clie_ubig_prov, clu.ubig_distrito AS clie_ubig_dist,
+        	clpa.pais_codigo AS clie_pais_codigo, clpa.pais_nombre AS clie_pais_nombre, 
+        	cls.sucu_id AS sucu_clie_id, cls.sucu_nombre_legal AS sucu_clie_nombrelegal, cls.sucu_direccion AS sucu_clie_direccion, cls.sucu_urbanizacion AS sucu_clie_urbanizacion, cls.sucu_status AS sucu_clie_status,
+        	clsu.ubig_id AS sucu_clie_ubig_id, clsu.ubig_cod_dpto || clsu.ubig_cod_prov || clsu.ubig_cod_dist AS sucu_clie_ubig_codigo, clsu.ubig_departamento AS sucu_clie_ubig_dpto, clsu.ubig_provincia AS sucu_clie_ubig_prov, clsu.ubig_distrito AS sucu_clie_ubig_dist,
+        	clspa.pais_codigo AS sucu_clie_pais_codigo, clspa.pais_nombre AS sucu_clie_pais_nombre, 
         	top.*, 
         	dr.*, 
         	l.*, 
         	tl.*, 
-        	dd.*
+        	dd.*,
+        	um.*,
+        	dmo.*,
+        	tig.*,
+        	tis.*
         FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
+        	INNER JOIN sunqubit.tipos_documentos_identidad AS etdi ON etdi.tiid_codigo = e.tiid_codigo
         	INNER JOIN sunqubit.ubigeos AS u ON u.ubig_id = e.ubig_id
-        	INNER JOIN sunqubit.paises AS p ON p.pais_codigo = e.pais_codigo
+        	INNER JOIN sunqubit.paises AS pa ON pa.pais_codigo = e.pais_codigo
         	LEFT JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
         	LEFT JOIN sunqubit.ubigeos AS su ON  su.ubig_id = es.ubig_id
         	LEFT JOIN sunqubit.paises AS sp ON sp.pais_codigo = es.pais_codigo
-        	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
-        	INNER JOIN sunqubit.contribuyentes AS c ON c.cont_id = d.cont_clie_id
-        	LEFT JOIN sunqubit.ubigeos AS cu ON cu.ubig_id = c.ubig_id
-        	INNER JOIN sunqubit.paises AS cp ON cp.pais_codigo = c.pais_codigo
-        	LEFT JOIN sunqubit.sucursales AS cs ON cs.sucu_id = d.sucu_clie_id
-        	LEFT JOIN sunqubit.ubigeos AS csu ON  csu.ubig_id = cs.ubig_id
-        	LEFT JOIN sunqubit.paises AS csp ON csp.pais_codigo = cs.pais_codigo
+        	INNER JOIN sunqubit.monedas AS mo ON mo.mone_codigo = d.mone_codigo
+        	INNER JOIN sunqubit.contribuyentes AS cl ON cl.cont_id = d.cont_clie_id
+        	INNER JOIN sunqubit.tipos_documentos_identidad AS cltdi ON cltdi.tiid_codigo = cl.tiid_codigo
+        	LEFT JOIN sunqubit.ubigeos AS clu ON clu.ubig_id = cl.ubig_id
+        	INNER JOIN sunqubit.paises AS clpa ON clpa.pais_codigo = cl.pais_codigo
+        	LEFT JOIN sunqubit.sucursales AS cls ON cls.sucu_id = d.sucu_clie_id
+        	LEFT JOIN sunqubit.ubigeos AS clsu ON  clsu.ubig_id = cls.ubig_id
+        	LEFT JOIN sunqubit.paises AS clspa ON clspa.pais_codigo = cls.pais_codigo
         	INNER JOIN sunqubit.tipos_operaciones AS top ON top.tiop_codigo = d.tiop_codigo
         	LEFT JOIN sunqubit.documentos_referenciados AS dr ON dr.documentos_docu_id = d.docu_id
         	INNER JOIN sunqubit.leyendas AS l ON l.docu_id = d.docu_id
         	INNER JOIN sunqubit.tipos_leyendas AS tl ON tl.tley_codigo = l.tley_codigo
-        	LEFT JOIN sunqubit.detalle_documentos AS dd ON dd.docu_id = d.docu_id
+        	INNER JOIN sunqubit.detalle_documentos AS dd ON dd.docu_id = d.docu_id
+        	INNER JOIN sunqubit.unidades_medida AS um ON um.unme_codigo = dd.unme_codigo
+    		INNER JOIN sunqubit.monedas AS dmo ON dmo.mone_codigo = dd.mone_codigo
+    		INNER JOIN sunqubit.tipos_afectacion_igv AS tig ON tig.tiai_codigo = dd.tiai_codigo
+    		LEFT JOIN sunqubit.tipos_isc AS tis ON tis.tisc_codigo = dd.tisc_codigo
         WHERE d.docu_numero = #{numDoc} AND d.cont_id = #{emprId} AND d.tido_codigo = #{tidoc};
     </select>
     
@@ -394,6 +421,8 @@
 			<if test="observacion != null">docu_observacion = #{observacion}</if>
 			<if test="linkPdf != null">docu_link_pdf = #{linkPdf}</if>
 			<if test="linkXml != null">docu_link_xml = #{linkXml}</if>
+			<if test="linkQR != null">docu_link_qr = #{linkQR}</if>
+			<if test="linkPDF417 != null">docu_link_pdf417 = #{linkPDF417}</if>
 			<if test="hashSunat != null">docu_hash_sunat = #{hashSunat}</if>
 			<if test="linkCdr != null">docu_link_cdr = #{linkCdr}</if>
 			<if test="cdrStatus != null">docu_cdr_status = #{cdrStatus}</if>
@@ -407,26 +436,28 @@
         SELECT d.*, 
         	td.*, 
         	e.*, 
+        	etdi.*,
         	u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito, 
-        	p.*, 
+        	pa.*, 
         	es.sucu_id, es.sucu_nombre_legal, es.sucu_direccion, es.sucu_urbanizacion, es.sucu_status, 
         	su.ubig_id AS sucu_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_ubig_codigo, su.ubig_departamento AS sucu_ubig_dpto, su.ubig_provincia AS sucu_ubig_prov, su.ubig_distrito AS sucu_ubig_dist,
-        	sp.pais_codigo AS sucu_pais_codigo, sp.pais_nombre AS sucu_pais_nombre, 
-        	m.*, 
+        	spa.pais_codigo AS sucu_pais_codigo, spa.pais_nombre AS sucu_pais_nombre, 
+        	mo.*, 
         	dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero, dr.docu_fecha_emision AS docu_asociado_fechaEmi, 
         	tn.*
         FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
+        	INNER JOIN sunqubit.tipos_documentos_identidad AS etdi ON etdi.tiid_codigo = e.tiid_codigo
         	INNER JOIN sunqubit.ubigeos AS u ON u.ubig_id = e.ubig_id
-        	INNER JOIN sunqubit.paises AS p ON p.pais_codigo = e.pais_codigo
+        	INNER JOIN sunqubit.paises AS pa ON pa.pais_codigo = e.pais_codigo
         	LEFT JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
         	LEFT JOIN sunqubit.ubigeos AS su ON  su.ubig_id = es.ubig_id
-        	LEFT JOIN sunqubit.paises AS sp ON sp.pais_codigo = es.pais_codigo
-        	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
+        	LEFT JOIN sunqubit.paises AS spa ON spa.pais_codigo = es.pais_codigo
+        	INNER JOIN sunqubit.monedas AS mo ON mo.mone_codigo = d.mone_codigo
         	INNER JOIN sunqubit.tipos_notas AS tn ON tn.tino_id = d.tino_id
-        	LEFT JOIN sunqubit.documentos_referenciados AS dri ON dri.documentos_docu_id = d.docu_id
-        	LEFT JOIN sunqubit.documentos AS dr ON dr.docu_id = dri.docu_asociado_id
+        	INNER JOIN sunqubit.documentos_referenciados AS dri ON dri.documentos_docu_id = d.docu_id
+        	INNER JOIN sunqubit.documentos AS dr ON dr.docu_id = dri.docu_asociado_id
         WHERE d.docu_id = #{docuId}  AND (d.tido_codigo = '07' OR d.tido_codigo = '08');
     </select>
     
@@ -434,26 +465,28 @@
         SELECT d.*, 
         	td.*, 
         	e.*, 
+        	etdi.*,
         	u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito, 
-        	p.*, 
+        	pa.*, 
         	es.sucu_id, es.sucu_nombre_legal, es.sucu_direccion, es.sucu_urbanizacion, es.sucu_status, 
         	su.ubig_id AS sucu_ubig_id, su.ubig_cod_dpto || su.ubig_cod_prov || su.ubig_cod_dist AS sucu_ubig_codigo, su.ubig_departamento AS sucu_ubig_dpto, su.ubig_provincia AS sucu_ubig_prov, su.ubig_distrito AS sucu_ubig_dist,
-        	sp.pais_codigo AS sucu_pais_codigo, sp.pais_nombre AS sucu_pais_nombre, 
-        	m.*, 
+        	spa.pais_codigo AS sucu_pais_codigo, spa.pais_nombre AS sucu_pais_nombre, 
+        	mo.*, 
         	dr.docu_id AS docu_asociado_id, dr.docu_numero AS docu_asociado_numero, dr.docu_fecha_emision AS docu_asociado_fechaEmi, 
         	tn.*
         FROM sunqubit.documentos AS d
         	INNER JOIN sunqubit.tipos_documentos AS td ON td.tido_codigo = d.tido_codigo
         	INNER JOIN sunqubit.contribuyentes AS e ON e.cont_id = d.cont_id
+        	INNER JOIN sunqubit.tipos_documentos_identidad AS etdi ON etdi.tiid_codigo = e.tiid_codigo
         	INNER JOIN sunqubit.ubigeos AS u ON u.ubig_id = e.ubig_id
-        	INNER JOIN sunqubit.paises AS p ON p.pais_codigo = e.pais_codigo
+        	INNER JOIN sunqubit.paises AS pa ON pa.pais_codigo = e.pais_codigo
         	LEFT JOIN sunqubit.sucursales AS es ON es.sucu_id = d.sucu_emisor_id
         	LEFT JOIN sunqubit.ubigeos AS su ON  su.ubig_id = es.ubig_id
-        	LEFT JOIN sunqubit.paises AS sp ON sp.pais_codigo = es.pais_codigo
-        	INNER JOIN sunqubit.monedas AS m ON m.mone_codigo = d.mone_codigo
+        	LEFT JOIN sunqubit.paises AS spa ON spa.pais_codigo = es.pais_codigo
+        	INNER JOIN sunqubit.monedas AS mo ON mo.mone_codigo = d.mone_codigo
         	INNER JOIN sunqubit.tipos_notas AS tn ON tn.tino_id = d.tino_id
-        	LEFT JOIN sunqubit.documentos_referenciados AS dri ON dri.documentos_docu_id = d.docu_id
-        	LEFT JOIN sunqubit.documentos AS dr ON dr.docu_id = dri.docu_asociado_id
+        	INNER JOIN sunqubit.documentos_referenciados AS dri ON dri.documentos_docu_id = d.docu_id
+        	INNER JOIN sunqubit.documentos AS dr ON dr.docu_id = dri.docu_asociado_id
         WHERE d.docu_numero = #{numDoc} AND d.cont_id = #{emprId} AND d.tido_codigo = #{tidoc};
     </select>
 </mapper>

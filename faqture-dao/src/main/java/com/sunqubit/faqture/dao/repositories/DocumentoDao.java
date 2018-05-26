@@ -29,11 +29,17 @@ public class DocumentoDao implements IDocumentoDao {
 		try {
 			DocumentoMapper mapper = session.getMapper(DocumentoMapper.class);
 			comprobantePago.setId(mapper.selectKey());
+			System.out.println(comprobantePago);
 			mapper.insertCompPago(comprobantePago);
 			return comprobantePago.getId();
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la insercion de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de percistencia en la inserción de los datos del Comprobante de Pago");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la inserción de los datos del Comprobante de Pago");
 		} finally {
 			session.close();
 		}
@@ -49,7 +55,12 @@ public class DocumentoDao implements IDocumentoDao {
 			return notaDC.getId();
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la insercion de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de percistencia en la inserción de los datos de la Nota de crédito o Débito");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la inserción de los datos de la Nota de crédito o Débito");
 		} finally {
 			session.close();
 		}
@@ -63,7 +74,12 @@ public class DocumentoDao implements IDocumentoDao {
 			mapper.updateCompPago(comprobantePago);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualización de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de percistencia en la actualización de los datos del Comprobante de Pago");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización de los datos del Comprobante de Pago");
 		} finally {
 			session.close();
 		}
@@ -77,7 +93,12 @@ public class DocumentoDao implements IDocumentoDao {
 			mapper.updateNotaDC(notaDC);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualización de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de percistencia en la actualización de los datos de la Nota de crédito o Débito");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización de los datos de la Nota de crédito o Débito");
 		} finally {
 			session.close();
 		}
@@ -91,7 +112,12 @@ public class DocumentoDao implements IDocumentoDao {
 			return mapper.getCompPago(docuId);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la obtención de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de percistencia en la obtención por id de los datos del Comprobante de Pago");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención por id de los datos del Comprobante de Pago");
 		} finally {
 			session.close();
 		}
@@ -105,7 +131,12 @@ public class DocumentoDao implements IDocumentoDao {
 			return mapper.getNotaDC(docuId);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la obtención de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de percistencia en la obtención por id de los datos de la Nota de Crédito o Débito");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención por id de los datos de la Nota de Crédito o Débito");
 		} finally {
 			session.close();
 		}
@@ -123,7 +154,12 @@ public class DocumentoDao implements IDocumentoDao {
 			return mapper.getByNumDocC(hmFind);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la obtención de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de percistencia en la obtención por numDoc de los datos del Comprobante de Pago");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención por numDoc de los datos del Comprobante de Pago");
 		} finally {
 			session.close();
 		}
@@ -141,7 +177,12 @@ public class DocumentoDao implements IDocumentoDao {
 			return mapper.getByNumDocN(hmFind);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la obtención de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de percistencia en la obtención por numDoc de los datos de la Nota de Crédito o Débito");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención por numDoc de los datos de la Nota de Crédito o Débito");
 		} finally {
 			session.close();
 		}

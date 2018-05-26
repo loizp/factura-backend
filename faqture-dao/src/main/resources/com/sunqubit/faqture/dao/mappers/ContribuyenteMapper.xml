@@ -7,8 +7,9 @@
         <result column="cont_nombre_legal" property="nombreLegal"/>
         <result column="cont_nombre_comercial" property="nombreComercial"/>
         <result column="cont_direccion" property="direccion"/>
-        <result column="cont_status" property="activo"/>
         <result column="cont_urbanizacion" property="urbanizacion"/>
+        <result column="cont_email" property="email"/>
+        <result column="cont_telefono" property="telefono"/>
         <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.dao.mappers.UbigeoMapper.UbigeoMap"/>
         <association property="pais" javaType="Pais" resultMap="com.sunqubit.faqture.dao.mappers.PaisMapper.PaisMap"/>
         <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="com.sunqubit.faqture.dao.mappers.TipoDocumentoIdentidadMapper.TipoDocumentoIdentidadMap"/>
@@ -38,8 +39,30 @@
         <result column="cont_nombre_legal" property="nombreLegal"/>
         <result column="cont_nombre_comercial" property="nombreComercial"/>
         <result column="cont_direccion" property="direccion"/>
+        <result column="cont_urbanizacion" property="urbanizacion"/>
+        <result column="cont_email" property="email"/>
+        <result column="cont_telefono" property="telefono"/>
+        <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.dao.mappers.UbigeoMapper.UbigeoMap"/>
+        <association property="pais" javaType="Pais" resultMap="com.sunqubit.faqture.dao.mappers.PaisMapper.PaisMap"/>
+        <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="com.sunqubit.faqture.dao.mappers.TipoDocumentoIdentidadMapper.TipoDocumentoIdentidadMap"/>
+    </resultMap>
+    
+    <resultMap id="EmpresaBaseMap" type="Empresa">
+        <id column="cont_id" property="id" />
+        <result column="cont_num_doc" property="numeroDocumento" />
+        <result column="cont_nombre_legal" property="nombreLegal"/>
+        <result column="cont_nombre_comercial" property="nombreComercial"/>
+        <result column="cont_direccion" property="direccion"/>
         <result column="cont_status" property="activo"/>
         <result column="cont_urbanizacion" property="urbanizacion"/>
+        <result column="cont_email" property="email"/>
+        <result column="cont_telefono" property="telefono"/>
+        <result column="cont_keystoreType" property="keystoreType"/>
+        <result column="cont_keystore_file" property="keystoreFile"/>
+        <result column="cont_keystore_pass" property="keystorePass"/>
+        <result column="cont_privatekey_alias" property="privateKeyAlias"/>
+        <result column="cont_privatekey_pass" property="privateKeyPass"/>
+        <result column="cont_certificate_alias" property="certificateAlias"/>
         <association property="ubigeo" javaType="Ubigeo" resultMap="com.sunqubit.faqture.dao.mappers.UbigeoMapper.UbigeoMap"/>
         <association property="pais" javaType="Pais" resultMap="com.sunqubit.faqture.dao.mappers.PaisMapper.PaisMap"/>
         <association property="tipoDocumentoIdentidad" javaType="TipoDocumentoIdentidad" resultMap="com.sunqubit.faqture.dao.mappers.TipoDocumentoIdentidadMapper.TipoDocumentoIdentidadMap"/>
@@ -54,11 +77,27 @@
     		<if test="nombreComercial != null">, cont_nombre_comercial</if>
     		, cont_direccion, cont_status
     		<if test="urbanizacion != null">, cont_urbanizacion</if>
+    		<if test="email != null">, cont_email</if>
+    		<if test="telefono != null">, cont_telefono</if>
+    		<if test="keystoreType != null">, cont_keystore_type</if>
+    		<if test="keystoreFile != null">, cont_keystore_file</if>
+    		<if test="keystorePass != null">, cont_keystore_pass</if>
+    		<if test="privateKeyAlias != null">, cont_privatekey_alias</if>
+    		<if test="privateKeyPass != null">, cont_privatekey_Pass</if>
+    		<if test="certificateAlias != null">, cont_certificate_alias</if>
     		, tiid_codigo, ubig_id)
     	VALUES (#{id}, #{numeroDocumento}, #{nombreLegal}
     		<if test="nombreComercial != null">, #{nombreComercial}</if>
     		, #{direccion}, #{activo}
     		<if test="urbanizacion != null">, #{urbanizacion}</if>
+    		<if test="email != null">, #{email}</if>
+    		<if test="telefono != null">, #{telefono}</if>
+    		<if test="keystoreType != null">, #{keystoreType}</if>
+    		<if test="keystoreFile != null">, #{keystoreFile}</if>
+    		<if test="keystorePass != null">, #{keystorePass}</if>
+    		<if test="privateKeyAlias != null">, #{privateKeyAlias}</if>
+    		<if test="privateKeyPass != null">, #{privateKeyPass}</if>
+    		<if test="certificateAlias != null">, #{certificateAlias}</if>
     		, #{tipoDocumentoIdentidad.codigo}, #{ubigeo.id});
     	
 		<if test="sucursales != null">
@@ -75,6 +114,15 @@
 		UPDATE sunqubit.contribuyentes 
 		SET cont_nombre_legal=#{nombreLegal}, cont_nombre_comercial = #{nombreComercial},
 			cont_direccion = #{direccion}, ubig_id = #{ubigeo.id}, cont_status = #{activo}
+			<if test="urbanizacion != null">, cont_urbanizacion = #{urbanizacion}</if>
+			<if test="email != null">, cont_email = #{email}</if>
+    		<if test="telefono != null">, cont_telefono = #{telefono}</if>
+    		<if test="keystoreType != null">, cont_keystore_type = #{keystoreType}</if>
+    		<if test="keystoreFile != null">, cont_keystore_file = #{keystoreFile}</if>
+    		<if test="keystorePass != null">, cont_keystore_pass = #{keystorePass}</if>
+    		<if test="privateKeyAlias != null">, cont_privatekey_alias = #{privateKeyAlias}</if>
+    		<if test="privateKeyPass != null">, cont_privatekey_Pass = #{privateKeyPass}</if>
+    		<if test="certificateAlias != null">, cont_certificate_alias = #{certificateAlias}</if>
 		WHERE cont_id = #{id};
 	</update>
 	
@@ -84,6 +132,8 @@
     		<if test="nombreComercial != null">, cont_nombre_comercial</if>
     		<if test="direccion != null">, cont_direccion</if>
     		<if test="urbanizacion != null">, cont_urbanizacion</if>
+    		<if test="email != null">, cont_email</if>
+    		<if test="telefono != null">, cont_telefono</if>
     		, tiid_codigo
     		<if test="ubigeo != null">, ubig_id</if>
     		)
@@ -92,6 +142,8 @@
     		<if test="nombreComercial != null">, #{nombreComercial}</if>
     		<if test="direccion != null">, #{direccion}</if>
     		<if test="urbanizacion != null">, #{urbanizacion}</if>
+    		<if test="email != null">, #{email}</if>
+    		<if test="telefono != null">, #{telefono}</if>
     		, #{tipoDocumentoIdentidad.codigo}
     		<if test="ubigeo != null">, #{ubigeo.id}</if>
     		);
@@ -103,6 +155,8 @@
 			<if test="nombreLegal != null">, cont_nombre_legal = #{nombreLegal}</if>
 			<if test="nombreComercial != null">, cont_num_doc=#{nombreComercial}</if>
 			<if test="urbanizacion != null">, cont_num_doc=#{urbanizacion}</if>
+			<if test="email != null">, cont_email = #{email}</if>
+    		<if test="telefono != null">, cont_telefono = #{telefono}</if>
 			<if test="direccion != null">, cont_direccion = #{direccion}</if>
 			<if test="ubigeo != null">, ubig_id = #{ubigeo.id}</if>
 		WHERE cont_id = #{id};

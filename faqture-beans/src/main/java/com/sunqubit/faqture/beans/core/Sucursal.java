@@ -56,6 +56,10 @@ public class Sucursal {
 		return pais;
 	}
 	public void setPais(Pais pais) {
+		if(pais == null) {
+			pais = new Pais();
+			pais.setCodigo("PE");
+		}
 		this.pais = pais;
 	}
 	public List<Documento> getDocumentos() {

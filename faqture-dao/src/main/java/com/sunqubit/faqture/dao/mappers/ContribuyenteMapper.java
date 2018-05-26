@@ -4,11 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.sunqubit.faqture.beans.core.Contribuyente;
+import com.sunqubit.faqture.beans.core.Empresa;
 
 public interface ContribuyenteMapper {
-	void insertE(Contribuyente contribuyente);
+	void insertE(Empresa empresa);
 	
-	void updateE(Contribuyente contribuyente);
+	void updateE(Empresa empresa);
 	
 	void insertC(Contribuyente contribuyente);
 	

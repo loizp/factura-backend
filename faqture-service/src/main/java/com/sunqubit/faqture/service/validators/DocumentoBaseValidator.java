@@ -25,7 +25,7 @@ public class DocumentoBaseValidator extends DocumentoDaoValidator {
     	
     	super.validaDocuObservacion(docuObservacion);
 
-        if (!docuObservacion.matches("^[\\w-.# ]*$")) {
+        if (!docuObservacion.matches("^[\\w-.#\\(\\)/ ]*$")) {
             throw new ValidatorException("Es necesario que el atributo 'observacion' debe estar correctamente expresado");
         }
     }
@@ -56,7 +56,7 @@ public class DocumentoBaseValidator extends DocumentoDaoValidator {
     		leyendaDaoValidator.validaLeyeTipo(leyenda.getTipoLeyenda());
     		leyendaDaoValidator.validaLeyeDescripcion(leyenda.getDescripcion());
     		
-    		if(leyenda.getDescripcion().trim().isEmpty() || leyenda.getDescripcion().trim().matches("^[\\w.-# ]*$"))
+    		if(leyenda.getDescripcion().trim().isEmpty() || !leyenda.getDescripcion().trim().matches("^[\\w-.#\\(\\)\\// ]*$"))
     			throw new ValidatorException("Es necesario que el atributo 'descripcion' de las leyendas sean correctamente llenadas");
 		}
     }

@@ -30,6 +30,11 @@ public class UbigeoDao implements IUbigeoDao{
 	    	return mapper.filter(filtro);
 	    } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el filtrado de ubigeos");
+	    } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
 			throw new Exception("Ocurrió un error en el filtrado de ubigeos");
 		} finally {
 			session.close();
@@ -46,7 +51,12 @@ public class UbigeoDao implements IUbigeoDao{
 	    	return false;
 	    } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el filtrado de ubigeos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la verificación de existencia del Ubigeo");
+	    } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la verificación de existencia del Ubigeo");
 		} finally {
 			session.close();
 		}
@@ -60,7 +70,12 @@ public class UbigeoDao implements IUbigeoDao{
 	    	return mapper.get(codigo);
 	    } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el filtrado de ubigeos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la obtencion por codigo del Ubigeo");
+	    } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtencion por codigo del Ubigeo");
 		} finally {
 			session.close();
 		}

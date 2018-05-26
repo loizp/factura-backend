@@ -13,7 +13,7 @@ public class SucursalValidator extends SucursalDaoValidator {
 	public void validaSucuDireccion(String sucuDireccion) throws ValidatorException {
 		super.validaSucuDireccion(sucuDireccion);
 		
-		if (!sucuDireccion.matches("^[A-Za-z][\\w- \\. \\#]*$"))
+		if (!sucuDireccion.matches("^[\\w-.#\\(\\)/ ]*$"))
             throw new ValidatorException("Es necesario que el atributo 'direccion' debe estar correctamente expresado");
 	}
 	
@@ -24,7 +24,7 @@ public class SucursalValidator extends SucursalDaoValidator {
 		
 		super.validaSucuUrbanizacion(sucuUrbanizacion);
 		
-		if (!sucuUrbanizacion.matches("^[A-Za-z][\\w- \\. \\#]*$"))
+		if (!sucuUrbanizacion.matches("^[\\w-.#\\(\\)/ ]*$"))
             throw new ValidatorException("Es necesario que el atributo 'urbanizacion' debe estar correctamente expresado");
 	}
 	

@@ -30,7 +30,12 @@ public class UnidadMedidaDao implements IUnidadMedidaDao {
         	return mapper.getAll();
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de las unidades de medida");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el listado de las Unidades de medida");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el listado de las Unidades de medida");
 		} finally {
 			session.close();
 		}

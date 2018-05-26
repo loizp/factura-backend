@@ -30,7 +30,12 @@ public class RolUsuarioDao implements IRolUsuarioDao {
         	return mapper.getAll();
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los roles del sistema");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el listado de los Roles del sistema");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el listado de los Roles del sistema");
 		} finally {
 			session.close();
 		}

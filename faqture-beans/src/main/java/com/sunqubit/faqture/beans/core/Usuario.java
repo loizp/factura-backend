@@ -3,12 +3,16 @@ package com.sunqubit.faqture.beans.core;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Usuario {
 	private long id;
 	private String loginName;
 	private String password;
 	private String nombre;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone="CST")
 	private Timestamp dateUpKey;
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone="CST")
 	private Timestamp dateLogin;
 	private String email;
 	private Boolean activo = true;

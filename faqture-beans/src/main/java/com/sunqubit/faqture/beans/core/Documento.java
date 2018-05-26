@@ -1,9 +1,11 @@
 package com.sunqubit.faqture.beans.core;
 
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sunqubit.faqture.beans.catalogs.Moneda;
 import com.sunqubit.faqture.beans.catalogs.TipoDocumento;
 
@@ -11,15 +13,15 @@ public class Documento {
 
     private long id;
     private long idSysEmisor = 0;
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "CST")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone="CST")
     private Timestamp fechaEmision;
     private String numero;
     private String observacion;
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "CST")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone="CST")
     private Timestamp fechaProceso;
     private String estadoProceso = "N";
     private TipoDocumento tipoDocumento;
-    private Contribuyente empresa;
+    private Empresa empresa;
     private Sucursal emprSucursal;
     private Moneda moneda;
     private Boolean enviarSunat = true;
@@ -27,10 +29,14 @@ public class Documento {
     private String linkPdf;
     private String linkXml;
     private String hashSunat;
+    private String linkQR;
+    private String linkPDF417;
     private String linkCdr;
     private String cdrStatus;
     private String cdrNota;
     private String cdrObservacion;
+    private Blob codigoQR;
+    private Blob codPdf417;
     private List<Leyenda> leyendas;
     private List<Documento> docsReferenciados;
 
@@ -44,10 +50,6 @@ public class Documento {
 
 	public Long getIdSysEmisor() {
 		return idSysEmisor;
-	}
-
-	public void setIdSysEmisor(Long idSysEmisor) {
-		this.idSysEmisor = idSysEmisor;
 	}
 
 	public Timestamp getFechaEmision() {
@@ -98,15 +100,19 @@ public class Documento {
         this.tipoDocumento = tipoDocumento;
     }
 
-    public Contribuyente getEmpresa() {
-        return empresa;
-    }
+    public Empresa getEmpresa() {
+		return empresa;
+	}
 
-    public void setEmpresa(Contribuyente empresa) {
-        this.empresa = empresa;
-    }
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
 
-    public Sucursal getEmprSucursal() {
+	public void setIdSysEmisor(long idSysEmisor) {
+		this.idSysEmisor = idSysEmisor;
+	}
+
+	public Sucursal getEmprSucursal() {
         return emprSucursal;
     }
 
@@ -207,6 +213,39 @@ public class Documento {
     }
 
     public void setTasaIgv(BigDecimal tasaIgv) {
+    	if(tasaIgv == null) tasaIgv = BigDecimal.valueOf(18.00);
         this.tasaIgv = tasaIgv;
     }
+
+	public Blob getCodigoQR() {
+		return codigoQR;
+	}
+
+	public void setCodigoQR(Blob codigoQR) {
+		this.codigoQR = codigoQR;
+	}
+
+	public Blob getCodPdf417() {
+		return codPdf417;
+	}
+
+	public void setCodPdf417(Blob codPdf417) {
+		this.codPdf417 = codPdf417;
+	}
+
+	public String getLinkQR() {
+		return linkQR;
+	}
+
+	public void setLinkQR(String linkQR) {
+		this.linkQR = linkQR;
+	}
+
+	public String getLinkPDF417() {
+		return linkPDF417;
+	}
+
+	public void setLinkPDF417(String linkPDF417) {
+		this.linkPDF417 = linkPDF417;
+	}
 }

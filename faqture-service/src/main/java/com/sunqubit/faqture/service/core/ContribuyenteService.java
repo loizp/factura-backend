@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sunqubit.faqture.beans.core.Contribuyente;
+import com.sunqubit.faqture.beans.core.Empresa;
 import com.sunqubit.faqture.beans.rest.ApiRestFullResponse;
 import com.sunqubit.faqture.beans.rest.RestFullResponseHeader;
+import com.sunqubit.faqture.beans.utils.AESCipher;
 import com.sunqubit.faqture.dao.contracts.IContribuyenteDao;
 import com.sunqubit.faqture.dao.contracts.IUbigeoDao;
 import com.sunqubit.faqture.dao.validators.ValidatorException;
@@ -37,7 +39,7 @@ public class ContribuyenteService {
     @Autowired
     private ClienteValidator clienteValidator;
     
-    public ApiRestFullResponse insertE(Contribuyente empresa) {
+    public ApiRestFullResponse insertE(Empresa empresa) {
     	Boolean ok = true;
         int code = 201;
         String msg = "La empresa fue registrado correctamente";
@@ -50,7 +52,7 @@ public class ContribuyenteService {
         	if(empresa.getUrbanizacion() != null)
         		contribuyenteValidator.validaContUrbanizacion(empresa.getUrbanizacion());
         	contribuyenteValidator.validaContUnigeo(empresa.getUbigeo());
-        	res = contribuyenteDao.insert(empresa,"E");
+        	res = contribuyenteDao.insert(preparaCertificado(empresa));
         } catch (ValidatorException ve) {
             ok = false;
             code = 400;
@@ -61,6 +63,41 @@ public class ContribuyenteService {
             msg = "No se puede registrar la empresa debido a: " + ex.getMessage();
         }
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
+    }
+    
+    private Empresa preparaCertificado(Empresa empresa) {
+    	String key = empresa.getNumeroDocumento() + empresa.getTipoDocumentoIdentidad().getCodigo();
+    	
+    	if(empresa.getKeystoreType() == null || empresa.getKeystoreFile().trim().equals(""))
+    		empresa.setKeystoreType("JKS");
+    	
+    	if(empresa.getKeystoreFile() != null && empresa.getKeystoreFile().trim().length() < 3)
+    		empresa.setKeystoreFile(null);
+    		
+    	if(empresa.getKeystorePass() != null) {
+    		if(empresa.getKeystorePass().trim().length() > 3)
+    			empresa.setKeystorePass(AESCipher.encripta(empresa.getKeystorePass(), key));
+    		else empresa.setKeystorePass(null);
+    	}
+    	
+    	if(empresa.getPrivateKeyAlias() != null) {
+    		if(empresa.getPrivateKeyAlias().trim().length() > 3)
+    			empresa.setPrivateKeyAlias(AESCipher.encripta(empresa.getPrivateKeyAlias(), key));
+    		else empresa.setPrivateKeyAlias(null);
+    	}
+    	
+    	if(empresa.getPrivateKeyPass() != null) {
+    		if(empresa.getPrivateKeyPass().trim().length() > 3)
+    			empresa.setPrivateKeyPass(AESCipher.encripta(empresa.getPrivateKeyPass(), key));
+    		else empresa.setPrivateKeyPass(null);
+    	}
+    	
+    	if(empresa.getCertificateAlias() != null) {
+    		if(empresa.getCertificateAlias().trim().length() > 3)
+    			empresa.setCertificateAlias(AESCipher.encripta(empresa.getCertificateAlias(), key));
+    		else empresa.setCertificateAlias(null);
+    	}
+    	return empresa;
     }
     
     public ApiRestFullResponse insertC(Contribuyente cliente) {
@@ -82,7 +119,7 @@ public class ContribuyenteService {
 					cliente.setUbigeo(ubigeoDao.get(cliente.getUbigeo().getCodigo()));
 				contribuyenteValidator.validaContUnigeo(cliente.getUbigeo());
 			}
-			res = contribuyenteDao.insert(cliente,"C");
+			res = contribuyenteDao.insert(cliente);
 		} catch (ValidatorException ve) {
 			ok = false;
 			code = 400;
@@ -95,7 +132,7 @@ public class ContribuyenteService {
 		return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
 	}
     
-    public ApiRestFullResponse updateE(Contribuyente empresa) {
+    public ApiRestFullResponse updateE(Empresa empresa) {
     	Boolean ok = true;
         int code = 201;
         String msg = "La empresa fue modificada correctamente";
@@ -113,7 +150,7 @@ public class ContribuyenteService {
         	contribuyenteValidator.validaContNombreComercial(empresa.getNombreComercial());
         	contribuyenteValidator.validaContDireccion(empresa.getDireccion());
         	contribuyenteValidator.validaContUnigeo(empresa.getUbigeo());
-        	contribuyenteDao.update(empresa,"E");
+        	contribuyenteDao.update(preparaCertificado(empresa));
         } catch (ValidatorException ve) {
             ok = false;
             code = 400;
@@ -151,7 +188,7 @@ public class ContribuyenteService {
         		contribuyenteValidator.validaContUrbanizacion(cliente.getUrbanizacion());
 			if(cliente.getUbigeo() != null)
 				contribuyenteValidator.validaContUnigeo(cliente.getUbigeo());
-			contribuyenteDao.update(cliente,"C");
+			contribuyenteDao.update(cliente);
 		} catch (ValidatorException ve) {
 			ok = false;
 			code = 400;

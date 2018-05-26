@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sunqubit.faqture.beans.core.Contribuyente;
+import com.sunqubit.faqture.beans.core.Empresa;
 import com.sunqubit.faqture.service.core.ContribuyenteService;
 
 @RestController
@@ -22,12 +22,12 @@ public class EmpresaController {
     private ContribuyenteService empresaService;
 
     @PostMapping(value = "/add", headers="Accept=application/json", produces={"application/json"})
-    public @ResponseBody ResponseEntity<?> insert(@RequestBody Contribuyente empresa) {
+    public @ResponseBody ResponseEntity<?> insert(@RequestBody Empresa empresa) {
     	return ResponseEntity.ok(empresaService.insertE(empresa));
     }
     
     @PutMapping(value = "/set", headers="Accept=application/json", produces={"application/json"})
-    public @ResponseBody ResponseEntity<?> update(@RequestBody Contribuyente empresa) {
+    public @ResponseBody ResponseEntity<?> update(@RequestBody Empresa empresa) {
     	return ResponseEntity.ok(empresaService.updateE(empresa));
     }
     

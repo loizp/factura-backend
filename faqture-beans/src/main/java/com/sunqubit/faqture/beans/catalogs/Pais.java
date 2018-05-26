@@ -8,6 +8,7 @@ public class Pais {
 		return codigo;
 	}
 	public void setCodigo(String codigo) {
+		if(codigo == null) codigo = "PE";
 		this.codigo = codigo;
 	}
 	public String getNombre() {

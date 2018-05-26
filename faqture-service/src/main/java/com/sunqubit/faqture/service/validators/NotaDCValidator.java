@@ -32,7 +32,7 @@ public class NotaDCValidator extends DocumentoDaoValidator {
     public void validaDocuSustentoNota(String docuSustentoNota) throws ValidatorException {
         super.validaDocuSustentoNota(docuSustentoNota);
 
-        if (docuSustentoNota.trim().isEmpty() || !docuSustentoNota.trim().matches("^[A-Za-z][\\w- \\.]*$")) {
+        if (docuSustentoNota.trim().isEmpty() || !docuSustentoNota.trim().matches("^[A-Za-z][\\w-.#\\(\\) ]*$")) {
             throw new ValidatorException("Es necesario que el atributo 'sustentoNota' debe estar correctamente expresado");
         }
     }

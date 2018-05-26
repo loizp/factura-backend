@@ -12,7 +12,7 @@ import com.sunqubit.faqture.service.validators.FechaHoraValidator;
 //import java.time.LocalDateTime;
 
 
-public class AppTest {
+public class ServiceTest {
 
     public static void main(String[] args) {
     	//BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(8);
@@ -41,7 +41,7 @@ public class AppTest {
         
         //System.out.println("fecha sql: " + java.sql.Timestamp.valueOf(fh));
         
-        //System.out.println("Usu@r10$".matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$_!%#-.*?&])[A-Za-z\\d$@_!%#-.*?&]{8,25}"));
+        System.out.println("Un mil trescientos cuarenta con 00/100 Soles".matches("^[\\w-.#\\(\\)\\// ]*$"));
         
         //String cader = "dddd-m-a";
         //System.out.println ("Original: " + cader);
@@ -51,8 +51,8 @@ public class AppTest {
         
         //BigDecimal b = new BigDecimal(0.01);
         //System.out.println(b.compareTo(BigDecimal.ZERO));
-    	LeyendaUtil numero = new LeyendaUtil();
-    	System.out.println(numero.numberToLetterES("7.404674", ".", "Soles" , 2));
-    	System.out.println(numero.numberToLetterES("345658265431456331209867.404674 ", ".", "Soles" , 2));
+    	//LeyendaUtil numero = new LeyendaUtil();
+    	//System.out.println(numero.numberToLetterES("7.404674", ".", "Soles" , 2));
+    	//System.out.println(numero.numberToLetterES("345658265431456331209867.404674 ", ".", "Soles" , 2));
     }
 }

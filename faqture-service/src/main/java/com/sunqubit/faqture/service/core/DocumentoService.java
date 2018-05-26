@@ -96,7 +96,7 @@ public class DocumentoService {
         Boolean ok = true;
         int code = 201;
         String msg = "El comprobante de pago fue registrado correctamente";
-        Long res = null;
+        ComprobantePago res = null;
         ApiRestFullResponse servicio;
         try {
         	compPago.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
@@ -104,21 +104,25 @@ public class DocumentoService {
             compPago.setLeyendas(preparaLeyenda(compPago.getLeyendas(), compPago.getTotal(), compPago.getMoneda().getCodigo()));
             comprobantePagoValidator.validaDocuNumero(compPago.getEmpresa(), compPago.getTipoDocumento(), compPago.getNumero());
             comprobantePagoValidator.validaDocBaseSinple(compPago);
-            if(usuarioService.allowService("bfif",compPago.getEmpresa().getId(), compPago.getEmprSucursal().getId())) {
+            long idsucu = 0;
+            if(compPago.getEmprSucursal() != null) idsucu = compPago.getEmprSucursal().getId();
+            if(usuarioService.allowService("bfif",compPago.getEmpresa().getId(), idsucu)) {
             	servicio = getC(compPago.getEmpresa().getId(), compPago.getTipoDocumento().getCodigo(), compPago.getNumero());
             	ok = servicio.getResponse().isSuccess();
             	if(servicio.getResponse().isSuccess()) {
+            		long docuId = 0;
             		ComprobantePago cpdata = (ComprobantePago) servicio.getData();
             		if(cpdata != null) {
             			compPago.setId(cpdata.getId());
             			if(!cpdata.getEstadoProceso().equals("C")) {
             				servicio = updateC(compPago);
+            				docuId = compPago.getId();
             				ok = servicio.getResponse().isSuccess();
             				code = servicio.getResponse().getCode();
                             msg = servicio.getResponse().getMessage();
             			} else {
             				ok = false;
-            				code = 400;
+            				code = 202;
             				msg = "El documento ya existe y ya completó su entrega a la SUNAT";
             			}
             		} else {
@@ -159,9 +163,9 @@ public class DocumentoService {
 			                code = (int) dataC.get("code");
 			                msg = (String) dataC.get("msg");
 			            }
-			            if(ok)
-			            	res = documentoDao.insert(compPago);
+			            if(ok) docuId = documentoDao.insert(compPago);
             		}
+            		if(docuId > 0) res = documentoDao.getCompPago(docuId);
             	} else {
             		code = servicio.getResponse().getCode();
                     msg = servicio.getResponse().getMessage();
@@ -186,7 +190,7 @@ public class DocumentoService {
     public ApiRestFullResponse updateC(ComprobantePago compPago) {
     	Boolean ok = true;
         int code = 201;
-        String msg = "El comprobante de pago fue registrado correctamente";
+        String msg = "El comprobante de pago fue modificado correctamente";
         try {
         	compPago.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
             compPago.setEstadoProceso("M");
@@ -195,11 +199,11 @@ public class DocumentoService {
         } catch (ValidatorException ve) {
             ok = false;
             code = 400;
-            msg = "No se puede modificar la empresa debido a: " + ve.getMessage();
+            msg = "No se puede modificar el comprobante de pago debido a: " + ve.getMessage();
 		} catch (Exception e) {
 			ok = false;
             code = 500;
-            msg = "No se puede modificar la empresa debido a: " + e.getMessage();
+            msg = "No se puede modificar el comprobante de pago debido a: " + e.getMessage();
 		}
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), null);
     }
@@ -264,7 +268,7 @@ public class DocumentoService {
     public ApiRestFullResponse updateN(NotaDC notaDC) {
     	Boolean ok = true;
         int code = 201;
-        String msg = "El comprobante de pago fue registrado correctamente";
+        String msg = "La nota fue modificado correctamente";
         try {
         	notaDC.setFechaProceso(java.sql.Timestamp.valueOf(LocalDateTime.now()));
         	notaDC.setEstadoProceso("M");
@@ -273,11 +277,11 @@ public class DocumentoService {
         } catch (ValidatorException ve) {
             ok = false;
             code = 400;
-            msg = "No se puede modificar la empresa debido a: " + ve.getMessage();
+            msg = "No se puede modificar la nota debido a: " + ve.getMessage();
 		} catch (Exception e) {
 			ok = false;
             code = 500;
-            msg = "No se puede modificar la empresa debido a: " + e.getMessage();
+            msg = "No se puede modificar la nota debido a: " + e.getMessage();
 		}
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), null);
     }
@@ -322,7 +326,7 @@ public class DocumentoService {
         } catch (Exception ex) {
             ok = false;
             code = 500;
-            msg = "No se puede obtener el comprobante de pago debido a: " + ex.getMessage();
+            msg = "No se puede obtener la nota debido a: " + ex.getMessage();
         }
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
     }
@@ -337,7 +341,7 @@ public class DocumentoService {
         } catch (Exception ex) {
             ok = false;
             code = 500;
-            msg = "No se puede obtener el comprobante de pago debido a: " + ex.getMessage();
+            msg = "No se puede obtener la nota debido a: " + ex.getMessage();
         }
         return new ApiRestFullResponse(new RestFullResponseHeader(ok, code, msg), res);
     }
@@ -392,7 +396,6 @@ public class DocumentoService {
                 			 sucu.setUrbanizacion(cliente.getUrbanizacion());
                 			 sucu.setPais(cliente.getPais());
                 			 sucu.setUbigeo(cliente.getUbigeo());
-                			 sucu.setActivo(cliente.isActivo());
                 			 res.replace("sucu", sucu);
                 		 }
                 		 creaclie = false;

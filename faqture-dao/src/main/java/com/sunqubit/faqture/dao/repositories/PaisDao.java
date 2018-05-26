@@ -30,7 +30,12 @@ public class PaisDao implements IPaisDao {
         	return mapper.getAll();
         } catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en el listado de los paises");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en el listado de los Paises");
+        } catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en el listado de los Paises");
 		} finally {
 			session.close();
 		}

@@ -42,7 +42,7 @@ public class ComprobantePagoValidator extends DocumentoDaoValidator {
 	public void validaDocuVendedor(String docuVendedor) throws ValidatorException {
 		super.validaDocuVendedor(docuVendedor);
 		
-		if (docuVendedor.trim().isEmpty() || !docuVendedor.trim().matches("^[\\w-]{2,}$"))
+		if (docuVendedor.trim().isEmpty() || !docuVendedor.trim().matches("^[\\w-. ]{2,}$"))
             throw new ValidatorException("Es necesario que el atributo 'leyenda' debe estar correctamente expresado");
 	}
 
@@ -104,12 +104,9 @@ public class ComprobantePagoValidator extends DocumentoDaoValidator {
 		for (DetalleDocumento item : detalleItemsDoc) {
 			detalleDocValidator.validaDedoOrden(item.getOrden());
 			detalleDocValidator.validaDedoDescripcion(item.getDescripcion());
-			if(item.getUnidadMedida() != null)
-				detalleDocValidator.validaDedoUnidadMedida(item.getUnidadMedida());
-			if(item.getCodigoProducto() != null)
-				detalleDocValidator.validaDedoCodigoProducto(item.getCodigoProducto());
-			if(item.getIgv().compareTo(BigDecimal.ZERO) > 0)
-				detalleDocValidator.validaDedoTipoAfectIgv(item.getTipoAfectacionIgv());
+			detalleDocValidator.validaDedoUnidadMedida(item.getUnidadMedida());
+			detalleDocValidator.validaDedoCodigoProducto(item.getCodigoProducto());
+			detalleDocValidator.validaDedoTipoAfectIgv(item.getTipoAfectacionIgv());
 			if(item.getIsc().compareTo(BigDecimal.ZERO) > 0)
 				detalleDocValidator.validaDedoTipoIsc(item.getTipoIsc());
 		}

@@ -30,7 +30,12 @@ public class DetalleDocumentoDao implements IDetalleDocumentoDao {
 			mapper.insert(detalleDocumento);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la insercion de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la insercion de los datos del Detalle de Documento");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la insercion de los datos del Detalle de Documento");
 		} finally {
 			session.close();
 		}
@@ -56,7 +61,12 @@ public class DetalleDocumentoDao implements IDetalleDocumentoDao {
 			return mapper.getDetalleDoc(docId);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la obtención de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la obtención del Detalle de Documento");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención del Detalle de Documento");
 		} finally {
 			session.close();
 		}

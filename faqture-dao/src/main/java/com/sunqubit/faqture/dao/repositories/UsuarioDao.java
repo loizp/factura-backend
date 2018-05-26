@@ -30,7 +30,12 @@ public class UsuarioDao implements IUsuarioDao {
 			return usuario.getId();
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la inserción de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la inserción de los datos del Usuario");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la inserción de los datos del Usuario");
 		}
 	}
 
@@ -42,7 +47,12 @@ public class UsuarioDao implements IUsuarioDao {
 			mapper.update(usuario);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualización de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la actualización de los datos del Usuario");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización de los datos del Usuario");
 		} finally {
 			session.close();
 		}
@@ -56,7 +66,12 @@ public class UsuarioDao implements IUsuarioDao {
 			return mapper.login(loginName);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la autenticación del usuario");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la obtención por login del Usuario");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención por login del Usuario");
 		} finally {
 			session.close();
 		}
@@ -72,7 +87,12 @@ public class UsuarioDao implements IUsuarioDao {
 			return false;
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la verificación de existencia del usuario");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la verificación de existencia del Usuario");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la verificación de existencia del Usuario");
 		} finally {
 			session.close();
 		}
@@ -86,7 +106,12 @@ public class UsuarioDao implements IUsuarioDao {
 			mapper.changePassword(usuario);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualización de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la actualización del password del Usuario");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización del password del Usuario");
 		} finally {
 			session.close();
 		}
@@ -100,7 +125,12 @@ public class UsuarioDao implements IUsuarioDao {
 			mapper.changeEmail(usuario);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualización de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la actualización del email del Usuario");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización del email del Usuario");
 		} finally {
 			session.close();
 		}
@@ -115,7 +145,12 @@ public class UsuarioDao implements IUsuarioDao {
 			mapper.changeLoginName(usuario);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualización de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la actualización del login del Usuario");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización del login del Usuario");
 		} finally {
 			session.close();
 		}
@@ -129,7 +164,12 @@ public class UsuarioDao implements IUsuarioDao {
 			return mapper.getById(id);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la identificación del usuario");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la obtención por id del Usuario");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la obtención por id del Usuario");
 		} finally {
 			session.close();
 		}
@@ -143,7 +183,12 @@ public class UsuarioDao implements IUsuarioDao {
 			mapper.dateLogin(loginName);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
-			throw new Exception("Ocurrió un error en la actualización de los datos");
+			pe.printStackTrace();
+			throw new Exception("Ocurrió un error de persistencia en la actualización de la fecha de login del Usuario");
+		} catch (Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrió un error en la actualización de la fecha de login del Usuario");
 		} finally {
 			session.close();
 		}

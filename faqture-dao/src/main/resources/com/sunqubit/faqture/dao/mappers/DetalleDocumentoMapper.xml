@@ -16,34 +16,33 @@
         <association property="comprobantePago" javaType="ComprobantePago">
     		<id property="id" column="docu_id"/>
   		</association>
+  		<association property="moneda" javaType="Moneda" resultMap="com.sunqubit.faqture.dao.mappers.MonedaMapper.MonedaMap"/>
         <association property="unidadMedida" javaType="UnidadMedida" resultMap="com.sunqubit.faqture.dao.mappers.UnidadMedidaMapper.UnidadMedidaMap"/>
         <association property="tipoAfectacionIgv" javaType="TipoAfectacionIgv" resultMap="com.sunqubit.faqture.dao.mappers.TipoAfectacionIgvMapper.TipoAfectacionIgvMap"/>
     	<association property="tipoIsc" javaType="TipoIsc" resultMap="com.sunqubit.faqture.dao.mappers.TipoIscMapper.TipoIscMap"/>
     </resultMap>
 
     <insert id="insert"  parameterType="DetalleDocumento">
-        INSERT INTO sunqubit.detalle_documentos (docu_id, dedo_orden
-			<if test="codigoProducto != null">, dedo_codigo_producto</if>
-			, dedo_descripcion
-			<if test="unidadMedida.id != null">, unme_codigo</if>
-			, dedo_cantidad, dedo_precio_venta, dedo_descuento, dedo_venta_no_onerosa
-			<if test="tipoAfectacionIgv.codigo != null">, tiai_codigo</if>
-			, dedo_igv, dedo_isc, dedo_subtotal
-			<if test="tipoIsc.codigo != null">tisc_codigo</if>
+        INSERT INTO sunqubit.detalle_documentos (docu_id, dedo_orden, dedo_codigo_producto, dedo_descripcion
+			<if test="unidadMedida != null">, unme_codigo</if>
+			, dedo_cantidad, dedo_precio_venta, dedo_descuento, dedo_venta_no_onerosa, tiai_codigo, dedo_igv, dedo_isc, dedo_subtotal
+			<if test="tipoIsc != null">, tisc_codigo</if>
 			)
-		VALUES (#{comprobantePago.id}, #{orden}
-			<if test="codigoProducto != null">, #{codigoProducto}</if>
-			, #{descripcion}
-			<if test="unidadMedida.id != null">, #{unidadMedida.id}</if>
-			, #{cantidad}, #{precioVenta}, #{descuento}, #{ventaNoOnerosa}
-			<if test="tipoAfectacionIgv.codigo != null">, #{tipoAfectacionIgv.codigo}</if>
-			, #{igv}, #{isc}, #{subtotal}
-			<if test="tipoIsc.codigo != null">#{item.tipoIsc.codigo}</if>
+		VALUES (#{comprobantePago.id}, #{orden}, #{codigoProducto}, #{descripcion}
+			<if test="unidadMedida != null">, #{unidadMedida.codigo}</if>
+			, #{cantidad}, #{precioVenta}, #{descuento}, #{ventaNoOnerosa}, #{tipoAfectacionIgv.codigo}, #{igv}, #{isc}, #{subtotal}
+			<if test="tipoIsc != null">, #{item.tipoIsc.codigo}</if>
 			);
     </insert>
     
     <select id="getDetalleDoc" parameterType="long" resultMap="DetalleDocumentoMap">
-    	SELECT * from sunqubit.detalle_documentos WHERE docu_id = #{docId};
+    	SELECT * 
+    	FROM sunqubit.detalle_documentos 
+    	INNER JOIN sunqubit.unidades_medida ON sunqubit.unidades_medida.unme_codigo = sunqubit.detalle_documentos.unme_codigo
+    	INNER JOIN sunqubit.monedas ON sunqubit.monedas.mone_codigo = sunqubit.detalle_documentos.mone_codigo
+    	INNER JOIN sunqubit.tipos_afectacion_igv ON sunqubit.tipos_afectacion_igv.tiai_codigo = sunqubit.detalle_documentos.tiai_codigo
+    	LEFT JOIN sunqubit.tipos_isc ON sunqubit.tipos_isc.tisc_codigo = sunqubit.detalle_documentos.tisc_codigo
+    	WHERE docu_id = #{docId};
     </select>
 
 </mapper>

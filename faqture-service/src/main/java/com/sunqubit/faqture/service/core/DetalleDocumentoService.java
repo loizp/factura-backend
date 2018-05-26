@@ -25,7 +25,7 @@ public class DetalleDocumentoService {
         String msg = "El item de documento fue registrado correctamente";
         
         try {
-        	detalleDocValidator.validaDedoCompPago(detalleDocumento.getCpmprobanteDocumento());
+        	detalleDocValidator.validaDedoCompPago(detalleDocumento.getComprobantePago());
         	detalleDocValidator.validaDedoOrden(detalleDocumento.getId());
         	detalleDocValidator.validaDedoDescripcion(detalleDocumento.getDescripcion());
         	
