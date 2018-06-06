@@ -14,10 +14,7 @@ public class HeaderHandlerResolver implements HandlerResolver {
 	@Override
 	public List<Handler> getHandlerChain(PortInfo portInfo) {
 		List<Handler> handlerChain = new ArrayList<Handler>();
-		HeaderHandler hh = new HeaderHandler();
-		hh.setRucEmisor(rucEmisor);
-		hh.setUserEmisor(userEmisor);
-		hh.setPassEmisor(passEmisor);
+		HeaderHandler hh = new HeaderHandler(rucEmisor, userEmisor, passEmisor);
 		handlerChain.add(hh);
         return handlerChain;
 	}

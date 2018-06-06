@@ -72,7 +72,7 @@ public class FacturaBoletaElectronica {
         String foldername = factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo() + "-" +  factura.getEmpresa().getNumeroDocumento();
         String qrname = factura.getEmpresa().getNumeroDocumento() + "-" + factura.getTipoDocumento().getCodigo() + "-" + factura.getNumero();
         if(StoreManager.store == 1) {
-        	qrpath = StoreManager.getDirectorioLocal(4, foldername, factura.getFechaEmision());
+        	qrpath = StoreManager.getDirectorioLocal(5, foldername, factura.getFechaEmision());
         	pathXMLFile = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision()) + qrname + XML_EXT;
         }
         if(StoreManager.store == 2) {
@@ -723,19 +723,19 @@ public class FacturaBoletaElectronica {
         LOGGER.info("FactE - enviarASunat | Prepara ambiente: " + sws);
         String key = factura.getEmpresa().getNumeroDocumento() + factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo();
         String foldername = factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo() + "-" +  factura.getEmpresa().getNumeroDocumento();
-        String unidadEnvio = "";
-        if(StoreManager.store == 1) unidadEnvio = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision());
-        if(StoreManager.store == 2) unidadEnvio = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision());
+        String unidadzip = "";
+        if(StoreManager.store == 1) unidadzip = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision());
+        if(StoreManager.store == 2) unidadzip = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision());
         String userEmisor = AESCipher.desencripta(factura.getEmpresa().getUserSunat(), key);
         String passEmisor = AESCipher.desencripta(factura.getEmpresa().getPassSunat(), key);
         try {
         	DataHandler dataHandler = null;
         	if(StoreManager.store == 1) {
-        		FileDataSource fileDataSource = new FileDataSource(unidadEnvio + zipFileName);
+        		FileDataSource fileDataSource = new FileDataSource(unidadzip + zipFileName);
         		dataHandler = new DataHandler(fileDataSource);
         	}
         	if(StoreManager.store == 2) {
-        		DataSource dataSource = new ByteArrayDataSource(StoreManager.getBlobGCloud(unidadEnvio + zipFileName), MediaType.ZIP.toString());
+        		DataSource dataSource = new ByteArrayDataSource(StoreManager.getBlobGCloud(unidadzip + zipFileName), MediaType.ZIP.toString());
         		dataHandler = new DataHandler(dataSource);
         	}
         	

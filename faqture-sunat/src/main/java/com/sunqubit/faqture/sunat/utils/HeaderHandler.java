@@ -15,7 +15,13 @@ public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 	private String rucEmisor;
 	private String userEmisor;
 	private String passEmisor;
-	
+
+	public HeaderHandler(String rucEmisor, String userEmisor, String passEmisor) {
+		this.rucEmisor = rucEmisor;
+		this.userEmisor = userEmisor;
+		this.passEmisor = passEmisor;
+	}
+
 	@Override
 	public boolean handleMessage(SOAPMessageContext context) {
 		Boolean outboundProperty = (Boolean) context.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY);
@@ -23,13 +29,16 @@ public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 			SOAPMessage message = context.getMessage();
 			try {
 				SOAPEnvelope envelope = message.getSOAPPart().getEnvelope();
-				SOAPHeader header = envelope.addHeader();
-				SOAPElement security = header.addChildElement("Security", "wsse", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
-                SOAPElement usernameToken = security.addChildElement("UsernameToken", "wsse");
-                SOAPElement username = usernameToken.addChildElement("Username", "wsse");
-                username.addTextNode(rucEmisor + userEmisor);
-                SOAPElement password = usernameToken.addChildElement("Password", "wsse");
-                password.addTextNode(passEmisor);
+				SOAPHeader header = envelope.getHeader();
+				if(header == null) header = envelope.addHeader();
+				SOAPElement security = header.addChildElement("Security", "wsse",
+						"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd");
+				
+				SOAPElement usernameToken = security.addChildElement("UsernameToken", "wsse");
+				SOAPElement username = usernameToken.addChildElement("Username", "wsse");
+				username.addTextNode(rucEmisor + userEmisor);
+				SOAPElement password = usernameToken.addChildElement("Password", "wsse");
+				password.addTextNode(passEmisor);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -43,7 +52,7 @@ public class HeaderHandler implements SOAPHandler<SOAPMessageContext> {
 	}
 
 	@Override
-	public void close(MessageContext context) {		
+	public void close(MessageContext context) {
 	}
 
 	@Override
