@@ -76,7 +76,8 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.2.0</version>
                 <configuration>
-                    <configFile>src/main/resources/config/flywayGCloudSQL.properties</configFile>
+                    <!-- <configFile>src/main/resources/config/flywayGCloudSQL.properties</configFile> -->
+                    <configFile>src/main/resources/config/flywayLocal.properties</configFile>
                 </configuration>
                 <dependencies>
                     <dependency>

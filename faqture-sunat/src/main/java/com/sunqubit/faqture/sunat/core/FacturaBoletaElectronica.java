@@ -11,6 +11,7 @@ import static com.sunqubit.faqture.beans.utils.ConstantProperty.PDF417NAME_EXT;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -66,13 +67,18 @@ public class FacturaBoletaElectronica {
     	Boolean ok = true;
         String msg = "Creación de las imágenes codigos QR y PDF417 correctamente";
         ComprobantePago res = factura;
-        String foldername = factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo() + "-" +  factura.getEmpresa().getNumeroDocumento();
-        //String qrpath = StoreManager.getDirectorioLocal(4, foldername, factura.getFechaEmision());
-        String qrpath = StoreManager.getDirectorioGCloud(4, foldername, factura.getFechaEmision());
-        String qrname = factura.getEmpresa().getNumeroDocumento() + "-" + factura.getTipoDocumento().getCodigo() + "-" + factura.getNumero();
+        String qrpath = "", pathXMLFile = "";
         
-        //String pathXMLFile = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision()) + qrname + XML_EXT;
-        String pathXMLFile = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision())	+ qrname + XML_EXT;
+        String foldername = factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo() + "-" +  factura.getEmpresa().getNumeroDocumento();
+        String qrname = factura.getEmpresa().getNumeroDocumento() + "-" + factura.getTipoDocumento().getCodigo() + "-" + factura.getNumero();
+        if(StoreManager.store == 1) {
+        	qrpath = StoreManager.getDirectorioLocal(4, foldername, factura.getFechaEmision());
+        	pathXMLFile = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision()) + qrname + XML_EXT;
+        }
+        if(StoreManager.store == 2) {
+        	qrpath = StoreManager.getDirectorioGCloud(4, foldername, factura.getFechaEmision());
+        	pathXMLFile = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision())	+ qrname + XML_EXT;
+        }
         qrpath += qrname;
         
         String hashCode = LecturaXML.getDigestValue(pathXMLFile);
@@ -105,16 +111,18 @@ public class FacturaBoletaElectronica {
         Boolean ok = true;
         String msg = "creación del archivo XML y comprimido correctamente";
         ComprobantePago res = factura;
+        String unidadEnvio = "";
         String foldername = factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo() + "-" +  factura.getEmpresa().getNumeroDocumento();
-        //String unidadEnvio = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision());
-        String unidadEnvio = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision());
+        if(StoreManager.store == 1) unidadEnvio = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision());
+        if(StoreManager.store == 2) unidadEnvio = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision());
         try {
         	LOGGER.info("FactE - generarXMLZipiado | RUC: " + factura.getEmpresa().getNumeroDocumento());
             ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "ds");
             String key = factura.getEmpresa().getNumeroDocumento() + factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo();
             String keystoreType = factura.getEmpresa().getKeystoreType();
-            //String keystoreFile = StoreManager.getDirectorioLocal(1, foldername, null) + factura.getEmpresa().getKeystoreFile();
-            String keystoreFile = StoreManager.getDirectorioGCloud(1, foldername, null) + factura.getEmpresa().getKeystoreFile();
+            String keystoreFile = "";
+            if(StoreManager.store == 1) keystoreFile = StoreManager.getDirectorioLocal(1, foldername, null) + factura.getEmpresa().getKeystoreFile();
+            if(StoreManager.store == 2) keystoreFile = StoreManager.getDirectorioGCloud(1, foldername, null) + factura.getEmpresa().getKeystoreFile();
             String keystorePass = AESCipher.desencripta(factura.getEmpresa().getKeystorePass(), key);
             String privateKeyAlias = AESCipher.desencripta(factura.getEmpresa().getPrivateKeyAlias(), key);
             String privateKeyPass = AESCipher.desencripta(factura.getEmpresa().getPrivateKeyPass(), key);
@@ -128,12 +136,19 @@ public class FacturaBoletaElectronica {
             LOGGER.info("FactE - generarXMLZipiado | Iniciamos la generacion del XML");
             String xmlname = factura.getEmpresa().getNumeroDocumento() + "-" + factura.getTipoDocumento().getCodigo() + "-" + factura.getNumero() + XML_EXT;
             String pathXMLFile = unidadEnvio + xmlname;
-            Path signatureFile = Paths.get(pathXMLFile);
-
+            File signatureFile = null;
+            Path signaturePath = null;
+            
             KeyStore ks = KeyStore.getInstance(keystoreType);
-            //FileInputStream fis = new FileInputStream(keystoreFile);
-            //ks.load(fis, keystorePass.toCharArray());
-            ks.load(StoreManager.getFileStore(keystoreFile), keystorePass.toCharArray());
+            if(StoreManager.store == 1) {
+            	signatureFile = new File(pathXMLFile);
+            	FileInputStream fis = new FileInputStream(keystoreFile);
+            	ks.load(fis, keystorePass.toCharArray());
+            }
+            if(StoreManager.store == 2) {
+            	signaturePath = Paths.get(pathXMLFile);
+            	ks.load(StoreManager.getFileStore(keystoreFile), keystorePass.toCharArray());
+            }
 
             PrivateKey privateKey = (PrivateKey) ks.getKey(privateKeyAlias, privateKeyPass.toCharArray());
             if (privateKey == null) {
@@ -286,7 +301,9 @@ public class FacturaBoletaElectronica {
                 AdditionalProperty.appendChild(ID);
                 AdditionalProperty.appendChild(Value);
             }
-            String BaseURI = signatureFile.toUri().toURL().toString();
+            String BaseURI = ""; 
+            if(StoreManager.store == 1) BaseURI = signatureFile.toURI().toURL().toString();
+            if(StoreManager.store == 2) BaseURI = signaturePath.toUri().toURL().toString();
             XMLSignature sig = new XMLSignature(doc, BaseURI, XMLSignature.ALGO_ID_SIGNATURE_RSA);
 
             ExtensionContent.appendChild(sig.getElement());
@@ -671,14 +688,18 @@ public class FacturaBoletaElectronica {
             {
                 sig.sign(privateKey);
             }
-            ByteArrayOutputStream f = new ByteArrayOutputStream();
+            FileOutputStream fout = null;
+            ByteArrayOutputStream bout = null;
+            if(StoreManager.store == 1) fout = new FileOutputStream(signatureFile);
+            if(StoreManager.store == 2) bout = new ByteArrayOutputStream();
             Transformer tf = TransformerFactory.newInstance().newTransformer();
             tf.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
             tf.setOutputProperty(OutputKeys.STANDALONE, "no");
-            StreamResult sr = new StreamResult(f);
+            StreamResult sr = null;
+            if(StoreManager.store == 1) sr = new StreamResult(fout);
+            if(StoreManager.store == 2) sr = new StreamResult(bout);
             tf.transform(new DOMSource(doc), sr);
-            
-            StoreManager.saveXMLStore(f.toByteArray(), pathXMLFile);
+            if(StoreManager.store == 2) StoreManager.saveXMLStore(bout.toByteArray(), pathXMLFile);
             sr.getOutputStream().close();
             res.setLinkXml("https://" + GCSTORE_BUCKET + ".storage.googleapis.com/" + unidadEnvio + xmlname);
             
@@ -702,14 +723,21 @@ public class FacturaBoletaElectronica {
         LOGGER.info("FactE - enviarASunat | Prepara ambiente: " + sws);
         String key = factura.getEmpresa().getNumeroDocumento() + factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo();
         String foldername = factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo() + "-" +  factura.getEmpresa().getNumeroDocumento();
-        //String unidadEnvio = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision());
-        String unidadEnvio = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision());
+        String unidadEnvio = "";
+        if(StoreManager.store == 1) unidadEnvio = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision());
+        if(StoreManager.store == 2) unidadEnvio = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision());
         String userEmisor = AESCipher.desencripta(factura.getEmpresa().getUserSunat(), key);
         String passEmisor = AESCipher.desencripta(factura.getEmpresa().getPassSunat(), key);
         try {
-            //FileDataSource fileDataSource = new FileDataSource(unidadEnvio + zipFileName);
-        	DataSource dataSource = new ByteArrayDataSource(StoreManager.getBlobGCloud(unidadEnvio + zipFileName), MediaType.ZIP.toString());
-            DataHandler dataHandler = new DataHandler(dataSource);
+        	DataHandler dataHandler = null;
+        	if(StoreManager.store == 1) {
+        		FileDataSource fileDataSource = new FileDataSource(unidadEnvio + zipFileName);
+        		dataHandler = new DataHandler(fileDataSource);
+        	}
+        	if(StoreManager.store == 2) {
+        		DataSource dataSource = new ByteArrayDataSource(StoreManager.getBlobGCloud(unidadEnvio + zipFileName), MediaType.ZIP.toString());
+        		dataHandler = new DataHandler(dataSource);
+        	}
         	
             byte[] respuestaSunat = null;
             switch (sws) {
@@ -750,12 +778,18 @@ public class FacturaBoletaElectronica {
                     respuestaSunat = null;
                     throw new NoExisteWSSunatException(sws);
             }
-            //String pathRecepcion = StoreManager.getDirectorioLocal(3, foldername, factura.getFechaEmision());
-            String pathRecepcion = StoreManager.getDirectorioGCloud(3, foldername, factura.getFechaEmision());
-            //FileOutputStream fos = new FileOutputStream(pathRecepcion + "R-" + zipFileName);
-            //fos.write(respuestaSunat);
-            //fos.close();
-            StoreManager.saveXMLZipStore(respuestaSunat, pathRecepcion + "R-" + zipFileName);/*
+            String pathRecepcion = "";
+            if(StoreManager.store == 1) {
+            	pathRecepcion = StoreManager.getDirectorioLocal(3, foldername, factura.getFechaEmision());
+            	FileOutputStream fos = new FileOutputStream(pathRecepcion + "R-" + zipFileName);
+            	fos.write(respuestaSunat);
+            	fos.close();
+            }
+            if(StoreManager.store == 2) {
+            	pathRecepcion = StoreManager.getDirectorioGCloud(3, foldername, factura.getFechaEmision());
+            	StoreManager.saveXMLZipStore(respuestaSunat, pathRecepcion + "R-" + zipFileName);
+            }
+            /*
             LOGGER.info("FactE - enviarASunat | Descomprimiendo CDR " + pathRecepcion + "R-" + zipFileName);
             ZipFile archive = new ZipFile(pathRecepcion + "R-" + zipFileName);
             Enumeration e = archive.entries();

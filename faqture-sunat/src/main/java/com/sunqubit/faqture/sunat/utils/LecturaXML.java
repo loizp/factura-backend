@@ -25,7 +25,9 @@ public class LecturaXML {
         try {
             DocumentBuilderFactory fabricaCreadorDocumento = DocumentBuilderFactory.newInstance();
             DocumentBuilder creadorDocumento = fabricaCreadorDocumento.newDocumentBuilder();
-            Document documento = creadorDocumento.parse(new InputSource(StoreManager.getFileStore(path)));
+            Document documento = null;
+            if(StoreManager.store == 1) documento = creadorDocumento.parse(path);
+            if(StoreManager.store == 2) documento = creadorDocumento.parse(new InputSource(StoreManager.getFileStore(path)));
             Element raiz = documento.getDocumentElement();
             
             LOGGER.info("LecturaXML - obtenerDigestValue | Iniciando con la lectura");
@@ -69,7 +71,9 @@ public class LecturaXML {
         try {
             DocumentBuilderFactory fabricaCreadorDocumento = DocumentBuilderFactory.newInstance();
             DocumentBuilder creadorDocumento = fabricaCreadorDocumento.newDocumentBuilder();
-            Document documento = creadorDocumento.parse(new InputSource(StoreManager.getFileStore(path)));
+            Document documento = null;
+            if(StoreManager.store == 1) documento = creadorDocumento.parse(path);
+            if(StoreManager.store == 2) documento = creadorDocumento.parse(new InputSource(StoreManager.getFileStore(path)));
             Element raiz = documento.getDocumentElement();
 
             NodeList nodlist = raiz.getElementsByTagName("ds:SignatureValue");

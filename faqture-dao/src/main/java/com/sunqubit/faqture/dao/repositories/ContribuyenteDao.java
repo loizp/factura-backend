@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sunqubit.faqture.beans.core.Contribuyente;
 import com.sunqubit.faqture.beans.core.Empresa;
+import com.sunqubit.faqture.beans.utils.StoreManager;
 import com.sunqubit.faqture.dao.contracts.IContribuyenteDao;
 import com.sunqubit.faqture.dao.mappers.ContribuyenteMapper;
 
@@ -76,7 +77,7 @@ public class ContribuyenteDao implements IContribuyenteDao {
 			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
 			empresa.setId(mapper.selectKey());
 			mapper.insertE(empresa);
-			//StoreManager.getDirectorio(1, empresa.getTipoDocumentoIdentidad().getCodigo(), empresa.getNumeroDocumento(), null);
+			if(StoreManager.store == 1) StoreManager.getDirectorioLocal(1, empresa.getTipoDocumentoIdentidad().getCodigo() + "-" + empresa.getNumeroDocumento(), null);
 			return empresa.getId();
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
@@ -118,7 +119,7 @@ public class ContribuyenteDao implements IContribuyenteDao {
 		try {
 			ContribuyenteMapper mapper = session.getMapper(ContribuyenteMapper.class);
 			mapper.updateE(empresa);
-			//StoreManager.getDirectorio(1, empresa.getTipoDocumentoIdentidad().getCodigo(), empresa.getNumeroDocumento(), null);
+			if(StoreManager.store == 1) StoreManager.getDirectorioLocal(1, empresa.getTipoDocumentoIdentidad().getCodigo() + "-" + empresa.getNumeroDocumento(), null);
 		} catch (PersistenceException pe) {
 			LOGGER.info(pe.getMessage());
 			pe.printStackTrace();

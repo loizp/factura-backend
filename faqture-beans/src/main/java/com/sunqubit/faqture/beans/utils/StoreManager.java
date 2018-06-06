@@ -31,6 +31,8 @@ import com.google.common.net.MediaType;
 public class StoreManager {	
 	private static Storage storage = StorageOptions.getDefaultInstance().getService();
 	
+	public static int store = 1; // 1:Local - 2:Google
+	
 	public static String getDirectorioLocal(int tipo, String foldername, Timestamp fechaTS) {
 		LocalProperties mainProperties = new LocalProperties();
 		String ruta = mainProperties.getPropertyValue("store.urlLocal");

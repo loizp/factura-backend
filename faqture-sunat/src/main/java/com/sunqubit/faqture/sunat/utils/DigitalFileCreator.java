@@ -6,7 +6,11 @@ import static com.sunqubit.faqture.beans.utils.ConstantProperty.ZIP_EXT;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -28,23 +32,37 @@ public class DigitalFileCreator {
 		Boolean resultado = true;
         try {
             LOGGER.info("DigFileCreator - crearZip | Iniciando con la creación");
-            //FileInputStream in = new FileInputStream(unidadEnvio + xmlName);
-            InputStream in = StoreManager.getFileStore(unidadEnvio + xmlName);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            //FileOutputStream out = new FileOutputStream(unidadEnvio + xmlName.substring(0,xmlName.length() - 4) + ZIP_EXT);
-            
             byte[] buffer = new byte[2048];
-        	try (ZipOutputStream zipOut = new ZipOutputStream(out)) {
-        		ZipEntry entry = new ZipEntry(xmlName);
-                zipOut.putNextEntry(entry);
-                int len = 0;
-                while ((len = in.read(buffer)) != -1) {
-                    zipOut.write(buffer, 0, len);
+            if(StoreManager.store == 1) {
+            	FileInputStream fin = new FileInputStream(unidadEnvio + xmlName);
+            	FileOutputStream fout = new FileOutputStream(unidadEnvio + xmlName.substring(0,xmlName.length() - 4) + ZIP_EXT);
+            	try (ZipOutputStream zipOut = new ZipOutputStream(fout)) {
+            		ZipEntry entry = new ZipEntry(xmlName);
+                    zipOut.putNextEntry(entry);
+                    int len = 0;
+                    while ((len = fin.read(buffer)) != -1) {
+                        zipOut.write(buffer, 0, len);
+                    }
+                    zipOut.closeEntry();
                 }
-                zipOut.closeEntry();
+            	fout.close();
+                fin.close();
             }
-        	StoreManager.saveXMLZipStore(out.toByteArray(), unidadEnvio + xmlName.substring(0,xmlName.length() - 4) + ZIP_EXT);
-            in.close();
+            if(StoreManager.store == 2) {
+            	InputStream in = StoreManager.getFileStore(unidadEnvio + xmlName);
+            	ByteArrayOutputStream bout = new ByteArrayOutputStream();
+            	try (ZipOutputStream zipOut = new ZipOutputStream(bout)) {
+            		ZipEntry entry = new ZipEntry(xmlName);
+                    zipOut.putNextEntry(entry);
+                    int len = 0;
+                    while ((len = in.read(buffer)) != -1) {
+                        zipOut.write(buffer, 0, len);
+                    }
+                    zipOut.closeEntry();
+                }
+            	StoreManager.saveXMLZipStore(bout.toByteArray(), unidadEnvio + xmlName.substring(0,xmlName.length() - 4) + ZIP_EXT);
+                in.close();
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             resultado = false;
@@ -59,17 +77,24 @@ public class DigitalFileCreator {
 		try {			
 			QRCodeWriter qrCodeWriter = new QRCodeWriter();
 			BitMatrix bitMatrix = qrCodeWriter.encode(infobarcode, BarcodeFormat.QR_CODE, 350, 350);
-			//Path path = FileSystems.getDefault().getPath(fileFinal + QRNAME_EXT);
-			//MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-			BufferedImage codigoImg = MatrixToImageWriter.toBufferedImage(bitMatrix);
-			StoreManager.qrpdf417Store(codigoImg, fileFinal + QRNAME_EXT);
-			
+			if(StoreManager.store == 1) {
+				Path pathqr = FileSystems.getDefault().getPath(fileFinal + QRNAME_EXT);
+				MatrixToImageWriter.writeToPath(bitMatrix, "PNG", pathqr);
+			}
+			if(StoreManager.store == 2) {
+				BufferedImage codigoImgqr = MatrixToImageWriter.toBufferedImage(bitMatrix);
+				StoreManager.qrpdf417Store(codigoImgqr, fileFinal + QRNAME_EXT);
+			}
 			Writer writer = new PDF417Writer();
 			bitMatrix = writer.encode(infobarcode, BarcodeFormat.PDF_417, 200, 100);
-			//path = FileSystems.getDefault().getPath(fileFinal + PDF417NAME_EXT);
-			//MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-			codigoImg = MatrixToImageWriter.toBufferedImage(bitMatrix);
-			StoreManager.qrpdf417Store(codigoImg, fileFinal + PDF417NAME_EXT);
+			if(StoreManager.store == 1) {
+				Path pathpdf417 = FileSystems.getDefault().getPath(fileFinal + PDF417NAME_EXT);
+				MatrixToImageWriter.writeToPath(bitMatrix, "PNG", pathpdf417);
+			}
+			if(StoreManager.store == 2) {
+				BufferedImage codigoImgpdf417 = MatrixToImageWriter.toBufferedImage(bitMatrix);
+				StoreManager.qrpdf417Store(codigoImgpdf417, fileFinal + PDF417NAME_EXT);
+			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			resultado = false;
