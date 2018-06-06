@@ -223,6 +223,8 @@ CREATE TABLE sunqubit.contribuyentes (
                 cont_urbanizacion VARCHAR(250),
                 ubig_id INTEGER,
                 pais_codigo CHAR(2) DEFAULT 'PE' NOT NULL,
+                cont_user_sunat VARCHAR,
+                cont_pass_sunat VARCHAR,
                 cont_keystore_type VARCHAR(10),
                 cont_keystore_file VARCHAR(250),
                 cont_keystore_pass VARCHAR,
@@ -231,6 +233,7 @@ CREATE TABLE sunqubit.contribuyentes (
                 cont_certificate_alias VARCHAR,
                 cont_email VARCHAR(200),
                 cont_telefono VARCHAR(25),
+                cont_tipo_envio CHAR(1) DEFAULT '1',
                 CONSTRAINT contribuyentes_pk PRIMARY KEY (cont_id)
 );
 COMMENT ON TABLE sunqubit.contribuyentes IS 'Tabla que contiene todos los contribuyentes admitidos por la SUNAT';
@@ -244,6 +247,8 @@ COMMENT ON COLUMN sunqubit.contribuyentes.cont_status IS 'Campo que permite la v
 COMMENT ON COLUMN sunqubit.contribuyentes.cont_urbanizacion IS 'Campo que contiene en caso de contra con la ubicacion de urbanización del contribuyente';
 COMMENT ON COLUMN sunqubit.contribuyentes.ubig_id IS 'Campo clave con el id de la ubicacion geografica del contribuyente en caso de tenerlo';
 COMMENT ON COLUMN sunqubit.contribuyentes.pais_codigo IS 'Campo clave referencial del pais al que pertenece el contribuyente';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_user_sunat IS 'Campo con el usuario del portal sunat';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_pass_sunat IS 'Campo con la contraseña del portal sunat';
 COMMENT ON COLUMN sunqubit.contribuyentes.cont_keystore_type IS 'Campo con el tipo de llave ya sea JKS u Otro';
 COMMENT ON COLUMN sunqubit.contribuyentes.cont_keystore_file IS 'Campo con la ruta del certificado codificado a usar';
 COMMENT ON COLUMN sunqubit.contribuyentes.cont_keystore_pass IS 'Campo con la clave del store';
@@ -252,6 +257,7 @@ COMMENT ON COLUMN sunqubit.contribuyentes.cont_privatekey_pass IS 'campo con la 
 COMMENT ON COLUMN sunqubit.contribuyentes.cont_certificate_alias IS 'Campo con el alias del certificado';
 COMMENT ON COLUMN sunqubit.contribuyentes.cont_email IS 'Campo con el Email principal que se mostrará en los documentos';
 COMMENT ON COLUMN sunqubit.contribuyentes.cont_telefono IS 'Campo con el numero de telefono principal';
+COMMENT ON COLUMN sunqubit.contribuyentes.cont_tipo_envio IS 'Campo que especifica que el envio de los documentos es de prueba = 1 o de producción = 3,';
 
 
 ALTER SEQUENCE sunqubit.contribuyentes_cont_id_seq_1_1 OWNED BY sunqubit.contribuyentes.cont_id;

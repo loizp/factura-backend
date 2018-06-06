@@ -3,11 +3,11 @@ package com.sunqubit.faqture.beans.utils;
 import java.io.FileInputStream;
 import java.util.Properties;
 
-public class MainProperties {
+public class LocalProperties {
 	private static Properties Propiedades;
     private String archivo = getClass().getClassLoader().getResource("faqture.properties").getPath();
     
-	public MainProperties() {
+	public LocalProperties() {
 		Propiedades = new Properties();
 	}
 

@@ -2,14 +2,31 @@ package com.sunqubit.faqture.sunat.core;
 
 import org.apache.xml.security.utils.ElementProxy;
 
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.XML_EXT;
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.ZIP_EXT;
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.GCSTORE_BUCKET;
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.QRNAME_EXT;
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.PDF417NAME_EXT;
+
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.util.ByteArrayDataSource;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -24,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Element;
 
+import com.google.common.net.MediaType;
 import com.sunqubit.faqture.beans.core.ComprobantePago;
 import com.sunqubit.faqture.beans.core.DetalleDocumento;
 import com.sunqubit.faqture.beans.core.Leyenda;
@@ -31,7 +49,10 @@ import com.sunqubit.faqture.beans.rest.ServiceResponse;
 import com.sunqubit.faqture.beans.utils.AESCipher;
 import com.sunqubit.faqture.beans.utils.StoreManager;
 import com.sunqubit.faqture.sunat.utils.DigitalFileCreator;
+import com.sunqubit.faqture.sunat.utils.HeaderHandlerResolver;
 import com.sunqubit.faqture.sunat.utils.LecturaXML;
+
+import pe.gob.sunat.service.NoExisteWSSunatException;
 
 public class FacturaBoletaElectronica {
 
@@ -45,10 +66,13 @@ public class FacturaBoletaElectronica {
     	Boolean ok = true;
         String msg = "Creación de las imágenes codigos QR y PDF417 correctamente";
         ComprobantePago res = factura;
-        String qrpath = StoreManager.getDirectorio(5, factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo(), factura.getEmpresa().getNumeroDocumento(), factura.getFechaEmision());
+        String foldername = factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo() + "-" +  factura.getEmpresa().getNumeroDocumento();
+        //String qrpath = StoreManager.getDirectorioLocal(4, foldername, factura.getFechaEmision());
+        String qrpath = StoreManager.getDirectorioGCloud(4, foldername, factura.getFechaEmision());
         String qrname = factura.getEmpresa().getNumeroDocumento() + "-" + factura.getTipoDocumento().getCodigo() + "-" + factura.getNumero();
-        String pathXMLFile = StoreManager.getDirectorio(2, factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo(), factura.getEmpresa().getNumeroDocumento(), factura.getFechaEmision())
-        		+ qrname + ".xml";
+        
+        //String pathXMLFile = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision()) + qrname + XML_EXT;
+        String pathXMLFile = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision())	+ qrname + XML_EXT;
         qrpath += qrname;
         
         String hashCode = LecturaXML.getDigestValue(pathXMLFile);
@@ -66,8 +90,12 @@ public class FacturaBoletaElectronica {
 		if(factura.getCliente().getTipoDocumentoIdentidad().getCodigo().equals("0")) infobarcode += "|";
 		else infobarcode += factura.getCliente().getNumeroDocumento() + "|";
 		infobarcode += hashCode + "|" + firma + "|";
-		
         ok = DigitalFileCreator.creaImgQRPdf417(infobarcode, qrpath);
+        if(ok) {
+        	String urlCode = "https://" + GCSTORE_BUCKET + ".storage.googleapis.com/" + qrpath;
+        	res.setLinkQR(urlCode+QRNAME_EXT);
+        	res.setLinkPDF417(urlCode+PDF417NAME_EXT);
+        }
         return new ServiceResponse(ok, msg, res);
     }
     
@@ -77,14 +105,16 @@ public class FacturaBoletaElectronica {
         Boolean ok = true;
         String msg = "creación del archivo XML y comprimido correctamente";
         ComprobantePago res = factura;
-        String unidadEnvio = StoreManager.getDirectorio(2, factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo(), factura.getEmpresa().getNumeroDocumento(), factura.getFechaEmision());
+        String foldername = factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo() + "-" +  factura.getEmpresa().getNumeroDocumento();
+        //String unidadEnvio = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision());
+        String unidadEnvio = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision());
         try {
         	LOGGER.info("FactE - generarXMLZipiado | RUC: " + factura.getEmpresa().getNumeroDocumento());
             ElementProxy.setDefaultPrefix(Constants.SignatureSpecNS, "ds");
             String key = factura.getEmpresa().getNumeroDocumento() + factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo();
             String keystoreType = factura.getEmpresa().getKeystoreType();
-            String keystoreFile = StoreManager.getDirectorio(1, factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo(), factura.getEmpresa().getNumeroDocumento(), null) 
-            		+ factura.getEmpresa().getKeystoreFile();
+            //String keystoreFile = StoreManager.getDirectorioLocal(1, foldername, null) + factura.getEmpresa().getKeystoreFile();
+            String keystoreFile = StoreManager.getDirectorioGCloud(1, foldername, null) + factura.getEmpresa().getKeystoreFile();
             String keystorePass = AESCipher.desencripta(factura.getEmpresa().getKeystorePass(), key);
             String privateKeyAlias = AESCipher.desencripta(factura.getEmpresa().getPrivateKeyAlias(), key);
             String privateKeyPass = AESCipher.desencripta(factura.getEmpresa().getPrivateKeyPass(), key);
@@ -96,13 +126,14 @@ public class FacturaBoletaElectronica {
             CDATASection cdata;
 
             LOGGER.info("FactE - generarXMLZipiado | Iniciamos la generacion del XML");
-            String xmlname = factura.getEmpresa().getNumeroDocumento() + "-" + factura.getTipoDocumento().getCodigo() + "-" + factura.getNumero() + ".xml";
+            String xmlname = factura.getEmpresa().getNumeroDocumento() + "-" + factura.getTipoDocumento().getCodigo() + "-" + factura.getNumero() + XML_EXT;
             String pathXMLFile = unidadEnvio + xmlname;
-            File signatureFile = new File(pathXMLFile);
+            Path signatureFile = Paths.get(pathXMLFile);
 
             KeyStore ks = KeyStore.getInstance(keystoreType);
-            FileInputStream fis = new FileInputStream(keystoreFile);
-            ks.load(fis, keystorePass.toCharArray());
+            //FileInputStream fis = new FileInputStream(keystoreFile);
+            //ks.load(fis, keystorePass.toCharArray());
+            ks.load(StoreManager.getFileStore(keystoreFile), keystorePass.toCharArray());
 
             PrivateKey privateKey = (PrivateKey) ks.getKey(privateKeyAlias, privateKeyPass.toCharArray());
             if (privateKey == null) {
@@ -255,7 +286,7 @@ public class FacturaBoletaElectronica {
                 AdditionalProperty.appendChild(ID);
                 AdditionalProperty.appendChild(Value);
             }
-            String BaseURI = signatureFile.toURI().toURL().toString();
+            String BaseURI = signatureFile.toUri().toURL().toString();
             XMLSignature sig = new XMLSignature(doc, BaseURI, XMLSignature.ALGO_ID_SIGNATURE_RSA);
 
             ExtensionContent.appendChild(sig.getElement());
@@ -640,18 +671,19 @@ public class FacturaBoletaElectronica {
             {
                 sig.sign(privateKey);
             }
-            FileOutputStream f = new FileOutputStream(signatureFile);
+            ByteArrayOutputStream f = new ByteArrayOutputStream();
             Transformer tf = TransformerFactory.newInstance().newTransformer();
             tf.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
             tf.setOutputProperty(OutputKeys.STANDALONE, "no");
             StreamResult sr = new StreamResult(f);
             tf.transform(new DOMSource(doc), sr);
-            sr.getOutputStream().close();
             
-            res.setLinkXml(xmlname);
+            StoreManager.saveXMLStore(f.toByteArray(), pathXMLFile);
+            sr.getOutputStream().close();
+            res.setLinkXml("https://" + GCSTORE_BUCKET + ".storage.googleapis.com/" + unidadEnvio + xmlname);
             
             LOGGER.info("FactE - generarXMLZipiado | XML creado " + pathXMLFile);
-            ok = DigitalFileCreator.crearZip(xmlname, unidadEnvio, signatureFile);
+            ok = DigitalFileCreator.crearZip(xmlname, unidadEnvio);
             if(!ok)
             	msg = "Ocurrió un error en la creación del archivo ZIP";
         } catch (Exception ex) {
@@ -661,5 +693,147 @@ public class FacturaBoletaElectronica {
             LOGGER.error("FactE - generarXMLZipiado | error  " + ex.toString());
         }
         return new ServiceResponse(ok, msg, res);
+    }
+
+    public static String enviarASunat(ComprobantePago factura) throws NoExisteWSSunatException {
+        String resultado = "";
+        String zipFileName = factura.getEmpresa().getNumeroDocumento() + "-" + factura.getTipoDocumento().getCodigo() + "-" + factura.getNumero() + ZIP_EXT;
+        String sws = factura.getEmpresa().getTipoEnvio();
+        LOGGER.info("FactE - enviarASunat | Prepara ambiente: " + sws);
+        String key = factura.getEmpresa().getNumeroDocumento() + factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo();
+        String foldername = factura.getEmpresa().getTipoDocumentoIdentidad().getCodigo() + "-" +  factura.getEmpresa().getNumeroDocumento();
+        //String unidadEnvio = StoreManager.getDirectorioLocal(2, foldername, factura.getFechaEmision());
+        String unidadEnvio = StoreManager.getDirectorioGCloud(2, foldername, factura.getFechaEmision());
+        String userEmisor = AESCipher.desencripta(factura.getEmpresa().getUserSunat(), key);
+        String passEmisor = AESCipher.desencripta(factura.getEmpresa().getPassSunat(), key);
+        try {
+            //FileDataSource fileDataSource = new FileDataSource(unidadEnvio + zipFileName);
+        	DataSource dataSource = new ByteArrayDataSource(StoreManager.getBlobGCloud(unidadEnvio + zipFileName), MediaType.ZIP.toString());
+            DataHandler dataHandler = new DataHandler(dataSource);
+        	
+            byte[] respuestaSunat = null;
+            switch (sws) {
+                case "1":
+                    pe.gob.sunat.servicio.registro.comppago.factura.gem.service_bta.BillService_Service_fe ws1 = new pe.gob.sunat.servicio.registro.comppago.factura.gem.service_bta.BillService_Service_fe();
+                    HeaderHandlerResolver handlerResolver1 = new HeaderHandlerResolver();
+                    handlerResolver1.setRucEmisor(factura.getEmpresa().getNumeroDocumento());
+                    handlerResolver1.setUserEmisor(userEmisor);
+                    handlerResolver1.setPassEmisor(passEmisor);
+                    ws1.setHandlerResolver(handlerResolver1);
+                    pe.gob.sunat.servicio.registro.comppago.factura.gem.service_bta.BillService port1 = ws1.getBillServicePort();
+                    respuestaSunat = port1.sendBill(zipFileName, dataHandler);
+                    LOGGER.info("FactE - enviarASunat | Ambiente Beta: " + sws);
+                    break;
+                case "2":
+                    pe.gob.sunat.servicio.registro.comppago.factura.gem.servicesqa.BillService_Service_sqa ws2 = new pe.gob.sunat.servicio.registro.comppago.factura.gem.servicesqa.BillService_Service_sqa();
+                    HeaderHandlerResolver handlerResolver2 = new HeaderHandlerResolver();
+                    handlerResolver2.setRucEmisor(factura.getEmpresa().getNumeroDocumento());
+                    handlerResolver2.setUserEmisor(userEmisor);
+                    handlerResolver2.setPassEmisor(passEmisor);
+                    ws2.setHandlerResolver(handlerResolver2);
+                    pe.gob.sunat.servicio.registro.comppago.factura.gem.servicesqa.BillService port2 = ws2.getBillServicePort();
+                    respuestaSunat = port2.sendBill(zipFileName, dataHandler);
+                    LOGGER.info("FactE - enviarASunat | Ambiente QA " + sws);
+                    break;
+                case "3":
+                    pe.gob.sunat.servicio.registro.comppago.factura.gem.service.BillService_Service_fe ws3 = new pe.gob.sunat.servicio.registro.comppago.factura.gem.service.BillService_Service_fe();
+                    HeaderHandlerResolver handlerResolver3 = new HeaderHandlerResolver();
+                    handlerResolver3.setRucEmisor(factura.getEmpresa().getNumeroDocumento());
+                    handlerResolver3.setUserEmisor(userEmisor);
+                    handlerResolver3.setPassEmisor(passEmisor);
+                    ws3.setHandlerResolver(handlerResolver3);
+                    pe.gob.sunat.servicio.registro.comppago.factura.gem.service.BillService port3 = ws3.getBillServicePort();
+                    respuestaSunat = port3.sendBill(zipFileName, dataHandler);
+                    LOGGER.info("FactE - enviarASunat | Ambiente Produccion " + sws);
+                    break;
+                default:
+                    respuestaSunat = null;
+                    throw new NoExisteWSSunatException(sws);
+            }
+            //String pathRecepcion = StoreManager.getDirectorioLocal(3, foldername, factura.getFechaEmision());
+            String pathRecepcion = StoreManager.getDirectorioGCloud(3, foldername, factura.getFechaEmision());
+            //FileOutputStream fos = new FileOutputStream(pathRecepcion + "R-" + zipFileName);
+            //fos.write(respuestaSunat);
+            //fos.close();
+            StoreManager.saveXMLZipStore(respuestaSunat, pathRecepcion + "R-" + zipFileName);/*
+            LOGGER.info("FactE - enviarASunat | Descomprimiendo CDR " + pathRecepcion + "R-" + zipFileName);
+            ZipFile archive = new ZipFile(pathRecepcion + "R-" + zipFileName);
+            Enumeration e = archive.entries();
+            while (e.hasMoreElements()) {
+                ZipEntry entry = (ZipEntry) e.nextElement();
+                File file = new File(pathRecepcion, entry.getName());
+//                System.out.println("<<< Quien es: "+file.getName()+">>>>>" );
+//                System.out.println("<<< Direcctorio: "+file.isDirectory()+">>>>>" );
+//                System.out.println("<<< Archivo: "+file.isFile()+">>>>>" );
+                if (!file.isDirectory()) {
+                    if (entry.isDirectory() && !file.exists()) {
+                        file.mkdirs();
+                    } else {
+                        if (!file.getParentFile().exists()) {
+                            file.getParentFile().mkdirs();
+                        }
+                        InputStream in = archive.getInputStream(entry);
+                        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+                        byte[] buffer = new byte[8192];
+                        int read;
+                        while (-1 != (read = in.read(buffer))) {
+                            out.write(buffer, 0, read);
+                        }
+                        in.close();
+                        out.close();
+                    }
+                }
+            }
+            archive.close();
+            //System.out.println("Leyendo cdr xml");
+            //================leeyendo la resuesta de Sunat
+            zipFileName = zipFileName.substring(0, zipFileName.indexOf(".zip"));
+            LOGGER.info("enviarASunat - Lectura del contenido del CDR ");
+            //resultado = LecturaXML.getRespuestaSunat(trans, pathRecepcion + "R-" + zipFileName + ".xml", conn);
+            System.out.println("==>El envio del Zip a sunat fue exitoso");
+            LOGGER.info("enviarASunat - Envio a Sunat Exitoso ");*/
+        } catch (javax.xml.ws.soap.SOAPFaultException ex) {
+            String errorCode = ex.getFault().getFaultCodeAsQName().getLocalPart();
+            errorCode = errorCode.substring(errorCode.indexOf(".") + 1, errorCode.length());
+            /*
+            resultado = Util.getErrorMesageByCode(errorCode, vruc);
+            log.error("enviarASunat - Error SOAP" + ex.toString());
+            String sql = "insert into seguimiento(estado_seguimiento, docu_codigo, cdr_code, cdr_nota, cdr_observacion ) values (?,?,?,?,?)";
+            try {
+
+                PreparedStatement ps = conn.prepareStatement(sql);
+                //===Inserta seguimiento de documento
+                String[] cdr = resultado.split("\\|", 0);
+                ps.setString(1, "ECDR");
+                ps.setString(2, trans);
+                ps.setString(3, cdr[0]);
+                ps.setString(4, cdr[1]);
+                ps.setString(5, ex.toString());
+                ps.executeUpdate();
+            } catch (SQLException ex1) {
+                log.error("enviarASunat - Error ex1 " + ex1.toString());
+            }
+            */
+        } catch (Exception e) {
+            LOGGER.error("FactE - enviarASunat | Error: " + e.toString());
+            resultado = "0100|Error en el envio de archivo zip a sunat";
+            //resultado = "0100|"+e.toString();
+            /*
+            String sql = "insert into seguimiento(estado_seguimiento, docu_codigo, cdr_code, cdr_nota ) values (?,?,?,?)";
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                //===Inserta seguimiento de documento
+                ps.setString(1, "ECDR");
+                ps.setString(2, trans);
+                ps.setString(3, "0100");
+                ps.setString(4, e.toString());
+                ps.executeUpdate();
+            } catch (SQLException ex1) {
+                //Logger.getLogger(BolElectronica.class.getName()).log(Level.SEVERE, null, ex1);
+                LOGGER.error("enviarASunat - Error ex1 " + ex1.toString());
+            }
+			*/
+        }
+        return resultado;
     }
 }

@@ -17,12 +17,14 @@ import com.sunqubit.faqture.beans.core.NotaDC;
 import com.sunqubit.faqture.beans.core.Sucursal;
 import com.sunqubit.faqture.beans.rest.ApiRestFullResponse;
 import com.sunqubit.faqture.beans.rest.RestFullResponseHeader;
+import com.sunqubit.faqture.beans.rest.ServiceResponse;
 import com.sunqubit.faqture.dao.contracts.IDocumentoDao;
 import com.sunqubit.faqture.dao.validators.ValidatorException;
 import com.sunqubit.faqture.service.security.UsuarioService;
 import com.sunqubit.faqture.service.utils.LeyendaUtil;
 import com.sunqubit.faqture.service.validators.ComprobantePagoValidator;
 import com.sunqubit.faqture.service.validators.NotaDCValidator;
+import com.sunqubit.faqture.sunat.core.FacturaBoletaElectronica;
 
 @Service
 public class DocumentoService {
@@ -165,7 +167,14 @@ public class DocumentoService {
 			            }
 			            if(ok) docuId = documentoDao.insert(compPago);
             		}
-            		if(docuId > 0) res = documentoDao.getCompPago(docuId);
+            		if(docuId > 0) {
+            			res = documentoDao.getCompPago(docuId);
+            			ServiceResponse sr = FacturaBoletaElectronica.generarXMLZipiado(res);
+            			if(sr.getSuccess()) res = (ComprobantePago) sr.getData();
+            			sr = FacturaBoletaElectronica.generarQRPdf417(res);
+            			if(sr.getSuccess()) res = (ComprobantePago) sr.getData();
+            			FacturaBoletaElectronica.enviarASunat(res);
+            		}
             	} else {
             		code = servicio.getResponse().getCode();
                     msg = servicio.getResponse().getMessage();

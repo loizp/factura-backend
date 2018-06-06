@@ -12,9 +12,15 @@
     
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="org.postgresql.Driver" />
-        <property name="url" value="jdbc:postgresql://localhost:5432/BD_Faqture" />       
+         
+        <property name="url" value="jdbc:postgresql://google/BD_Faqture?socketFactory=com.google.cloud.sql.postgres.SocketFactory&amp;socketFactoryArg=maximal-valve-203119:us-central1:faqture" />       
+        <property name="username" value="postgres" />
+        <property name="password" value="f@qtureG00gleCl0udPg$QL" />
+        <!--
+        <property name="url" value="jdbc:postgresql://127.0.0.1:5432/BD_Faqture" />       
         <property name="username" value="faqture" />
         <property name="password" value="faqture" />
+        -->
         <!--<property name="defaultAutoCommit" value="false" />-->
     </bean>
     

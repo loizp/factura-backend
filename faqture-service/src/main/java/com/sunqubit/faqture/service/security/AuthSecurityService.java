@@ -25,7 +25,7 @@ public class AuthSecurityService {
 	private UserDetailsService userDetailsService;
 	
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private JwtTokenSecurity jwtTokenSecurity;
 	
 	@Autowired
 	IUsuarioDao usuarioDao;
@@ -34,7 +34,7 @@ public class AuthSecurityService {
 		
 		if (autenticateUser(jwtAuthRequest.getUsername(), jwtAuthRequest.getPassword())) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(jwtAuthRequest.getUsername());
-			final String token = jwtTokenUtil.generateToken(userDetails);
+			final String token = jwtTokenSecurity.generateToken(userDetails);
 			
 			return new JwtAuthenticationResponse(true, "Entrega del token de autorización", token);
 		} else

@@ -56,6 +56,11 @@
             <artifactId>faqture-dao</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.sunqubit</groupId>
+            <artifactId>faqture-sunat</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>faqture-service</finalName>

@@ -1,6 +1,6 @@
 package com.sunqubit.faqture.service.security;
 
-import static com.sunqubit.faqture.service.security.JwtConstanSecurity.HEADER_AUTHORIZACION_KEY;
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.HEADER_AUTHORIZACION_KEY;
 
 import java.io.IOException;
 
@@ -29,19 +29,19 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private UserDetailsService userDetailsService;
 	
 	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
+	private JwtTokenSecurity jwtTokenSecurity;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
 			throws ServletException, IOException {
 		String authToken = req.getHeader(HEADER_AUTHORIZACION_KEY);
 		LOGGER.info(authToken);
-		String username = jwtTokenUtil.getUsernameFromToken(authToken);
+		String username = jwtTokenSecurity.getUsernameFromToken(authToken);
 		
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 			
-			if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+			if (jwtTokenSecurity.validateToken(authToken, userDetails)) {
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
 				SecurityContextHolder.getContext().setAuthentication(authentication);

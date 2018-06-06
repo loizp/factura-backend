@@ -68,6 +68,18 @@ public class ContribuyenteService {
     private Empresa preparaCertificado(Empresa empresa) {
     	String key = empresa.getNumeroDocumento() + empresa.getTipoDocumentoIdentidad().getCodigo();
     	
+    	if(empresa.getUserSunat() != null) {
+    		if(empresa.getUserSunat().trim().length() > 3)
+    			empresa.setUserSunat(AESCipher.encripta(empresa.getUserSunat(), key));
+    		else empresa.setUserSunat(null);
+    	}
+    	
+    	if(empresa.getPassSunat() != null) {
+    		if(empresa.getPassSunat().trim().length() > 3)
+    			empresa.setPassSunat(AESCipher.encripta(empresa.getPassSunat(), key));
+    		else empresa.setPassSunat(null);
+    	}
+    	
     	if(empresa.getKeystoreType() == null || empresa.getKeystoreFile().trim().equals(""))
     		empresa.setKeystoreType("JKS");
     	

@@ -2,6 +2,9 @@ package com.sunqubit.faqture.beans.core;
 
 public class Empresa extends Contribuyente {
 	private boolean activo = true;
+	private String tipoEnvio;
+	private String userSunat;
+	private String passSunat;
 	private String keystoreType = "JKS";
 	private String keystoreFile;
 	private String keystorePass;
@@ -9,6 +12,18 @@ public class Empresa extends Contribuyente {
 	private String privateKeyPass;
 	private String certificateAlias;
 	
+	public String getUserSunat() {
+		return userSunat;
+	}
+	public void setUserSunat(String userSunat) {
+		this.userSunat = userSunat;
+	}
+	public String getPassSunat() {
+		return passSunat;
+	}
+	public void setPassSunat(String passSunat) {
+		this.passSunat = passSunat;
+	}
 	public boolean isActivo() {
 		return activo;
 	}
@@ -50,5 +65,11 @@ public class Empresa extends Contribuyente {
 	}
 	public void setCertificateAlias(String certificateAlias) {
 		this.certificateAlias = certificateAlias;
+	}
+	public String getTipoEnvio() {
+		return tipoEnvio;
+	}
+	public void setTipoEnvio(String tipoEnvio) {
+		this.tipoEnvio = tipoEnvio;
 	}
 }

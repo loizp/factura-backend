@@ -57,6 +57,9 @@
         <result column="cont_urbanizacion" property="urbanizacion"/>
         <result column="cont_email" property="email"/>
         <result column="cont_telefono" property="telefono"/>
+        <result column="cont_tipo_envio" property="tipoEnvio"/>
+        <result column="cont_user_sunat" property="userSunat"/>
+        <result column="cont_pass_sunat" property="passSunat"/>
         <result column="cont_keystoreType" property="keystoreType"/>
         <result column="cont_keystore_file" property="keystoreFile"/>
         <result column="cont_keystore_pass" property="keystorePass"/>
@@ -79,6 +82,9 @@
     		<if test="urbanizacion != null">, cont_urbanizacion</if>
     		<if test="email != null">, cont_email</if>
     		<if test="telefono != null">, cont_telefono</if>
+    		<if test="tipoEnvio != null">, cont_tipo_envio</if>
+    		<if test="userSunat != null">, cont_user_sunat</if>
+    		<if test="passSunat != null">, cont_pass_sunat</if>
     		<if test="keystoreType != null">, cont_keystore_type</if>
     		<if test="keystoreFile != null">, cont_keystore_file</if>
     		<if test="keystorePass != null">, cont_keystore_pass</if>
@@ -92,6 +98,9 @@
     		<if test="urbanizacion != null">, #{urbanizacion}</if>
     		<if test="email != null">, #{email}</if>
     		<if test="telefono != null">, #{telefono}</if>
+    		<if test="tipoEnvio != null">, #{tipoEnvio}</if>
+    		<if test="userSunat != null">, #{userSunat}</if>
+    		<if test="passSunat != null">, #{passSunat}</if>
     		<if test="keystoreType != null">, #{keystoreType}</if>
     		<if test="keystoreFile != null">, #{keystoreFile}</if>
     		<if test="keystorePass != null">, #{keystorePass}</if>
@@ -117,6 +126,9 @@
 			<if test="urbanizacion != null">, cont_urbanizacion = #{urbanizacion}</if>
 			<if test="email != null">, cont_email = #{email}</if>
     		<if test="telefono != null">, cont_telefono = #{telefono}</if>
+    		<if test="tipoEnvio != null">, cont_tipo_envio = #{tipoEnvio}</if>
+    		<if test="userSunat != null">, cont_user_sunat = #{userSunat}</if>
+    		<if test="passSunat != null">, cont_pass_sunat = #{passSunat}</if>
     		<if test="keystoreType != null">, cont_keystore_type = #{keystoreType}</if>
     		<if test="keystoreFile != null">, cont_keystore_file = #{keystoreFile}</if>
     		<if test="keystorePass != null">, cont_keystore_pass = #{keystorePass}</if>
@@ -170,7 +182,7 @@
     
     <select id="getById" parameterType="long" resultMap="ContribuyenteMap">
         SELECT e.*, tdi.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito,
-        	p.*, s.sucu_id, s.sucu_direccion, s.sucu_urbanizacion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
+        	p.*, s.sucu_id, s.sucu_nombre_legal, s.sucu_direccion, s.sucu_urbanizacion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
 			us.ubig_departamento AS sucu_ubig_departamento, us.ubig_provincia AS sucu_ubig_provincia, us.ubig_distrito AS sucu_ubig_distrito, ps.pais_codigo AS sucu_pais_codigo, ps.pais_nombre AS sucu_pais_nombre
 		FROM sunqubit.contribuyentes AS e
 			INNER JOIN sunqubit.tipos_documentos_identidad AS tdi ON tdi.tiid_codigo = e.tiid_codigo
@@ -184,7 +196,7 @@
     
     <select id="getByDoc" parameterType="HashMap" resultMap="ContribuyenteMap">
         SELECT e.*, tdi.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito,
-        	p.*, s.sucu_id, s.sucu_direccion, s.sucu_urbanizacion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
+        	p.*, s.sucu_id, s.sucu_nombre_legal, s.sucu_direccion, s.sucu_urbanizacion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
 			us.ubig_departamento AS sucu_ubig_departamento, us.ubig_provincia AS sucu_ubig_provincia, us.ubig_distrito AS sucu_ubig_distrito, ps.pais_codigo AS sucu_pais_codigo, ps.pais_nombre AS sucu_pais_nombre
 		FROM sunqubit.contribuyentes AS e
 			INNER JOIN sunqubit.tipos_documentos_identidad AS tdi ON tdi.tiid_codigo = e.tiid_codigo
@@ -198,7 +210,7 @@
     
     <select id="filterName" parameterType="string" resultMap="ContribuyenteMap">
         SELECT e.*, tdi.*, u.ubig_id, u.ubig_cod_dpto || u.ubig_cod_prov || u.ubig_cod_dist AS ubig_codigo, u.ubig_departamento, u.ubig_provincia, u.ubig_distrito,
-        	p.*, s.sucu_id, s.sucu_direccion, s.sucu_urbanizacion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
+        	p.*, s.sucu_id, s.sucu_nombre_legal, s.sucu_direccion, s.sucu_urbanizacion, s.sucu_status, us.ubig_id AS sucu_ubig_id, us.ubig_cod_dpto || us.ubig_cod_prov || us.ubig_cod_dist AS sucu_ubig_codigo,
 			us.ubig_departamento AS sucu_ubig_departamento, us.ubig_provincia AS sucu_ubig_provincia, us.ubig_distrito AS sucu_ubig_distrito, ps.pais_codigo AS sucu_pais_codigo, ps.pais_nombre AS sucu_pais_nombre
 		FROM sunqubit.contribuyentes AS e
 			INNER JOIN sunqubit.tipos_documentos_identidad AS tdi ON tdi.tiid_codigo = e.tiid_codigo

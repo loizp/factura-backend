@@ -53,6 +53,11 @@
             <version>${pgsql.version}</version>
         </dependency>
         <dependency>
+    		<groupId>com.google.cloud.sql</groupId>
+    		<artifactId>postgres-socket-factory</artifactId>
+    		<version>1.0.8</version>
+		</dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
@@ -71,7 +76,7 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>4.2.0</version>
                 <configuration>
-                    <configFile>src/main/resources/config/flyway.properties</configFile>
+                    <configFile>src/main/resources/config/flywayGCloudSQL.properties</configFile>
                 </configuration>
                 <dependencies>
                     <dependency>

@@ -35,8 +35,6 @@ public class Documento {
     private String cdrStatus;
     private String cdrNota;
     private String cdrObservacion;
-    private Blob codigoQR;
-    private Blob codPdf417;
     private List<Leyenda> leyendas;
     private List<Documento> docsReferenciados;
 
@@ -216,22 +214,6 @@ public class Documento {
     	if(tasaIgv == null) tasaIgv = BigDecimal.valueOf(18.00);
         this.tasaIgv = tasaIgv;
     }
-
-	public Blob getCodigoQR() {
-		return codigoQR;
-	}
-
-	public void setCodigoQR(Blob codigoQR) {
-		this.codigoQR = codigoQR;
-	}
-
-	public Blob getCodPdf417() {
-		return codPdf417;
-	}
-
-	public void setCodPdf417(Blob codPdf417) {
-		this.codPdf417 = codPdf417;
-	}
 
 	public String getLinkQR() {
 		return linkQR;

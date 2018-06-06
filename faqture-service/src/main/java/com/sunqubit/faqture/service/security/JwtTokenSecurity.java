@@ -1,8 +1,8 @@
 package com.sunqubit.faqture.service.security;
 
-import static com.sunqubit.faqture.service.security.JwtConstanSecurity.ISSUER_INFO;
-import static com.sunqubit.faqture.service.security.JwtConstanSecurity.SUPER_SECRET_KEY;
-import static com.sunqubit.faqture.service.security.JwtConstanSecurity.TOKEN_EXPIRATION_TIME;
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.ISSUER_INFO;
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.SUPER_SECRET_KEY;
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.TOKEN_EXPIRATION_TIME;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -24,12 +24,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwtTokenUtil {
+public class JwtTokenSecurity {
 	
 	@Autowired
 	IUsuarioDao usuarioDao;
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenSecurity.class);
 
     static final String CLAIM_KEY_EMISOR = "iss";
     static final String CLAIM_KEY_USERNAME = "sub";

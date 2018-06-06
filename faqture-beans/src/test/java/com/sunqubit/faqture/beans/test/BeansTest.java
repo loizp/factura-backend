@@ -1,7 +1,7 @@
 package com.sunqubit.faqture.beans.test;
 
 import com.sunqubit.faqture.beans.utils.AESCipher;
-import com.sunqubit.faqture.beans.utils.MainProperties;
+import com.sunqubit.faqture.beans.utils.LocalProperties;
 
 public class BeansTest {
 	public static void main(String[] args) {

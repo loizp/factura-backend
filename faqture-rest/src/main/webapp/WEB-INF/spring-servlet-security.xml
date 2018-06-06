@@ -9,6 +9,7 @@
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<http pattern="/" security="none" />
+	<http pattern="/zip" security="none" />
 
 	<http entry-point-ref="jwtAuthenticationEntryPoint"
 		create-session="stateless" use-expressions="true">
@@ -53,7 +54,7 @@
                 
 	<beans:bean id="jwtAuthenticationTokenFilter" class="com.sunqubit.faqture.service.security.JwtAuthenticationTokenFilter" />
 	
-	<beans:bean id="jwtTokenUtil" class="com.sunqubit.faqture.service.security.JwtTokenUtil" />
+	<beans:bean id="jwtTokenSecurity" class="com.sunqubit.faqture.service.security.JwtTokenSecurity" />
 	
     <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="userSecurityService">

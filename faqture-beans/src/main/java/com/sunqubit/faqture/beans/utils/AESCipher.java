@@ -1,5 +1,7 @@
 package com.sunqubit.faqture.beans.utils;
 
+import static com.sunqubit.faqture.beans.utils.ConstantProperty.SALT_SECRET;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -10,6 +12,7 @@ import org.springframework.security.crypto.keygen.KeyGenerators;
 public class AESCipher {
 	
 	public static String encripta(String dato, String key) {
+		key += SALT_SECRET;
 		String salt = KeyGenerators.string().generateKey();
 		TextEncryptor encryptor = Encryptors.text(key, salt);
 		Base64.Encoder encoder = Base64.getEncoder();
@@ -17,6 +20,7 @@ public class AESCipher {
 	}
 	
 	public static String desencripta(String dato, String key) {
+		key += SALT_SECRET;
 		Base64.Decoder decoder = Base64.getDecoder();
         byte[] decodedByteArray = decoder.decode(dato);
 		String salt = new String(decodedByteArray);

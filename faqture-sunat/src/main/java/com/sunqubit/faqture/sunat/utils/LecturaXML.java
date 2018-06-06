@@ -12,6 +12,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import com.sunqubit.faqture.beans.utils.StoreManager;
 
 public class LecturaXML {
 	
@@ -22,7 +25,7 @@ public class LecturaXML {
         try {
             DocumentBuilderFactory fabricaCreadorDocumento = DocumentBuilderFactory.newInstance();
             DocumentBuilder creadorDocumento = fabricaCreadorDocumento.newDocumentBuilder();
-            Document documento = creadorDocumento.parse(path);
+            Document documento = creadorDocumento.parse(new InputSource(StoreManager.getFileStore(path)));
             Element raiz = documento.getDocumentElement();
             
             LOGGER.info("LecturaXML - obtenerDigestValue | Iniciando con la lectura");
@@ -66,7 +69,7 @@ public class LecturaXML {
         try {
             DocumentBuilderFactory fabricaCreadorDocumento = DocumentBuilderFactory.newInstance();
             DocumentBuilder creadorDocumento = fabricaCreadorDocumento.newDocumentBuilder();
-            Document documento = creadorDocumento.parse(path);
+            Document documento = creadorDocumento.parse(new InputSource(StoreManager.getFileStore(path)));
             Element raiz = documento.getDocumentElement();
 
             NodeList nodlist = raiz.getElementsByTagName("ds:SignatureValue");
