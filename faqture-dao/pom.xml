@@ -16,7 +16,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.version>4.3.14.RELEASE</spring.version>
         <logback.version>1.2.3</logback.version>
-        <pgsql.version>42.1.4</pgsql.version>
+        <pgsql.version>42.4.1</pgsql.version>
         <mybatis.version>3.4.5</mybatis.version>
         <mybatis-spring.version>1.3.1</mybatis-spring.version>
         <dbcp.version>1.4</dbcp.version>
